@@ -1,8 +1,9 @@
+import { APIRouteWithVariable, Links } from '../../const';
 import { useEffect, useState } from 'react';
 
-import { APIRouteById } from '../../const';
 import { Comments } from '../../types/comment';
 import { Guitar } from '../../types/guitar';
+import { Link } from 'react-router-dom';
 import RatingStars from '../rating-stars/rating-stars';
 import api from '../../services/api';
 
@@ -15,7 +16,7 @@ function ProductCard(props: ProductCardProps): JSX.Element {
   const [rateCount, setRateCount] = useState<number>(0);
 
   useEffect(() => {
-    api.get<Comments>(APIRouteById.CommentsByGuitarId(guitar.id)).then((response) => setRateCount(response.data.length));
+    api.get<Comments>(APIRouteWithVariable.CommentsByGuitarId(guitar.id)).then((response) => setRateCount(response.data.length));
   }, [guitar.id, setRateCount]);
 
   return (
@@ -32,7 +33,11 @@ function ProductCard(props: ProductCardProps): JSX.Element {
         <p className="product-card__price"><span className="visually-hidden">Цена:</span>{String(guitar.price).replace(/(\d)(?=(\d{3})+$)/g, '$1 ')} ₽
         </p>
       </div>
-      <div className="product-card__buttons"><a className="button button--mini" href="#">Подробнее</a><a className="button button--red button--mini button--add-to-cart" href="#">Купить</a>
+      <div className="product-card__buttons">
+        <Link to={Links.ProductById(guitar.id)} className="button button--mini">
+          Подробнее
+        </Link>
+        <a className="button button--red button--mini button--add-to-cart" href="#">Купить</a>
       </div>
     </div>
   );

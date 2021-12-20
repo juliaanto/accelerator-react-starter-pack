@@ -2261,6 +2261,8 @@ button,
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
+
+  z-index: 1;
 }
 
 .form-search__select-list::-webkit-scrollbar {
@@ -2285,7 +2287,7 @@ button,
   padding-bottom: 4px;
 
   font-size: 14px;
-  line-height: 19px;
+  line-height: 28px;
 
   color: inherit;
 
