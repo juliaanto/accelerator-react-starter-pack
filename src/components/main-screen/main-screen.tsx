@@ -5,6 +5,7 @@ import Footer from '../footer/footer';
 import Header from '../header/header';
 import { Link } from 'react-router-dom';
 import ProductCard from '../product-card/product-card';
+import Sort from '../sort/sort';
 import { State } from '../../types/state';
 import { getGuitars } from '../../store/guitar-data/selectors';
 
@@ -31,7 +32,8 @@ function MainScreen(props: PropsFromRedux): JSX.Element {
             <li className="breadcrumbs__item">
               <Link to={AppRoute.Main} className="link">Главная</Link>
             </li>
-            <li className="breadcrumbs__item"><a className="link">Каталог</a>
+            <li className="breadcrumbs__item">
+              <a className="link">Каталог</a>
             </li>
           </ul>
           <div className="catalog">
@@ -85,24 +87,15 @@ function MainScreen(props: PropsFromRedux): JSX.Element {
                 </div>
               </fieldset>
             </form>
-            <div className="catalog-sort">
-              <h2 className="catalog-sort__title">Сортировать:</h2>
-              <div className="catalog-sort__type">
-                <button className="catalog-sort__type-button catalog-sort__type-button--active" aria-label="по цене" tabIndex={-1}>по цене</button>
-                <button className="catalog-sort__type-button" aria-label="по популярности">по популярности</button>
-              </div>
-              <div className="catalog-sort__order">
-                <button className="catalog-sort__order-button catalog-sort__order-button--up catalog-sort__order-button--active" aria-label="По возрастанию" tabIndex={-1}></button>
-                <button className="catalog-sort__order-button catalog-sort__order-button--down" aria-label="По убыванию"></button>
-              </div>
-            </div>
-            <div className="cards catalog__cards">
 
+            <Sort />
+
+            <div className="cards catalog__cards">
               {guitars.map((guitar) => (
                 <ProductCard key={guitar.id} guitar={guitar}/>
               ))}
-
             </div>
+
             <div className="pagination page-content__pagination">
               <ul className="pagination__list">
                 <li className="pagination__page pagination__page--active"><a className="link pagination__page-link" href="1">1</a>
