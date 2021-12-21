@@ -1,7 +1,7 @@
 export enum AppRoute {
   Main = '/',
   Product = '/product/:id',
-  FilterPrefix = '/guitars?',
+  FilterPrefix = '/guitars',
   NotFound = '/notfound',
 }
 
@@ -19,7 +19,7 @@ export const APIRouteWithVariable = {
   GuitarsBySearchText: ((text: string): string => `/guitars?name_like=${text}`),
   GuitarById: ((guitarId: number): string => `/guitars/${guitarId}`),
   Sort: ((filterParams: string, sort: string, order?: string): string => `/guitars${filterParams ? `${filterParams}&` : '?'}${sort}${order ? order : ''}`),
-  Filter: ((searchParams: string): string => `/guitars?${searchParams}`),
+  Filter: ((searchParams: string): string => `/guitars${searchParams}`),
 };
 
 export enum SortBy {

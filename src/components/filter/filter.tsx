@@ -1,10 +1,10 @@
 import { APIRoute, AppRoute } from '../../const';
 import { ConnectedProps, connect } from 'react-redux';
+import { useEffect, useRef } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { ThunkAppDispatch } from '../../types/action';
 import { fetchFilteredGuitarsAction } from '../../store/api-actions';
-import { useHistory } from 'react-router-dom';
-import { useRef } from 'react';
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   onChangeFilterValue(searchParams: string) {
@@ -20,11 +20,16 @@ function Filter(props: PropsFromRedux): JSX.Element {
   const {onChangeFilterValue} = props;
 
   const history = useHistory();
+  const filterParams = useLocation<string>().search;
+
+  useEffect(() => {
+    onChangeFilterValue(filterParams);
+  }, [filterParams, onChangeFilterValue]);
 
   const priceMinRef = useRef<HTMLInputElement | null>(null);
 
   const handleInput = () => {
-    let searchInput = '';
+    let searchInput = '?';
 
     if (priceMinRef.current?.value) {
       searchInput += `${APIRoute.FilterPriceMin}${priceMinRef.current?.value}`;
