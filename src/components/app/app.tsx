@@ -30,7 +30,7 @@ function App(props: PropsFromRedux): JSX.Element {
   return (
     <BrowserRouter history={browserHistory}>
       <Switch>
-        <Route path={AppRoute.Main}>
+        <Route exact path={AppRoute.Main}>
           <MainScreen />
         </Route>
         <Route path={AppRoute.FilterPrefix}>

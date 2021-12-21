@@ -1,6 +1,6 @@
 import { APIRoute, AppRoute } from '../../const';
 import { ConnectedProps, connect } from 'react-redux';
-import { useEffect, useRef } from 'react';
+import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { ThunkAppDispatch } from '../../types/action';
@@ -19,6 +19,8 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 function Filter(props: PropsFromRedux): JSX.Element {
   const {onChangeFilterValue} = props;
 
+  const [currentTypes, setCurrentTypes] = useState<string[]>([]);
+
   const history = useHistory();
   const filterParams = useLocation<string>().search;
 
@@ -27,19 +29,33 @@ function Filter(props: PropsFromRedux): JSX.Element {
   }, [filterParams, onChangeFilterValue]);
 
   const priceMinRef = useRef<HTMLInputElement | null>(null);
+  const priceMaxRef = useRef<HTMLInputElement | null>(null);
 
-  const handleInput = () => {
+  const handleInput = (event: SyntheticEvent) => {
+    const target = event.target as HTMLInputElement;
     let searchInput = '?';
 
     if (priceMinRef.current?.value) {
-      searchInput += `${APIRoute.FilterPriceMin}${priceMinRef.current?.value}`;
+      searchInput += `${APIRoute.FilterPriceMin}${priceMinRef.current?.value}&`;
     }
+
+    if (priceMaxRef.current?.value) {
+      searchInput += `${APIRoute.FilterPriceMax}${priceMaxRef.current?.value}&`;
+    }
+
+    if (target.checked) {
+      currentTypes.push(target.id);
+      setCurrentTypes(currentTypes);
+    } else {
+      const index = currentTypes.indexOf(target.id);
+      currentTypes.splice(index, 1);
+    }
+
+    currentTypes.map((type) => searchInput += `${APIRoute.FilterType}${type}&`);
 
     history.push(String(AppRoute.FilterPrefix) + searchInput);
 
-    if (searchInput) {
-      onChangeFilterValue(searchInput);
-    }
+    onChangeFilterValue(searchInput);
   };
 
   return (
@@ -62,22 +78,51 @@ function Filter(props: PropsFromRedux): JSX.Element {
           </div>
           <div className="form-input">
             <label className="visually-hidden">Максимальная цена</label>
-            <input type="number" placeholder="30 000" id="priceMax" name="до"></input>
+            <input
+              type="number"
+              placeholder="30 000"
+              id="priceMax"
+              name="до"
+              ref={priceMaxRef}
+              onInput={handleInput}
+            >
+            </input>
           </div>
         </div>
       </fieldset>
       <fieldset className="catalog-filter__block">
         <legend className="catalog-filter__block-title">Тип гитар</legend>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="acoustic" name="acoustic"></input>
+          <input
+            className="visually-hidden"
+            type="checkbox"
+            id="acoustic"
+            name="acoustic"
+            onInput={handleInput}
+          >
+          </input>
           <label htmlFor="acoustic">Акустические гитары</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="electric" name="electric"></input>
+          <input
+            className="visually-hidden"
+            type="checkbox"
+            id="electric"
+            name="electric"
+            onInput={handleInput}
+          >
+          </input>
           <label htmlFor="electric">Электрогитары</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="ukulele" name="ukulele"></input>
+          <input
+            className="visually-hidden"
+            type="checkbox"
+            id="ukulele"
+            name="ukulele"
+            onInput={handleInput}
+          >
+          </input>
           <label htmlFor="ukulele">Укулеле</label>
         </div>
       </fieldset>

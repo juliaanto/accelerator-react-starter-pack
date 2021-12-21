@@ -12,6 +12,8 @@ export const Links = {
 export enum APIRoute {
   Guitars = '/guitars',
   FilterPriceMin = 'price_gte=',
+  FilterPriceMax = 'price_lte=',
+  FilterType = 'type=',
 }
 
 export const APIRouteWithVariable = {
