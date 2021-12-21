@@ -20,10 +20,24 @@ export const fetchGuitarsAction = (): ThunkActionResult =>
     }
   };
 
-export const fetchSortedGuitarsAction = (sort: string, order?: string): ThunkActionResult =>
+export const fetchSortedGuitarsAction = (filterParams: string, sort: string, order?: string): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
-      const {data} = await api.get<Guitars>(APIRouteWithVariable.Sort(sort, order));
+      const {data} = await api.get<Guitars>(APIRouteWithVariable.Sort(filterParams, sort, order));
+      dispatch(loadGuitars(data));
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === HttpCode.NotFound) {
+          dispatch(redirectToRoute(AppRoute.NotFound));
+        }
+      }
+    }
+  };
+
+export const fetchFilteredGuitarsAction = (searchParams: string): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      const {data} = await api.get<Guitars>(APIRouteWithVariable.Filter(searchParams));
       dispatch(loadGuitars(data));
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
