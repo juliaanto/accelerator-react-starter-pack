@@ -14,6 +14,7 @@ export enum APIRoute {
   FilterPriceMin = 'price_gte=',
   FilterPriceMax = 'price_lte=',
   FilterType = 'type=',
+  FilterStringCount = 'stringCount=',
 }
 
 export const APIRouteWithVariable = {

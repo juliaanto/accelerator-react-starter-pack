@@ -20,6 +20,7 @@ function Filter(props: PropsFromRedux): JSX.Element {
   const {onChangeFilterValue} = props;
 
   const [currentTypes, setCurrentTypes] = useState<string[]>([]);
+  const [currentStringCount, setcurrentStringCount] = useState<string[]>([]);
 
   const history = useHistory();
   const filterParams = useLocation<string>().search;
@@ -31,8 +32,7 @@ function Filter(props: PropsFromRedux): JSX.Element {
   const priceMinRef = useRef<HTMLInputElement | null>(null);
   const priceMaxRef = useRef<HTMLInputElement | null>(null);
 
-  const handleInput = (event: SyntheticEvent) => {
-    const target = event.target as HTMLInputElement;
+  const handleInput = () => {
     let searchInput = '?';
 
     if (priceMinRef.current?.value) {
@@ -43,6 +43,18 @@ function Filter(props: PropsFromRedux): JSX.Element {
       searchInput += `${APIRoute.FilterPriceMax}${priceMaxRef.current?.value}&`;
     }
 
+    currentTypes.map((type) => searchInput += `${APIRoute.FilterType}${type}&`);
+
+    currentStringCount.map((stringCount) => searchInput += `${APIRoute.FilterStringCount}${stringCount.substring(0, stringCount.indexOf('-'))}&`);
+
+    history.push(String(AppRoute.FilterPrefix) + searchInput);
+
+    onChangeFilterValue(searchInput);
+  };
+
+  const handleTypeInput = (event: SyntheticEvent) => {
+    const target = event.target as HTMLInputElement;
+
     if (target.checked) {
       currentTypes.push(target.id);
       setCurrentTypes(currentTypes);
@@ -50,12 +62,18 @@ function Filter(props: PropsFromRedux): JSX.Element {
       const index = currentTypes.indexOf(target.id);
       currentTypes.splice(index, 1);
     }
+  };
 
-    currentTypes.map((type) => searchInput += `${APIRoute.FilterType}${type}&`);
+  const handleStringCountInput = (event: SyntheticEvent) => {
+    const target = event.target as HTMLInputElement;
 
-    history.push(String(AppRoute.FilterPrefix) + searchInput);
-
-    onChangeFilterValue(searchInput);
+    if (target.checked) {
+      currentStringCount.push(target.id);
+      setcurrentStringCount(currentStringCount);
+    } else {
+      const index = currentStringCount.indexOf(target.id);
+      currentStringCount.splice(index, 1);
+    }
   };
 
   return (
@@ -98,7 +116,10 @@ function Filter(props: PropsFromRedux): JSX.Element {
             type="checkbox"
             id="acoustic"
             name="acoustic"
-            onInput={handleInput}
+            onInput={(event) => {
+              handleTypeInput(event);
+              handleInput();
+            }}
           >
           </input>
           <label htmlFor="acoustic">Акустические гитары</label>
@@ -109,7 +130,10 @@ function Filter(props: PropsFromRedux): JSX.Element {
             type="checkbox"
             id="electric"
             name="electric"
-            onInput={handleInput}
+            onInput={(event) => {
+              handleTypeInput(event);
+              handleInput();
+            }}
           >
           </input>
           <label htmlFor="electric">Электрогитары</label>
@@ -120,7 +144,10 @@ function Filter(props: PropsFromRedux): JSX.Element {
             type="checkbox"
             id="ukulele"
             name="ukulele"
-            onInput={handleInput}
+            onInput={(event) => {
+              handleTypeInput(event);
+              handleInput();
+            }}
           >
           </input>
           <label htmlFor="ukulele">Укулеле</label>
@@ -129,19 +156,60 @@ function Filter(props: PropsFromRedux): JSX.Element {
       <fieldset className="catalog-filter__block">
         <legend className="catalog-filter__block-title">Количество струн</legend>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="4-strings" name="4-strings"></input>
+          <input
+            className="visually-hidden"
+            type="checkbox"
+            id="4-strings"
+            name="4-strings"
+            onInput={(event) => {
+              handleStringCountInput(event);
+              handleInput();
+            }}
+          >
+          </input>
           <label htmlFor="4-strings">4</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="6-strings" name="6-strings"></input>
+          <input
+            className="visually-hidden"
+            type="checkbox"
+            id="6-strings"
+            name="6-strings"
+            onInput={(event) => {
+              handleStringCountInput(event);
+              handleInput();
+            }}
+          >
+          </input>
           <label htmlFor="6-strings">6</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="7-strings" name="7-strings"></input>
+          <input
+            className="visually-hidden"
+            type="checkbox"
+            id="7-strings"
+            name="7-strings"
+            onInput={(event) => {
+              handleStringCountInput(event);
+              handleInput();
+            }}
+          >
+          </input>
           <label htmlFor="7-strings">7</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="12-strings" name="12-strings" disabled></input>
+          <input
+            className="visually-hidden"
+            type="checkbox"
+            id="12-strings"
+            name="12-strings"
+            onInput={(event) => {
+              handleStringCountInput(event);
+              handleInput();
+            }}
+            disabled
+          >
+          </input>
           <label htmlFor="12-strings">12</label>
         </div>
       </fieldset>
