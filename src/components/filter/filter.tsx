@@ -1,10 +1,17 @@
 import { APIRoute, AppRoute } from '../../const';
 import { ConnectedProps, connect } from 'react-redux';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { getMaxPrice, getMinPrice } from '../../utils';
 import { useHistory, useLocation } from 'react-router-dom';
 
+import { State } from '../../types/state';
 import { ThunkAppDispatch } from '../../types/action';
 import { fetchFilteredGuitarsAction } from '../../store/api-actions';
+import { getInitialGuitars } from '../../store/guitar-data/selectors';
+
+const mapStateToProps = (state: State) => ({
+  initialGuitars: getInitialGuitars(state),
+});
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   onChangeFilterValue(searchParams: string) {
@@ -12,18 +19,21 @@ const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   },
 });
 
-const connector = connect(null, mapDispatchToProps);
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function Filter(props: PropsFromRedux): JSX.Element {
-  const {onChangeFilterValue} = props;
+  const {onChangeFilterValue, initialGuitars} = props;
 
   const [currentTypes, setCurrentTypes] = useState<string[]>([]);
   const [currentStringCount, setcurrentStringCount] = useState<string[]>([]);
 
   const history = useHistory();
   const filterParams = useLocation<string>().search;
+
+  const minPrice = getMinPrice(initialGuitars);
+  const maxPrice = getMaxPrice(initialGuitars);
 
   useEffect(() => {
     onChangeFilterValue(filterParams);
@@ -76,6 +86,18 @@ function Filter(props: PropsFromRedux): JSX.Element {
     }
   };
 
+  const handlePriceMinBlur = () => {
+    if (priceMinRef.current?.value && Number(priceMinRef.current?.value) < minPrice) {
+      (document.querySelector('#priceMin') as HTMLInputElement).value = String(minPrice);
+    }
+  };
+
+  const handlePriceMaxBlur = () => {
+    if (priceMaxRef.current?.value && Number(priceMaxRef.current?.value) > maxPrice) {
+      (document.querySelector('#priceMax') as HTMLInputElement).value = String(maxPrice);
+    }
+  };
+
   return (
     <form className="catalog-filter">
       <h2 className="title title--bigger catalog-filter__title">Фильтр</h2>
@@ -86,11 +108,13 @@ function Filter(props: PropsFromRedux): JSX.Element {
             <label className="visually-hidden">Минимальная цена</label>
             <input
               type="number"
-              placeholder="1 000"
+              placeholder={String(minPrice)}
               id="priceMin"
               name="от"
+              min="0"
               ref={priceMinRef}
               onInput={handleInput}
+              onBlur={handlePriceMinBlur}
             >
             </input>
           </div>
@@ -98,11 +122,13 @@ function Filter(props: PropsFromRedux): JSX.Element {
             <label className="visually-hidden">Максимальная цена</label>
             <input
               type="number"
-              placeholder="30 000"
+              placeholder={String(maxPrice)}
               id="priceMax"
               name="до"
+              min="0"
               ref={priceMaxRef}
               onInput={handleInput}
+              onBlur={handlePriceMaxBlur}
             >
             </input>
           </div>

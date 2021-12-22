@@ -8,6 +8,13 @@ export const loadGuitars = (guitars: Guitars) => ({
   },
 } as const);
 
+export const loadInitialGuitars = (initialGuitars: Guitars) => ({
+  type: ActionType.LoadInitialGuitars,
+  payload: {
+    initialGuitars,
+  },
+} as const);
+
 export const redirectToRoute = (url: string) => ({
   type: ActionType.RedirectToRoute,
   payload: url,

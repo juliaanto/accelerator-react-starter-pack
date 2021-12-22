@@ -1,16 +1,18 @@
 import { ThunkAction, ThunkDispatch } from '@reduxjs/toolkit';
-import { loadGuitars, redirectToRoute } from '../store/action';
+import { loadGuitars, loadInitialGuitars, redirectToRoute } from '../store/action';
 
 import { AxiosInstance } from 'axios';
 import { State } from './state';
 
 export enum ActionType {
   LoadGuitars = 'data/loadGuitars',
+  LoadInitialGuitars = 'data/loadInitialGuitars',
   RedirectToRoute = 'guitars/redirectToRoute',
 }
 
 export type Actions =
 | ReturnType<typeof loadGuitars>
+| ReturnType<typeof loadInitialGuitars>
 | ReturnType<typeof redirectToRoute>;
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;

@@ -1,5 +1,5 @@
 import { APIRoute, APIRouteWithVariable, AppRoute } from '../const';
-import { loadGuitars, redirectToRoute } from './action';
+import { loadGuitars, loadInitialGuitars, redirectToRoute } from './action';
 
 import { Guitars } from '../types/guitar';
 import { HttpCode } from '../services/api';
@@ -11,6 +11,7 @@ export const fetchGuitarsAction = (): ThunkActionResult =>
     try {
       const {data} = await api.get<Guitars>(APIRoute.Guitars);
       dispatch(loadGuitars(data));
+      dispatch(loadInitialGuitars(data));
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === HttpCode.NotFound) {
