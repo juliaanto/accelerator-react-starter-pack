@@ -1,7 +1,7 @@
-import { APIRoute, AppRoute } from '../../const';
+import { APIRoute, AppRoute, initialStringCountValues } from '../../const';
 import { ConnectedProps, connect } from 'react-redux';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
-import { getMaxPrice, getMinPrice } from '../../utils';
+import { getMaxPrice, getMinPrice, getStringsCountElementIdByValue, getStringsCountValueByElementId, getStringsCountValuesByGuitarTypes } from '../../utils';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { State } from '../../types/state';
@@ -28,6 +28,7 @@ function Filter(props: PropsFromRedux): JSX.Element {
 
   const [currentTypes, setCurrentTypes] = useState<string[]>([]);
   const [currentStringCount, setcurrentStringCount] = useState<string[]>([]);
+  const [availableStringCount, setAvailableStringCount] = useState<number[]>(initialStringCountValues);
 
   const history = useHistory();
   const filterParams = useLocation<string>().search;
@@ -38,6 +39,16 @@ function Filter(props: PropsFromRedux): JSX.Element {
   useEffect(() => {
     onChangeFilterValue(filterParams);
   }, [filterParams, onChangeFilterValue]);
+
+  useEffect(() => {
+    initialStringCountValues.forEach((value) => {
+      document.getElementById(`${getStringsCountElementIdByValue(value)}`)?.setAttribute('disabled', 'true');
+    });
+
+    availableStringCount.forEach((value) => {
+      document.getElementById(`${getStringsCountElementIdByValue(value)}`)?.removeAttribute('disabled');
+    });
+  }, [availableStringCount]);
 
   const priceMinRef = useRef<HTMLInputElement | null>(null);
   const priceMaxRef = useRef<HTMLInputElement | null>(null);
@@ -55,7 +66,7 @@ function Filter(props: PropsFromRedux): JSX.Element {
 
     currentTypes.map((type) => searchInput += `${APIRoute.FilterType}${type}&`);
 
-    currentStringCount.map((stringCount) => searchInput += `${APIRoute.FilterStringCount}${stringCount.substring(0, stringCount.indexOf('-'))}&`);
+    currentStringCount.map((stringCount) => searchInput += `${APIRoute.FilterStringCount}${getStringsCountValueByElementId(stringCount)}&`);
 
     history.push(String(AppRoute.FilterPrefix) + searchInput);
 
@@ -71,6 +82,12 @@ function Filter(props: PropsFromRedux): JSX.Element {
     } else {
       const index = currentTypes.indexOf(target.id);
       currentTypes.splice(index, 1);
+    }
+
+    if (currentTypes.length === 0) {
+      setAvailableStringCount(initialStringCountValues);
+    } else {
+      setAvailableStringCount(getStringsCountValuesByGuitarTypes(currentTypes));
     }
   };
 
@@ -233,7 +250,6 @@ function Filter(props: PropsFromRedux): JSX.Element {
               handleStringCountInput(event);
               handleInput();
             }}
-            disabled
           >
           </input>
           <label htmlFor="12-strings">12</label>

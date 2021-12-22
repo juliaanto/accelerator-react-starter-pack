@@ -34,3 +34,34 @@ export enum Order {
   Asc = '&_order=asc',
   Desc = '&_order=desc',
 }
+
+export enum GuitarType {
+  Acoustic = 'acoustic',
+  Electric = 'electric',
+  Ukulele = 'ukulele',
+}
+
+export const initialStringCountValues = [4, 6, 7, 12];
+
+export const stringCount = [
+  {
+    elementId: '4-strings',
+    value: 4,
+    guitarTypes: [String(GuitarType.Electric), String(GuitarType.Ukulele)],
+  },
+  {
+    elementId: '6-strings',
+    value: 6,
+    guitarTypes: [String(GuitarType.Acoustic), String(GuitarType.Electric)],
+  },
+  {
+    elementId: '7-strings',
+    value: 7,
+    guitarTypes: [String(GuitarType.Acoustic), String(GuitarType.Electric)],
+  },
+  {
+    elementId: '12-strings',
+    value: 12,
+    guitarTypes: [String(GuitarType.Acoustic)],
+  },
+];
