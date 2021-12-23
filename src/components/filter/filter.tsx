@@ -1,12 +1,12 @@
 import { APIRoute, FIRST_PAGE, Links, initialStringCountValues } from '../../const';
 import { ConnectedProps, connect } from 'react-redux';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
 import { getMaxPrice, getMinPrice, getStringsCountElementIdByValue, getStringsCountValueByElementId, getStringsCountValuesByGuitarTypes } from '../../utils';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { State } from '../../types/state';
 import { ThunkAppDispatch } from '../../types/action';
-import { fetchFilteredGuitarsAction } from '../../store/api-actions';
 import { getInitialGuitars } from '../../store/guitar-data/selectors';
 
 const mapStateToProps = (state: State) => ({
@@ -16,6 +16,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   onChangeFilterValue(filterParams: string, pageNumber: number) {
     dispatch(fetchFilteredGuitarsAction(filterParams, pageNumber));
+    dispatch(fetchGuitarsCountAction(filterParams));
   },
 });
 

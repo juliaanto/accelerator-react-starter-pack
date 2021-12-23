@@ -1,21 +1,22 @@
 import { ConnectedProps, connect } from 'react-redux';
 import { FIRST_PAGE, Links, PAGES_STEP } from '../../const';
 import { Link, useLocation, useParams } from 'react-router-dom';
+import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
+import { getFirstPageInList, getMaxPage, getRestGuitarsCount } from '../../utils';
 
 import { State } from '../../types/state';
 import { ThunkAppDispatch } from '../../types/action';
-import { fetchFilteredGuitarsAction } from '../../store/api-actions';
-import { getFirstPageInList } from '../../utils';
-import { getGuitars } from '../../store/guitar-data/selectors';
+import { getGuitarsCount } from '../../store/guitar-data/selectors';
 import { useEffect } from 'react';
 
 const mapStateToProps = (state: State) => ({
-  guitars: getGuitars(state),
+  guitarsCount: getGuitarsCount(state),
 });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   onPageChange(filterParams: string, pageNumber: number) {
     dispatch(fetchFilteredGuitarsAction(filterParams, pageNumber));
+    dispatch(fetchGuitarsCountAction(filterParams));
   },
 });
 
@@ -24,13 +25,11 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function Pagination(props: PropsFromRedux): JSX.Element {
-  const {onPageChange, guitars} = props;
+  const {onPageChange, guitarsCount} = props;
 
-  let {pageNumber} = useParams<{pageNumber: string}>();
+  const {pageNumber} = useParams<{pageNumber: string}>();
 
-  if (!pageNumber) {
-    pageNumber = String(FIRST_PAGE);
-  }
+  const currentPage = pageNumber ? Number(pageNumber) : FIRST_PAGE;
 
   const filterParams = String(useLocation<string>().search);
 
@@ -39,7 +38,7 @@ function Pagination(props: PropsFromRedux): JSX.Element {
 
     const firstPageInList = getFirstPageInList(initialPage);
 
-    for (let i = firstPageInList; i < firstPageInList + PAGES_STEP; i++) {
+    for (let i = firstPageInList; i < firstPageInList + PAGES_STEP && i <= getMaxPage(guitarsCount); i++) {
       pages.push(i);
     }
 
@@ -47,25 +46,25 @@ function Pagination(props: PropsFromRedux): JSX.Element {
   };
 
   useEffect(() => {
-    onPageChange(filterParams, Number(pageNumber));
-  }, [filterParams, onPageChange, pageNumber]);
+    onPageChange(filterParams, currentPage);
+  }, [filterParams, onPageChange, currentPage]);
 
   return (
     <div className="pagination page-content__pagination">
       <ul className="pagination__list">
-        {Number(pageNumber) > PAGES_STEP ?
+        {currentPage > PAGES_STEP ?
           <li className="pagination__page pagination__page--prev" id="prev">
-            <Link to={Links.PageByPageNumber((Number(pageNumber) - 1), filterParams)} className="link pagination__page-link">Назад</Link>
+            <Link to={Links.PageByPageNumber((getFirstPageInList(currentPage) - PAGES_STEP), filterParams)} className="link pagination__page-link">Назад</Link>
           </li>
           : ''}
-        {getPages(Number(pageNumber)).map((page) => (
-          <li key={`page-${page}`} className={`pagination__page ${page === Number(pageNumber) ? 'pagination__page--active' : ''}` }>
+        {getPages(currentPage).map((page) => (
+          <li key={`page-${page}`} className={`pagination__page ${page === currentPage ? 'pagination__page--active' : ''}` }>
             <Link to={Links.PageByPageNumber(page, filterParams)} className="link pagination__page-link">{page}</Link>
           </li>
         ))}
-        {guitars.length !== 0 ?
+        {getRestGuitarsCount(guitarsCount, currentPage) > 0 ?
           <li className="pagination__page pagination__page--next" id="next">
-            <Link to={Links.PageByPageNumber((getFirstPageInList(Number(pageNumber)) + PAGES_STEP), filterParams)} className="link pagination__page-link">Далее</Link>
+            <Link to={Links.PageByPageNumber((getFirstPageInList(currentPage) + PAGES_STEP), filterParams)} className="link pagination__page-link">Далее</Link>
           </li>
           : ''}
       </ul>

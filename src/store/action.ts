@@ -8,6 +8,13 @@ export const loadGuitars = (guitars: Guitars) => ({
   },
 } as const);
 
+export const loadGuitarsCount = (guitars: Guitars) => ({
+  type: ActionType.LoadGuitarsCount,
+  payload: {
+    guitars,
+  },
+} as const);
+
 export const loadInitialGuitars = (initialGuitars: Guitars) => ({
   type: ActionType.LoadInitialGuitars,
   payload: {

@@ -18,7 +18,7 @@ export enum APIRoute {
   FilterStringCount = 'stringCount=',
 }
 
-const PRODUCTS_PER_PAGE = 9;
+export const PRODUCTS_PER_PAGE = 6;
 
 export const PAGES_STEP = 3;
 
@@ -30,6 +30,7 @@ export const APIRouteWithVariable = {
   GuitarById: ((guitarId: number): string => `/guitars/${guitarId}`),
   Sort: ((filterParams: string, sort: string, order?: string): string => `/guitars${filterParams ? `${filterParams}&` : '?'}${sort}${order ? order : ''}`),
   Filter: ((filterParams: string, page: number): string => `/guitars${filterParams ? `${filterParams}` : '?'}_start=${(page - 1) * PRODUCTS_PER_PAGE}&_limit=${PRODUCTS_PER_PAGE}`),
+  GuitarsCount:  ((filterParams: string): string => `/guitars${filterParams ? `${filterParams}` : '?'}`),
 };
 
 export enum SortBy {
