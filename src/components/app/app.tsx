@@ -33,7 +33,7 @@ function App(props: PropsFromRedux): JSX.Element {
         <Route exact path={AppRoute.Main}>
           <MainScreen />
         </Route>
-        <Route path={AppRoute.FilterPrefix}>
+        <Route path={AppRoute.Catalog}>
           <MainScreen />
         </Route>
         <Route exact path={AppRoute.Product}>

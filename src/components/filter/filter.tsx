@@ -1,4 +1,4 @@
-import { APIRoute, AppRoute, initialStringCountValues } from '../../const';
+import { APIRoute, FIRST_PAGE, Links, initialStringCountValues } from '../../const';
 import { ConnectedProps, connect } from 'react-redux';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { getMaxPrice, getMinPrice, getStringsCountElementIdByValue, getStringsCountValueByElementId, getStringsCountValuesByGuitarTypes } from '../../utils';
@@ -68,7 +68,7 @@ function Filter(props: PropsFromRedux): JSX.Element {
 
     currentStringCount.map((stringCount) => searchInput += `${APIRoute.FilterStringCount}${getStringsCountValueByElementId(stringCount)}&`);
 
-    history.push(String(AppRoute.FilterPrefix) + searchInput);
+    history.push(String(Links.PageByPageNumber(FIRST_PAGE, searchInput)));
 
     onChangeFilterValue(searchInput);
   };

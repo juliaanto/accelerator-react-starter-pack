@@ -1,5 +1,6 @@
+import { PAGES_STEP, stringCount } from './const';
+
 import { Guitars } from './types/guitar';
-import { stringCount } from './const';
 
 export const getGuitarPrices = (guitarsList: Guitars) => [...new Set(guitarsList.map((guitar) => guitar.price))];
 
@@ -25,3 +26,5 @@ export const getStringsCountValuesByGuitarTypes = (currentGuitarTypes: string[])
 };
 
 export const getStringsCountValueByElementId = (elementId: string) => (stringCount.find((element) => element.elementId === elementId))?.value;
+
+export const getFirstPageInList = (initialPage: number) => (Math.ceil(initialPage / PAGES_STEP) - 1) * PAGES_STEP + 1;

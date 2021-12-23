@@ -48,3 +48,17 @@ export const fetchFilteredGuitarsAction = (searchParams: string): ThunkActionRes
       }
     }
   };
+
+export const fetchPagedGuitarsAction = (filterParams: string, pageNumber: number): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      const {data} = await api.get<Guitars>(APIRouteWithVariable.Pagination(filterParams, pageNumber));
+      dispatch(loadGuitars(data));
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === HttpCode.NotFound) {
+          dispatch(redirectToRoute(AppRoute.NotFound));
+        }
+      }
+    }
+  };
