@@ -14,8 +14,8 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onChangeFilterValue(searchParams: string) {
-    dispatch(fetchFilteredGuitarsAction(searchParams));
+  onChangeFilterValue(filterParams: string, pageNumber: number) {
+    dispatch(fetchFilteredGuitarsAction(filterParams, pageNumber));
   },
 });
 
@@ -37,7 +37,7 @@ function Filter(props: PropsFromRedux): JSX.Element {
   const maxPrice = getMaxPrice(initialGuitars);
 
   useEffect(() => {
-    onChangeFilterValue(filterParams);
+    onChangeFilterValue(filterParams, FIRST_PAGE);
   }, [filterParams, onChangeFilterValue]);
 
   useEffect(() => {
@@ -70,7 +70,7 @@ function Filter(props: PropsFromRedux): JSX.Element {
 
     history.push(String(Links.PageByPageNumber(FIRST_PAGE, searchInput)));
 
-    onChangeFilterValue(searchInput);
+    onChangeFilterValue(searchInput, FIRST_PAGE);
   };
 
   const handleTypeInput = (event: SyntheticEvent) => {

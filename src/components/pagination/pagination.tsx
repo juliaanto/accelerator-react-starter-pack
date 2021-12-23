@@ -4,7 +4,7 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 
 import { State } from '../../types/state';
 import { ThunkAppDispatch } from '../../types/action';
-import { fetchPagedGuitarsAction } from '../../store/api-actions';
+import { fetchFilteredGuitarsAction } from '../../store/api-actions';
 import { getFirstPageInList } from '../../utils';
 import { getGuitars } from '../../store/guitar-data/selectors';
 import { useEffect } from 'react';
@@ -15,7 +15,7 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   onPageChange(filterParams: string, pageNumber: number) {
-    dispatch(fetchPagedGuitarsAction(filterParams, pageNumber));
+    dispatch(fetchFilteredGuitarsAction(filterParams, pageNumber));
   },
 });
 

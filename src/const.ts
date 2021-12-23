@@ -29,8 +29,7 @@ export const APIRouteWithVariable = {
   GuitarsBySearchText: ((text: string): string => `/guitars?name_like=${text}`),
   GuitarById: ((guitarId: number): string => `/guitars/${guitarId}`),
   Sort: ((filterParams: string, sort: string, order?: string): string => `/guitars${filterParams ? `${filterParams}&` : '?'}${sort}${order ? order : ''}`),
-  Filter: ((searchParams: string): string => `/guitars${searchParams}`),
-  Pagination: ((filterParams: string, page: number): string => `/guitars${filterParams ? `${filterParams}` : '?'}_start=${(page - 1) * PRODUCTS_PER_PAGE}&_limit=${PRODUCTS_PER_PAGE}`),
+  Filter: ((filterParams: string, page: number): string => `/guitars${filterParams ? `${filterParams}` : '?'}_start=${(page - 1) * PRODUCTS_PER_PAGE}&_limit=${PRODUCTS_PER_PAGE}`),
 };
 
 export enum SortBy {
