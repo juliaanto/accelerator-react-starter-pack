@@ -3,6 +3,7 @@ import { ConnectedProps, connect } from 'react-redux';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
 import { getMaxPrice, getMinPrice, getStringsCountElementIdByValue, getStringsCountValueByElementId, getStringsCountValuesByGuitarTypes } from '../../utils';
+import { getOrder, getSort } from '../../store/search-parameters/selectors';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { State } from '../../types/state';
@@ -11,11 +12,13 @@ import { getInitialGuitars } from '../../store/guitar-data/selectors';
 
 const mapStateToProps = (state: State) => ({
   initialGuitars: getInitialGuitars(state),
+  sort: getSort(state),
+  order: getOrder(state),
 });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onChangeFilterValue(filterParams: string, pageNumber: number) {
-    dispatch(fetchFilteredGuitarsAction(filterParams, pageNumber));
+  onChangeFilterValue(filterParams: string, sort: string, order: string, pageNumber: number) {
+    dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, pageNumber));
     dispatch(fetchGuitarsCountAction(filterParams));
   },
 });
@@ -25,7 +28,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function Filter(props: PropsFromRedux): JSX.Element {
-  const {onChangeFilterValue, initialGuitars} = props;
+  const {onChangeFilterValue, initialGuitars, sort, order} = props;
 
   const [currentTypes, setCurrentTypes] = useState<string[]>([]);
   const [currentStringCount, setcurrentStringCount] = useState<string[]>([]);
@@ -38,8 +41,8 @@ function Filter(props: PropsFromRedux): JSX.Element {
   const maxPrice = getMaxPrice(initialGuitars);
 
   useEffect(() => {
-    onChangeFilterValue(filterParams, FIRST_PAGE);
-  }, [filterParams, onChangeFilterValue]);
+    onChangeFilterValue(filterParams, sort, order, FIRST_PAGE);
+  }, [filterParams, onChangeFilterValue, order, sort]);
 
   useEffect(() => {
     initialStringCountValues.forEach((value) => {
@@ -71,7 +74,7 @@ function Filter(props: PropsFromRedux): JSX.Element {
 
     history.push(String(Links.PageByPageNumber(FIRST_PAGE, searchInput)));
 
-    onChangeFilterValue(searchInput, FIRST_PAGE);
+    onChangeFilterValue(searchInput, sort, order, FIRST_PAGE);
   };
 
   const handleTypeInput = (event: SyntheticEvent) => {

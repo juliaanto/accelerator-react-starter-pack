@@ -9,7 +9,7 @@ const initialState: GuitarData = {
   isDataLoaded: false,
 };
 
-const guitarData = (state = initialState, action: Actions) => {
+const guitarData = (state = initialState, action: Actions): GuitarData => {
   switch (action.type) {
     case ActionType.LoadGuitars: {
       const {guitars} = action.payload;

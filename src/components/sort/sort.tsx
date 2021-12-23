@@ -1,30 +1,45 @@
 import { ConnectedProps, connect } from 'react-redux';
-import { Order, SortBy } from '../../const';
-import { SyntheticEvent, useState } from 'react';
+import { FIRST_PAGE, Order, SortBy } from '../../const';
+import { SyntheticEvent, useEffect } from 'react';
+import { getOrder, getSort } from '../../store/search-parameters/selectors';
+import { setOrder, setSort } from '../../store/action';
 
+import { State } from '../../types/state';
 import { ThunkAppDispatch } from '../../types/action';
-import { fetchSortedGuitarsAction } from '../../store/api-actions';
+import { fetchFilteredGuitarsAction } from '../../store/api-actions';
 import { useLocation } from 'react-router-dom';
 
+const mapStateToProps = (state: State) => ({
+  sort: getSort(state),
+  order: getOrder(state),
+});
+
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onTypeOrOrderChange(filterParams: string, sort: string, order?: string) {
-    dispatch(fetchSortedGuitarsAction(filterParams, sort, order));
+  onTypeChange(sort: SortBy) {
+    dispatch(setSort(sort));
+  },
+  onOrderChange(order: Order) {
+    dispatch(setOrder(order));
+  },
+  onTypeOrOrderChange(filterParams: string, sort: SortBy, order: Order, pageNumber: number) {
+    dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, pageNumber));
   },
 });
 
-const connector = connect(null, mapDispatchToProps);
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function Sort(props: PropsFromRedux): JSX.Element {
-  const {onTypeOrOrderChange} = props;
-
-  const [sort, setSort] = useState<string>(SortBy.Price);
-  const [order, setOrder] = useState<string>();
+  const {onTypeChange, onOrderChange, onTypeOrOrderChange, sort, order} = props;
 
   const filterParams = String(useLocation<string>().search);
 
-  const onTypeChange = (event: SyntheticEvent): void => {
+  useEffect(() => {
+    onTypeOrOrderChange(filterParams, sort, order, FIRST_PAGE);
+  }, [sort, order, onTypeOrOrderChange, filterParams]);
+
+  const handleTypeChange = (event: SyntheticEvent): void => {
     const target = event.target as HTMLInputElement;
     const sortTypeButtonElements = document.querySelectorAll('.catalog-sort__type-button');
 
@@ -35,7 +50,7 @@ function Sort(props: PropsFromRedux): JSX.Element {
     target.classList.toggle('catalog-sort__type-button--active');
   };
 
-  const onOrderChange = (event: SyntheticEvent) => {
+  const handleOrderChange = (event: SyntheticEvent) => {
     const target = event.target as HTMLInputElement;
     const orderTypeButtonElements = document.querySelectorAll('.catalog-sort__order-button');
 
@@ -55,9 +70,8 @@ function Sort(props: PropsFromRedux): JSX.Element {
           aria-label="по цене"
           tabIndex={-1}
           onClick={(event) => {
-            setSort(SortBy.Price);
-            onTypeChange(event);
-            onTypeOrOrderChange(filterParams, SortBy.Price, order);
+            onTypeChange(SortBy.Price);
+            handleTypeChange(event);
           }}
         >
           по цене
@@ -66,9 +80,8 @@ function Sort(props: PropsFromRedux): JSX.Element {
           className="catalog-sort__type-button"
           aria-label="по популярности"
           onClick={(event) => {
-            setSort(SortBy.Rating);
-            onTypeChange(event);
-            onTypeOrOrderChange(filterParams, SortBy.Rating, order);
+            onTypeChange(SortBy.Rating);
+            handleTypeChange(event);
           }}
         >
           по популярности
@@ -80,9 +93,8 @@ function Sort(props: PropsFromRedux): JSX.Element {
           aria-label="По возрастанию"
           tabIndex={-1}
           onClick={(event) => {
-            setOrder(Order.Asc);
-            onOrderChange(event);
-            onTypeOrOrderChange(filterParams, sort, Order.Asc);
+            onOrderChange(Order.Asc);
+            handleOrderChange(event);
           }}
         >
         </button>
@@ -90,9 +102,8 @@ function Sort(props: PropsFromRedux): JSX.Element {
           className="catalog-sort__order-button catalog-sort__order-button--down"
           aria-label="По убыванию"
           onClick={(event) => {
-            setOrder(Order.Desc);
-            onOrderChange(event);
-            onTypeOrOrderChange(filterParams, sort, Order.Desc);
+            onOrderChange(Order.Desc);
+            handleOrderChange(event);
           }}
         >
         </button>

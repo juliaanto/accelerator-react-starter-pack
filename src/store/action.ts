@@ -1,3 +1,5 @@
+import { Order, SortBy } from '../const';
+
 import { ActionType } from '../types/action';
 import { Guitars } from '../types/guitar';
 
@@ -25,4 +27,14 @@ export const loadInitialGuitars = (initialGuitars: Guitars) => ({
 export const redirectToRoute = (url: string) => ({
   type: ActionType.RedirectToRoute,
   payload: url,
+} as const);
+
+export const setSort = (sort: SortBy) => ({
+  type: ActionType.SetSort,
+  payload: sort,
+} as const);
+
+export const setOrder = (order: Order) => ({
+  type: ActionType.SetOrder,
+  payload: order,
 } as const);

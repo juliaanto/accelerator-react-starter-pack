@@ -28,25 +28,27 @@ export const APIRouteWithVariable = {
   CommentsByGuitarId: ((guitarId: number): string => `/guitars/${guitarId}/comments`),
   GuitarsBySearchText: ((text: string): string => `/guitars?name_like=${text}`),
   GuitarById: ((guitarId: number): string => `/guitars/${guitarId}`),
-  Sort: ((filterParams: string, sort: string, order?: string): string => `/guitars${filterParams ? `${filterParams}&` : '?'}${sort}${order ? order : ''}`),
-  Filter: ((filterParams: string, page: number): string => `/guitars${filterParams ? `${filterParams}` : '?'}_start=${(page - 1) * PRODUCTS_PER_PAGE}&_limit=${PRODUCTS_PER_PAGE}`),
+  GuitarsByParameters: ((filterParams: string, sort: string, order: string, page: number): string => `/guitars${filterParams ? `${filterParams}` : '?'}${sort !== '' ? sort : ''}${order !== null ? order : ''}&_start=${(page - 1) * PRODUCTS_PER_PAGE}&_limit=${PRODUCTS_PER_PAGE}`),
   GuitarsCount:  ((filterParams: string): string => `/guitars${filterParams ? `${filterParams}` : '?'}`),
 };
 
 export enum SortBy {
   Price = '_sort=price',
   Rating = '_sort=rating',
+  Unknown = '',
 }
 
 export enum Order {
   Asc = '&_order=asc',
   Desc = '&_order=desc',
+  Unknown = '',
 }
 
 export enum GuitarType {
   Acoustic = 'acoustic',
   Electric = 'electric',
   Ukulele = 'ukulele',
+  Unknown = '',
 }
 
 export const initialStringCountValues = [4, 6, 7, 12];

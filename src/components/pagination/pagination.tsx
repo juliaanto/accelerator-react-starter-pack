@@ -3,6 +3,7 @@ import { FIRST_PAGE, Links, PAGES_STEP } from '../../const';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
 import { getFirstPageInList, getMaxPage, getRestGuitarsCount } from '../../utils';
+import { getOrder, getSort } from '../../store/search-parameters/selectors';
 
 import { State } from '../../types/state';
 import { ThunkAppDispatch } from '../../types/action';
@@ -11,11 +12,13 @@ import { useEffect } from 'react';
 
 const mapStateToProps = (state: State) => ({
   guitarsCount: getGuitarsCount(state),
+  sort: getSort(state),
+  order: getOrder(state),
 });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onPageChange(filterParams: string, pageNumber: number) {
-    dispatch(fetchFilteredGuitarsAction(filterParams, pageNumber));
+  onPageChange(filterParams: string, sort: string, order: string, pageNumber: number) {
+    dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, pageNumber));
     dispatch(fetchGuitarsCountAction(filterParams));
   },
 });
@@ -25,7 +28,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function Pagination(props: PropsFromRedux): JSX.Element {
-  const {onPageChange, guitarsCount} = props;
+  const {onPageChange, guitarsCount, sort, order} = props;
 
   const {pageNumber} = useParams<{pageNumber: string}>();
 
@@ -46,8 +49,8 @@ function Pagination(props: PropsFromRedux): JSX.Element {
   };
 
   useEffect(() => {
-    onPageChange(filterParams, currentPage);
-  }, [filterParams, onPageChange, currentPage]);
+    onPageChange(filterParams, sort, order, currentPage);
+  }, [filterParams, onPageChange, currentPage, sort, order]);
 
   return (
     <div className="pagination page-content__pagination">
