@@ -37,7 +37,7 @@ function ProductCard(props: ProductCardProps): JSX.Element {
         <Link to={Links.ProductById(guitar.id)} className="button button--mini">
           Подробнее
         </Link>
-        <a className="button button--red button--mini button--add-to-cart" href="#">Купить</a>
+        <Link to="#" className="button button--red button--mini button--add-to-cart">Купить</Link>
       </div>
     </div>
   );

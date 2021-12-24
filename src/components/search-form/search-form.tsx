@@ -5,6 +5,14 @@ import { Guitars } from '../../types/guitar';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
 
+document.addEventListener('click', (event) => {
+  const isClickInside = document.querySelector('#search')?.contains(event.target as Node);
+
+  if (!isClickInside) {
+    document.querySelector('.form-search__select-list')?.classList.add('hidden');
+  }
+});
+
 function SearchForm(): JSX.Element {
 
   const searchRef = useRef<HTMLInputElement | null>(null);
@@ -20,10 +28,6 @@ function SearchForm(): JSX.Element {
     if (searchRef.current?.value === '') {
       document.querySelector('.form-search__select-list')?.classList.add('hidden');
     }
-  };
-
-  const handleBlur = () => {
-    document.querySelector('.form-search__select-list')?.classList.add('hidden');
   };
 
   return (
@@ -43,7 +47,6 @@ function SearchForm(): JSX.Element {
           ref={searchRef}
           onInput={handleInputAndClick}
           onClick={handleInputAndClick}
-          onBlur={handleBlur}
         >
         </input>
         <label className="visually-hidden" htmlFor="search">Поиск</label>
