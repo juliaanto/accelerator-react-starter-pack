@@ -28,7 +28,7 @@ export const APIRouteWithVariable = {
   CommentsByGuitarId: ((guitarId: number): string => `/guitars/${guitarId}/comments`),
   GuitarsBySearchText: ((text: string): string => `/guitars?name_like=${text}`),
   GuitarById: ((guitarId: number): string => `/guitars/${guitarId}`),
-  GuitarsByParameters: ((filterParams: string, sort: string, order: string, page: number): string => `/guitars${filterParams ? `${filterParams}` : '?'}${sort !== '' ? sort : ''}${order !== null ? order : ''}&_start=${(page - 1) * PRODUCTS_PER_PAGE}&_limit=${PRODUCTS_PER_PAGE}`),
+  GuitarsByParameters: ((filterParams: string, sort: string, order: string, page: number): string => `/guitars${filterParams ? `${filterParams}` : '?'}${sort}${order}&_start=${(page - 1) * PRODUCTS_PER_PAGE}&_limit=${PRODUCTS_PER_PAGE}`),
   GuitarsCount:  ((filterParams: string): string => `/guitars${filterParams ? `${filterParams}` : '?'}`),
 };
 

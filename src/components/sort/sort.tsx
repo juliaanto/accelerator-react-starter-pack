@@ -59,6 +59,10 @@ function Sort(props: PropsFromRedux): JSX.Element {
     }
 
     target.classList.toggle('catalog-sort__order-button--active');
+
+    if (sort === SortBy.Unknown) {
+      onTypeChange(SortBy.Price);
+    }
   };
 
   return (
