@@ -2,7 +2,7 @@ import { APIRoute, FIRST_PAGE, Links, initialStringCountValues } from '../../con
 import { ConnectedProps, connect } from 'react-redux';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
-import { getMaxPrice, getMinPrice, getStringsCountElementIdByValue, getStringsCountValueByElementId, getStringsCountValuesByGuitarTypes } from '../../utils';
+import { getMaxPrice, getMinPrice, getStringsCountElementIdByValue, getStringsCountValueByElementId, getStringsCountValuesByGuitarTypes } from '../../utils/filter';
 import { getOrder, getSort } from '../../store/search-parameters/selectors';
 import { useHistory, useLocation } from 'react-router-dom';
 

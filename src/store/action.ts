@@ -2,39 +2,58 @@ import { Order, SortBy } from '../const';
 
 import { ActionType } from '../types/action';
 import { Guitars } from '../types/guitar';
+import { createAction } from '@reduxjs/toolkit';
 
-export const loadGuitars = (guitars: Guitars) => ({
-  type: ActionType.LoadGuitars,
-  payload: {
-    guitars,
-  },
-} as const);
+export const loadGuitars = createAction (
+  ActionType.LoadGuitars,
+  (guitars: Guitars) => ({
+    payload: {
+      guitars,
+    },
+  }),
+);
 
-export const loadGuitarsCount = (guitars: Guitars) => ({
-  type: ActionType.LoadGuitarsCount,
-  payload: {
-    guitars,
-  },
-} as const);
+export const loadGuitarsCount = createAction (
+  ActionType.LoadGuitarsCount,
+  (guitars: Guitars) => ({
+    payload: {
+      guitars,
+    },
+  }),
+);
 
-export const loadInitialGuitars = (initialGuitars: Guitars) => ({
-  type: ActionType.LoadInitialGuitars,
-  payload: {
-    initialGuitars,
-  },
-} as const);
+export const loadInitialGuitars = createAction (
+  ActionType.LoadInitialGuitars,
+  (initialGuitars: Guitars) => ({
+    payload: {
+      initialGuitars,
+    },
+  }),
+);
 
-export const redirectToRoute = (url: string) => ({
-  type: ActionType.RedirectToRoute,
-  payload: url,
-} as const);
+export const redirectToRoute = createAction (
+  ActionType.RedirectToRoute,
+  (url: string) => ({
+    payload: {
+      url,
+    },
+  }),
+);
 
-export const setSort = (sort: SortBy) => ({
-  type: ActionType.SetSort,
-  payload: sort,
-} as const);
+export const setSort = createAction (
+  ActionType.SetSort,
+  (sort: SortBy) => ({
+    payload: {
+      sort,
+    },
+  }),
+);
 
-export const setOrder = (order: Order) => ({
-  type: ActionType.SetOrder,
-  payload: order,
-} as const);
+export const setOrder = createAction (
+  ActionType.SetOrder,
+  (order: Order) => ({
+    payload: {
+      order,
+    },
+  }),
+);

@@ -2,7 +2,7 @@ import { ConnectedProps, connect } from 'react-redux';
 import { FIRST_PAGE, Links, PAGES_STEP } from '../../const';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
-import { getFirstPageInList, getMaxPage, getRestGuitarsCount } from '../../utils';
+import { getFirstPageInList, getMaxPage, getRestGuitarsCount } from '../../utils/pagination';
 import { getOrder, getSort } from '../../store/search-parameters/selectors';
 
 import { State } from '../../types/state';

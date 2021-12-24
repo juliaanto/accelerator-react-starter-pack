@@ -1,8 +1,8 @@
-import { ThunkAction, ThunkDispatch } from '@reduxjs/toolkit';
-import { loadGuitars, loadGuitarsCount, loadInitialGuitars, redirectToRoute, setOrder, setSort } from '../store/action';
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
+import {Action} from 'redux';
 import { AxiosInstance } from 'axios';
-import { State } from './state';
+import { State } from '../types/state';
 
 export enum ActionType {
   LoadGuitars = 'data/loadGuitars',
@@ -13,14 +13,6 @@ export enum ActionType {
   SetOrder = 'parameters/setOrder',
 }
 
-export type Actions =
-| ReturnType<typeof loadGuitars>
-| ReturnType<typeof loadGuitarsCount>
-| ReturnType<typeof loadInitialGuitars>
-| ReturnType<typeof redirectToRoute>
-| ReturnType<typeof setSort>
-| ReturnType<typeof setOrder>;
+export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Action>;
 
-export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;
-
-export type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Actions>;
+export type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Action>;

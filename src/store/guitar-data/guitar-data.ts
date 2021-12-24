@@ -1,6 +1,7 @@
-import { ActionType, Actions } from '../../types/action';
+import { loadGuitars, loadGuitarsCount, loadInitialGuitars } from '../action';
 
 import { GuitarData } from '../../types/state';
+import { createReducer } from '@reduxjs/toolkit';
 
 const initialState: GuitarData = {
   guitars: [],
@@ -9,24 +10,25 @@ const initialState: GuitarData = {
   isDataLoaded: false,
 };
 
-const guitarData = (state = initialState, action: Actions): GuitarData => {
-  switch (action.type) {
-    case ActionType.LoadGuitars: {
+const guitarData = createReducer(initialState, (builder) => {
+  builder
+    .addCase(loadGuitars, (state, action) => {
       const {guitars} = action.payload;
-      return {...state, guitars, isDataLoaded: true};
-    }
-    case ActionType.LoadGuitarsCount: {
+
+      state.guitars = guitars;
+      state.isDataLoaded = true;
+    })
+    .addCase(loadGuitarsCount, (state, action) => {
       const {guitars} = action.payload;
       const guitarsCount = guitars.length;
-      return {...state, guitarsCount};
-    }
-    case ActionType.LoadInitialGuitars: {
+
+      state.guitarsCount = guitarsCount;
+    })
+    .addCase(loadInitialGuitars, (state, action) => {
       const {initialGuitars} = action.payload;
-      return {...state, initialGuitars, isDataLoaded: true};
-    }
-    default:
-      return state;
-  }
-};
+
+      state.initialGuitars = initialGuitars;
+    });
+});
 
 export {guitarData};
