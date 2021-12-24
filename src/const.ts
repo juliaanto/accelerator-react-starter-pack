@@ -75,3 +75,5 @@ export const stringCount = [
     guitarTypes: [String(GuitarType.Acoustic)],
   },
 ];
+
+export const SERVER_UNAVAILABLE_MESSAGE = 'Сервер недоступен.';
