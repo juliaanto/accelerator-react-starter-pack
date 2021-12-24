@@ -1,4 +1,4 @@
-import { Order, SortBy } from '../const';
+import { AppRoute, Order, SortBy } from '../const';
 
 import { ActionType } from '../types/action';
 import { Guitars } from '../types/guitar';
@@ -31,12 +31,10 @@ export const loadInitialGuitars = createAction (
   }),
 );
 
-export const redirectToRoute = createAction (
+export const redirectToRoute = createAction(
   ActionType.RedirectToRoute,
-  (url: string) => ({
-    payload: {
-      url,
-    },
+  (url: AppRoute) => ({
+    payload: url,
   }),
 );
 
