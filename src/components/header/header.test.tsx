@@ -14,5 +14,9 @@ describe('Component: Header', () => {
       </Router>);
 
     expect(screen.getByAltText(/Логотип/i)).toBeInTheDocument();
+    expect(screen.getByText(/Каталог/i)).toBeInTheDocument();
+    expect(screen.getByText(/Где купить?/i)).toBeInTheDocument();
+    expect(screen.getByText(/О компании/i)).toBeInTheDocument();
+    expect(screen.getByText(/Перейти в корзину/i)).toBeInTheDocument();
   });
 });

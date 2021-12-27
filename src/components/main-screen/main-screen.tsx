@@ -1,5 +1,3 @@
-import { ConnectedProps, connect } from 'react-redux';
-
 import { AppRoute } from '../../const';
 import Filter from '../filter/filter';
 import Footer from '../footer/footer';
@@ -8,19 +6,11 @@ import { Link } from 'react-router-dom';
 import Pagination from '../pagination/pagination';
 import ProductCard from '../product-card/product-card';
 import Sort from '../sort/sort';
-import { State } from '../../types/state';
 import { getGuitars } from '../../store/guitar-data/selectors';
+import { useSelector } from 'react-redux';
 
-const mapStateToProps = (state: State) => ({
-  guitars: getGuitars(state),
-});
-
-const connector = connect(mapStateToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function MainScreen(props: PropsFromRedux): JSX.Element {
-  const {guitars} = props;
+function MainScreen(): JSX.Element {
+  const guitars = useSelector(getGuitars);
 
   return (
     <div className="wrapper">
@@ -62,5 +52,4 @@ function MainScreen(props: PropsFromRedux): JSX.Element {
   );
 }
 
-export {MainScreen};
-export default connector(MainScreen);
+export default MainScreen;

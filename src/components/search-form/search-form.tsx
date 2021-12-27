@@ -47,6 +47,7 @@ function SearchForm(): JSX.Element {
           ref={searchRef}
           onInput={handleInputAndClick}
           onClick={handleInputAndClick}
+          data-testid="search"
         >
         </input>
         <label className="visually-hidden" htmlFor="search">Поиск</label>

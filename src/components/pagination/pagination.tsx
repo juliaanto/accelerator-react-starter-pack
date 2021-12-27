@@ -1,34 +1,19 @@
-import { ConnectedProps, connect } from 'react-redux';
 import { FIRST_PAGE, Links, PAGES_STEP } from '../../const';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
 import { getFirstPageInList, getMaxPage, getRestGuitarsCount } from '../../utils/pagination';
 import { getOrder, getSort } from '../../store/search-parameters/selectors';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { State } from '../../types/state';
-import { ThunkAppDispatch } from '../../types/action';
 import { getGuitarsCount } from '../../store/guitar-data/selectors';
 import { useEffect } from 'react';
 
-const mapStateToProps = (state: State) => ({
-  guitarsCount: getGuitarsCount(state),
-  sort: getSort(state),
-  order: getOrder(state),
-});
+function Pagination(): JSX.Element {
 
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onPageChange(filterParams: string, sort: string, order: string, pageNumber: number) {
-    dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, pageNumber));
-    dispatch(fetchGuitarsCountAction(filterParams));
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function Pagination(props: PropsFromRedux): JSX.Element {
-  const {onPageChange, guitarsCount, sort, order} = props;
+  const guitarsCount = useSelector(getGuitarsCount);
+  const sort = useSelector(getSort);
+  const order = useSelector(getOrder);
+  const dispatch = useDispatch();
 
   const {pageNumber} = useParams<{pageNumber: string}>();
 
@@ -49,8 +34,9 @@ function Pagination(props: PropsFromRedux): JSX.Element {
   };
 
   useEffect(() => {
-    onPageChange(filterParams, sort, order, currentPage);
-  }, [filterParams, onPageChange, currentPage, sort, order]);
+    dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, currentPage));
+    dispatch(fetchGuitarsCountAction(filterParams));
+  }, [filterParams, currentPage, sort, order, dispatch]);
 
   return (
     <div className="pagination page-content__pagination">
@@ -75,5 +61,4 @@ function Pagination(props: PropsFromRedux): JSX.Element {
   );
 }
 
-export {Pagination};
-export default connector(Pagination);
+export default Pagination;

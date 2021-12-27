@@ -4,7 +4,7 @@ import { ActionType } from '../types/action';
 import { Guitars } from '../types/guitar';
 import { createAction } from '@reduxjs/toolkit';
 
-export const loadGuitars = createAction (
+export const loadGuitars = createAction(
   ActionType.LoadGuitars,
   (guitars: Guitars) => ({
     payload: {
@@ -13,7 +13,7 @@ export const loadGuitars = createAction (
   }),
 );
 
-export const loadGuitarsCount = createAction (
+export const loadGuitarsCount = createAction(
   ActionType.LoadGuitarsCount,
   (guitars: Guitars) => ({
     payload: {
@@ -22,7 +22,7 @@ export const loadGuitarsCount = createAction (
   }),
 );
 
-export const loadInitialGuitars = createAction (
+export const loadInitialGuitars = createAction(
   ActionType.LoadInitialGuitars,
   (initialGuitars: Guitars) => ({
     payload: {
@@ -38,7 +38,7 @@ export const redirectToRoute = createAction(
   }),
 );
 
-export const setSort = createAction (
+export const setSort = createAction(
   ActionType.SetSort,
   (sort: SortBy) => ({
     payload: {
@@ -47,7 +47,7 @@ export const setSort = createAction (
   }),
 );
 
-export const setOrder = createAction (
+export const setOrder = createAction(
   ActionType.SetOrder,
   (order: Order) => ({
     payload: {

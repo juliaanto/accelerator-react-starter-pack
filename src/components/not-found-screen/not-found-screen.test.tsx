@@ -15,6 +15,7 @@ describe('Component: NotFoundScreen', () => {
       </Router>);
 
     expect(screen.getByText(/404 Not Found/i)).toBeInTheDocument();
+    expect(screen.getByText('Вернуться на главную')).toBeInTheDocument();
     expect(screen.getByRole('link')).toBeInTheDocument();
   });
 

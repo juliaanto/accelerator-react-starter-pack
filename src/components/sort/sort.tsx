@@ -1,43 +1,23 @@
-import { ConnectedProps, connect } from 'react-redux';
 import { FIRST_PAGE, Order, SortBy } from '../../const';
 import { SyntheticEvent, useEffect } from 'react';
 import { getOrder, getSort } from '../../store/search-parameters/selectors';
 import { setOrder, setSort } from '../../store/action';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { State } from '../../types/state';
-import { ThunkAppDispatch } from '../../types/action';
 import { fetchFilteredGuitarsAction } from '../../store/api-actions';
 import { useLocation } from 'react-router-dom';
 
-const mapStateToProps = (state: State) => ({
-  sort: getSort(state),
-  order: getOrder(state),
-});
+function Sort(): JSX.Element {
 
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onTypeChange(sort: SortBy) {
-    dispatch(setSort(sort));
-  },
-  onOrderChange(order: Order) {
-    dispatch(setOrder(order));
-  },
-  onTypeOrOrderChange(filterParams: string, sort: SortBy, order: Order, pageNumber: number) {
-    dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, pageNumber));
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function Sort(props: PropsFromRedux): JSX.Element {
-  const {onTypeChange, onOrderChange, onTypeOrOrderChange, sort, order} = props;
+  const sort = useSelector(getSort);
+  const order = useSelector(getOrder);
+  const dispatch = useDispatch();
 
   const filterParams = String(useLocation<string>().search);
 
   useEffect(() => {
-    onTypeOrOrderChange(filterParams, sort, order, FIRST_PAGE);
-  }, [sort, order, onTypeOrOrderChange, filterParams]);
+    dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, FIRST_PAGE));
+  }, [sort, order, filterParams, dispatch]);
 
   const handleTypeChange = (event: SyntheticEvent): void => {
     const target = event.target as HTMLInputElement;
@@ -61,7 +41,7 @@ function Sort(props: PropsFromRedux): JSX.Element {
     target.classList.toggle('catalog-sort__order-button--active');
 
     if (sort === SortBy.Unknown) {
-      onTypeChange(SortBy.Price);
+      dispatch(setSort(SortBy.Price));
     }
   };
 
@@ -74,7 +54,7 @@ function Sort(props: PropsFromRedux): JSX.Element {
           aria-label="по цене"
           tabIndex={-1}
           onClick={(event) => {
-            onTypeChange(SortBy.Price);
+            dispatch(setSort(SortBy.Price));
             handleTypeChange(event);
           }}
         >
@@ -84,7 +64,7 @@ function Sort(props: PropsFromRedux): JSX.Element {
           className="catalog-sort__type-button"
           aria-label="по популярности"
           onClick={(event) => {
-            onTypeChange(SortBy.Rating);
+            dispatch(setSort(SortBy.Rating));
             handleTypeChange(event);
           }}
         >
@@ -97,7 +77,7 @@ function Sort(props: PropsFromRedux): JSX.Element {
           aria-label="По возрастанию"
           tabIndex={-1}
           onClick={(event) => {
-            onOrderChange(Order.Asc);
+            dispatch(setOrder(Order.Asc));
             handleOrderChange(event);
           }}
         >
@@ -106,7 +86,7 @@ function Sort(props: PropsFromRedux): JSX.Element {
           className="catalog-sort__order-button catalog-sort__order-button--down"
           aria-label="По убыванию"
           onClick={(event) => {
-            onOrderChange(Order.Desc);
+            dispatch(setOrder(Order.Desc));
             handleOrderChange(event);
           }}
         >
@@ -116,5 +96,4 @@ function Sort(props: PropsFromRedux): JSX.Element {
   );
 }
 
-export {Sort};
-export default connector(Sort);
+export default Sort;

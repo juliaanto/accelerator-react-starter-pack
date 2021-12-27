@@ -1,5 +1,5 @@
-import { Router as BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ConnectedProps, connect } from 'react-redux';
+import { Route, Switch } from 'react-router-dom';
 
 import { AppRoute } from '../../const';
 import LoadingScreen from '../loading-screen/loading-screen';
@@ -7,7 +7,6 @@ import MainScreen from '../main-screen/main-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import ProductScreen from '../product-screen/product-screen';
 import { State } from '../../types/state';
-import browserHistory from '../../browser-history';
 import { getLoadedDataStatus } from '../../store/guitar-data/selectors';
 
 const mapStateToProps = (state: State) => ({
@@ -28,22 +27,20 @@ function App(props: PropsFromRedux): JSX.Element {
   }
 
   return (
-    <BrowserRouter history={browserHistory}>
-      <Switch>
-        <Route exact path={AppRoute.Main}>
-          <MainScreen />
-        </Route>
-        <Route path={AppRoute.Catalog}>
-          <MainScreen />
-        </Route>
-        <Route exact path={AppRoute.Product}>
-          <ProductScreen />
-        </Route>
-        <Route>
-          <NotFoundScreen />
-        </Route>
-      </Switch>
-    </BrowserRouter>
+    <Switch>
+      <Route exact path={AppRoute.Main}>
+        <MainScreen />
+      </Route>
+      <Route path={AppRoute.Catalog}>
+        <MainScreen />
+      </Route>
+      <Route exact path={AppRoute.Product}>
+        <ProductScreen />
+      </Route>
+      <Route>
+        <NotFoundScreen />
+      </Route>
+    </Switch>
   );
 }
 
