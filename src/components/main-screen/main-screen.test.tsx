@@ -15,6 +15,8 @@ const store = mockStore({
   PARAMETERS: { sort: SortBy.Unknown },
 });
 
+store.dispatch = jest.fn();
+
 describe('Component: MainScreen', () => {
   it('should render correctly', () => {
     render(

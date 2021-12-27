@@ -18,6 +18,7 @@ describe('Component: Filter', () => {
       DATA: {  guitars: makeFakeGuitars(), guitarsCount: makeFakeGuitars().length, initialGuitars: makeFakeGuitars(), isDataLoaded: true},
       PARAMETERS: {  sort: SortBy.Unknown, order: Order.Unknown},
     });
+    store.dispatch = jest.fn();
 
     render(
       <Provider store={store}>

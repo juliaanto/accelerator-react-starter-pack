@@ -14,6 +14,8 @@ const store = mockStore({
   PARAMETERS: { sort: SortBy.Unknown, order: Order.Unknown },
 });
 
+store.dispatch = jest.fn();
+
 describe('Component: Sort', () => {
   it('should render correctly', () => {
     render(

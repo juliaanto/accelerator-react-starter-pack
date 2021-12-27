@@ -15,6 +15,8 @@ const store = mockStore({
   PARAMETERS: {  sort: SortBy.Unknown, order: Order.Unknown},
 });
 
+store.dispatch = jest.fn();
+
 const history = createMemoryHistory();
 const fakeApp = (
   <Provider store={store}>

@@ -17,6 +17,8 @@ const store = mockStore({
   PARAMETERS: { sort: SortBy.Unknown, order: Order.Unknown },
 });
 
+store.dispatch = jest.fn();
+
 describe('Component: Pagination', () => {
   it('should render correctly', () => {
     render(
