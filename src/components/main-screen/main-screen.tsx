@@ -25,7 +25,7 @@ function MainScreen(): JSX.Element {
               <Link to={AppRoute.Main} className="link">Главная</Link>
             </li>
             <li className="breadcrumbs__item">
-              <a className="link">Каталог</a>
+              <Link to="#" className="link">Каталог</Link>
             </li>
           </ul>
           <div className="catalog">

@@ -7,7 +7,7 @@ import Header from '../header/header';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import RatingStars from '../rating-stars/rating-stars';
 import api from '../../services/api';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 function ProductScreen(): JSX.Element {
   const {id} = useParams<{id: string}>();
@@ -35,7 +35,7 @@ function ProductScreen(): JSX.Element {
             </li>
             <li className="breadcrumbs__item"><a className="link" href={AppRoute.Main}>Каталог</a>
             </li>
-            <li className="breadcrumbs__item"><a className="link">Товар</a>
+            <li className="breadcrumbs__item"><Link to="#" className="link">Товар</Link>
             </li>
           </ul>
           <div className="product-container">
@@ -72,11 +72,11 @@ function ProductScreen(): JSX.Element {
             </div>
             <div className="product-container__price-wrapper">
               <p className="product-container__price-info product-container__price-info--title">Цена:</p>
-              <p className="product-container__price-info product-container__price-info--value">{String(product.price).replace(/(\d)(?=(\d{3})+$)/g, '$1 ')} ₽</p><a className="button button--red button--big product-container__button" href="#">Добавить в корзину</a>
+              <p className="product-container__price-info product-container__price-info--value">{String(product.price).replace(/(\d)(?=(\d{3})+$)/g, '$1 ')} ₽</p><Link to="#" className="button button--red button--big product-container__button">Добавить в корзину</Link>
             </div>
           </div>
           <section className="reviews">
-            <h3 className="reviews__title title title--bigger">Отзывы</h3><a className="button button--red-border button--big reviews__sumbit-button" href="#">Оставить отзыв</a>
+            <h3 className="reviews__title title title--bigger">Отзывы</h3><Link to="#" className="button button--red-border button--big reviews__sumbit-button">Оставить отзыв</Link>
             <div className="review">
               <div className="review__wrapper">
                 <h4 className="review__title review__title--author title title--lesser">Иванов Максим</h4><span className="review__date">12 декабря</span>

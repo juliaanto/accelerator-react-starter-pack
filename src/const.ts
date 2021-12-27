@@ -39,8 +39,8 @@ export enum SortBy {
 }
 
 export enum Order {
-  Asc = '_order=asc',
-  Desc = '_order=desc',
+  Asc = '_order=asc&',
+  Desc = '_order=desc&',
   Unknown = '',
 }
 
