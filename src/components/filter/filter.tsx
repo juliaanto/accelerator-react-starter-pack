@@ -26,8 +26,8 @@ function Filter(): JSX.Element {
   const maxPrice = getMaxPrice(initialGuitars);
 
   useEffect(() => {
-    // dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, FIRST_PAGE));
-    // dispatch(fetchGuitarsCountAction(filterParams));
+    dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, FIRST_PAGE));
+    dispatch(fetchGuitarsCountAction(filterParams));
   }, [dispatch, filterParams, order, sort]);
 
   useEffect(() => {
