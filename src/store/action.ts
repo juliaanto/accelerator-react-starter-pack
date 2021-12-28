@@ -1,6 +1,7 @@
 import { AppRoute, Order, SortBy } from '../const';
 
 import { ActionType } from '../types/action';
+import { Comments } from '../types/comment';
 import { Guitars } from '../types/guitar';
 import { createAction } from '@reduxjs/toolkit';
 
@@ -9,6 +10,15 @@ export const loadGuitars = createAction(
   (guitars: Guitars) => ({
     payload: {
       guitars,
+    },
+  }),
+);
+
+export const loadComments = createAction(
+  ActionType.LoadComments,
+  (comments: Comments) => ({
+    payload: {
+      comments,
     },
   }),
 );

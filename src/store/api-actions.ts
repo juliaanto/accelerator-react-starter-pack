@@ -1,6 +1,7 @@
 import { APIRoute, APIRouteWithVariable, AppRoute, SERVER_UNAVAILABLE_MESSAGE } from '../const';
-import { loadGuitars, loadGuitarsCount, loadInitialGuitars, redirectToRoute } from './action';
+import { loadComments, loadGuitars, loadGuitarsCount, loadInitialGuitars, redirectToRoute } from './action';
 
+import { Comments } from '../types/comment';
 import { Guitars } from '../types/guitar';
 import { HttpCode } from '../services/api';
 import { ThunkActionResult } from '../types/action';
@@ -13,6 +14,13 @@ export const fetchGuitarsAction = (): ThunkActionResult =>
       const {data} = await api.get<Guitars>(APIRoute.Guitars);
       dispatch(loadGuitars(data));
       dispatch(loadInitialGuitars(data));
+      data.map((guitar) => api.get<Comments>(APIRouteWithVariable.CommentsByGuitarId(guitar.id)).then((response) => {
+        try {
+          dispatch(loadComments(response.data));
+        } catch (error: unknown) {
+          toast.error(SERVER_UNAVAILABLE_MESSAGE);
+        }
+      }));
     } catch (error: unknown) {
       toast.error(SERVER_UNAVAILABLE_MESSAGE);
     }

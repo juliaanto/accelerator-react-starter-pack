@@ -1,11 +1,10 @@
-import { APIRouteWithVariable, Links } from '../../const';
-import { useEffect, useState } from 'react';
-
-import { Comments } from '../../types/comment';
 import { Guitar } from '../../types/guitar';
 import { Link } from 'react-router-dom';
+import { Links } from '../../const';
 import RatingStars from '../rating-stars/rating-stars';
-import api from '../../services/api';
+import { State } from '../../types/state';
+import { getCommentsCount } from '../../store/guitar-data/selectors';
+import { useSelector } from 'react-redux';
 
 type ProductCardProps = {
   guitar: Guitar;
@@ -13,11 +12,8 @@ type ProductCardProps = {
 
 function ProductCard(props: ProductCardProps): JSX.Element {
   const {guitar} = props;
-  const [rateCount, setRateCount] = useState<number>(0);
 
-  useEffect(() => {
-    api.get<Comments>(APIRouteWithVariable.CommentsByGuitarId(guitar.id)).then((response) => setRateCount(response.data.length));
-  }, [guitar.id, setRateCount]);
+  const rateCount = useSelector((state: State) => getCommentsCount(state, guitar.id));
 
   return (
     <div className="product-card">
