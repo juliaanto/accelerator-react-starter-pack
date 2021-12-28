@@ -53,7 +53,7 @@ export enum GuitarType {
 
 export const initialStringCountValues = [4, 6, 7, 12];
 
-export const stringCount = [
+export const stringsCountList = [
   {
     elementId: '4-strings',
     value: 4,
