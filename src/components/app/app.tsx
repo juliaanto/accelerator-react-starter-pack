@@ -1,4 +1,3 @@
-import { ConnectedProps, connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 
 import { AppRoute } from '../../const';
@@ -6,19 +5,11 @@ import LoadingScreen from '../loading-screen/loading-screen';
 import MainScreen from '../main-screen/main-screen';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import ProductScreen from '../product-screen/product-screen';
-import { State } from '../../types/state';
 import { getLoadedDataStatus } from '../../store/guitar-data/selectors';
+import { useSelector } from 'react-redux';
 
-const mapStateToProps = (state: State) => ({
-  isDataLoaded: getLoadedDataStatus(state),
-});
-
-const connector = connect(mapStateToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function App(props: PropsFromRedux): JSX.Element {
-  const {isDataLoaded} = props;
+function App(): JSX.Element {
+  const isDataLoaded = useSelector(getLoadedDataStatus);
 
   if (!isDataLoaded) {
     return (
@@ -44,5 +35,4 @@ function App(props: PropsFromRedux): JSX.Element {
   );
 }
 
-export {App};
-export default connector(App);
+export default App;
