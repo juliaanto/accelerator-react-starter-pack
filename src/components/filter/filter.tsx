@@ -50,11 +50,11 @@ function Filter(): JSX.Element {
   const handleInput = () => {
     let searchInput = '?';
 
-    if (priceMinRef.current?.value) {
+    if (priceMinRef.current?.value  && Number(priceMinRef.current.value) > 0) {
       searchInput += `${APIRoute.FilterPriceMin}${priceMinRef.current?.value}&`;
     }
 
-    if (priceMaxRef.current?.value) {
+    if (priceMaxRef.current?.value && Number(priceMaxRef.current.value) > 0) {
       searchInput += `${APIRoute.FilterPriceMax}${priceMaxRef.current?.value}&`;
     }
 
