@@ -19,7 +19,11 @@ function Pagination(): JSX.Element {
 
   const currentPage = pageNumber ? Number(pageNumber) : FIRST_PAGE;
 
-  const filterParams = String(useLocation<string>().search);
+  let filterParams = String(useLocation<string>().search);
+  const indexOfSortParams = filterParams.indexOf('_sort');
+  if (indexOfSortParams > 0) {
+    filterParams = filterParams.substring(0, filterParams.indexOf('_sort'));
+  }
 
   const getPages = (initialPage: number) => {
     const pages = [];

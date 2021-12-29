@@ -1,11 +1,11 @@
-import { FIRST_PAGE, Order, SortBy } from '../../const';
+import { FIRST_PAGE, Links, Order, SortBy } from '../../const';
 import { SyntheticEvent, useEffect } from 'react';
 import { getOrder, getSort } from '../../store/search-parameters/selectors';
 import { setOrder, setSort } from '../../store/action';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { fetchFilteredGuitarsAction } from '../../store/api-actions';
-import { useLocation } from 'react-router-dom';
 
 function Sort(): JSX.Element {
 
@@ -13,13 +13,18 @@ function Sort(): JSX.Element {
   const order = useSelector(getOrder);
   const dispatch = useDispatch();
 
-  const filterParams = String(useLocation<string>().search);
+  const history = useHistory();
+  let filterParams = String(useLocation<string>().search);
+  const indexOfSortParams = filterParams.indexOf('_sort');
+  if (indexOfSortParams > 0) {
+    filterParams = filterParams.substring(0, filterParams.indexOf('_sort'));
+  }
 
   useEffect(() => {
     dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, FIRST_PAGE));
   }, [sort, order, filterParams, dispatch]);
 
-  const handleTypeChange = (event: SyntheticEvent): void => {
+  const handleTypeChange = (event: SyntheticEvent, currentType: SortBy): void => {
     const target = event.target as HTMLInputElement;
     const sortTypeButtonElements = document.querySelectorAll('.catalog-sort__type-button');
 
@@ -28,9 +33,11 @@ function Sort(): JSX.Element {
     }
 
     target.classList.toggle('catalog-sort__type-button--active');
+
+    history.push(String(Links.PageByPageNumber(FIRST_PAGE, `${filterParams ? filterParams : '?'}${currentType}${order}`)));
   };
 
-  const handleOrderChange = (event: SyntheticEvent) => {
+  const handleOrderChange = (event: SyntheticEvent, currentOrder: Order) => {
     const target = event.target as HTMLInputElement;
     const orderTypeButtonElements = document.querySelectorAll('.catalog-sort__order-button');
 
@@ -43,6 +50,8 @@ function Sort(): JSX.Element {
     if (sort === SortBy.Unknown) {
       dispatch(setSort(SortBy.Price));
     }
+
+    history.push(String(Links.PageByPageNumber(FIRST_PAGE, `${filterParams ? filterParams : '?'}${sort ? sort : SortBy.Price}${currentOrder}`)));
   };
 
   return (
@@ -55,7 +64,7 @@ function Sort(): JSX.Element {
           tabIndex={-1}
           onClick={(event) => {
             dispatch(setSort(SortBy.Price));
-            handleTypeChange(event);
+            handleTypeChange(event, SortBy.Price);
           }}
         >
           по цене
@@ -65,7 +74,7 @@ function Sort(): JSX.Element {
           aria-label="по популярности"
           onClick={(event) => {
             dispatch(setSort(SortBy.Rating));
-            handleTypeChange(event);
+            handleTypeChange(event, SortBy.Rating);
           }}
         >
           по популярности
@@ -78,7 +87,7 @@ function Sort(): JSX.Element {
           tabIndex={-1}
           onClick={(event) => {
             dispatch(setOrder(Order.Asc));
-            handleOrderChange(event);
+            handleOrderChange(event, Order.Asc);
           }}
         >
         </button>
@@ -87,7 +96,7 @@ function Sort(): JSX.Element {
           aria-label="По убыванию"
           onClick={(event) => {
             dispatch(setOrder(Order.Desc));
-            handleOrderChange(event);
+            handleOrderChange(event, Order.Desc);
           }}
         >
         </button>

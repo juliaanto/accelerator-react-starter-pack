@@ -20,7 +20,11 @@ function Filter(): JSX.Element {
   const [availableStringCount, setAvailableStringCount] = useState<number[]>(initialStringCountValues);
 
   const history = useHistory();
-  const filterParams = useLocation<string>().search;
+  let filterParams = String(useLocation<string>().search);
+  const indexOfSortParams = filterParams.indexOf('_sort');
+  if (indexOfSortParams > 0) {
+    filterParams = filterParams.substring(0, filterParams.indexOf('_sort'));
+  }
 
   const minPrice = getMinPrice(initialGuitars);
   const maxPrice = getMaxPrice(initialGuitars);
@@ -57,6 +61,8 @@ function Filter(): JSX.Element {
     currentTypes.map((type) => searchInput += `${APIRoute.FilterType}${type}&`);
 
     currentStringCount.map((stringCount) => searchInput += `${APIRoute.FilterStringCount}${getStringsCountValueByElementId(stringCount)}&`);
+
+    searchInput += sort + order;
 
     history.push(String(Links.PageByPageNumber(FIRST_PAGE, searchInput)));
 
