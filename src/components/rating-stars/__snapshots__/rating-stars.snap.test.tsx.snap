@@ -1,0 +1,201 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: RatingStars should render correctly when rating = 0 1`] = `
+<div>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-star"
+    />
+  </svg>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-star"
+    />
+  </svg>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-star"
+    />
+  </svg>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-star"
+    />
+  </svg>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-star"
+    />
+  </svg>
+</div>
+`;
+
+exports[`Component: RatingStars should render correctly when rating = 0 2`] = `
+<div>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-star"
+    />
+  </svg>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-star"
+    />
+  </svg>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-star"
+    />
+  </svg>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-star"
+    />
+  </svg>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-star"
+    />
+  </svg>
+</div>
+`;
+
+exports[`Component: RatingStars should render correctly when rating = 3 1`] = `
+<div>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-full-star"
+    />
+  </svg>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-full-star"
+    />
+  </svg>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-full-star"
+    />
+  </svg>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-star"
+    />
+  </svg>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-star"
+    />
+  </svg>
+</div>
+`;
+
+exports[`Component: RatingStars should render correctly when rating = 5 1`] = `
+<div>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-full-star"
+    />
+  </svg>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-full-star"
+    />
+  </svg>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-full-star"
+    />
+  </svg>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-full-star"
+    />
+  </svg>
+  <svg
+    aria-hidden="true"
+    height="11"
+    width="12"
+  >
+    <use
+      xlink:href="#icon-full-star"
+    />
+  </svg>
+</div>
+`;
