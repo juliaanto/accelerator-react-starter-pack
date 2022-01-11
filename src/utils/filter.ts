@@ -25,3 +25,5 @@ export const getStringsCountValuesByGuitarTypes = (currentGuitarTypes: string[])
 };
 
 export const getStringsCountValueByElementId = (elementId: string) => (stringsCountList.find((element) => element.elementId === elementId))?.value;
+
+export const getAvailableStringCountId = (availableStringCount: number[]) => availableStringCount.map((element) => getStringsCountElementIdByValue(element));

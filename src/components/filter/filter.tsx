@@ -1,7 +1,7 @@
 import { APIRoute, FIRST_PAGE, Links, initialStringCountValues } from '../../const';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
-import { getMaxPrice, getMinPrice, getStringsCountElementIdByValue, getStringsCountValueByElementId, getStringsCountValuesByGuitarTypes } from '../../utils/filter';
+import { getAvailableStringCountId, getMaxPrice, getMinPrice, getStringsCountElementIdByValue, getStringsCountValueByElementId, getStringsCountValuesByGuitarTypes } from '../../utils/filter';
 import { getOrder, getSort } from '../../store/search-parameters/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -16,7 +16,8 @@ function Filter(): JSX.Element {
   const order = useSelector(getOrder);
 
   const [currentTypes, setCurrentTypes] = useState<string[]>([]);
-  const [currentStringCount, setcurrentStringCount] = useState<string[]>([]);
+  const [currentStringCount, setCurrentStringCount] = useState<string[]>([]);
+  const [currentAndAvailableStringCount, setCurrentAndAvailableStringCount] = useState<string[]>([]);
   const [availableStringCount, setAvailableStringCount] = useState<number[]>(initialStringCountValues);
 
   const history = useHistory();
@@ -28,6 +29,10 @@ function Filter(): JSX.Element {
 
   const minPrice = getMinPrice(initialGuitars);
   const maxPrice = getMaxPrice(initialGuitars);
+
+  useEffect(() => {
+    handleInput();
+  }, [currentAndAvailableStringCount]);
 
   useEffect(() => {
     dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, FIRST_PAGE));
@@ -42,6 +47,9 @@ function Filter(): JSX.Element {
     availableStringCount.forEach((value) => {
       document.getElementById(`${getStringsCountElementIdByValue(value)}`)?.removeAttribute('disabled');
     });
+
+    setCurrentAndAvailableStringCount(currentStringCount.filter((element) => getAvailableStringCountId(availableStringCount).includes(element)));
+
   }, [availableStringCount]);
 
   const priceMinRef = useRef<HTMLInputElement | null>(null);
@@ -60,7 +68,7 @@ function Filter(): JSX.Element {
 
     currentTypes.map((type) => searchInput += `${APIRoute.FilterType}${type}&`);
 
-    currentStringCount.map((stringCount) => searchInput += `${APIRoute.FilterStringCount}${getStringsCountValueByElementId(stringCount)}&`);
+    currentAndAvailableStringCount.map((stringCount) => searchInput += `${APIRoute.FilterStringCount}${getStringsCountValueByElementId(stringCount)}&`);
 
     searchInput += sort + order;
 
@@ -93,11 +101,13 @@ function Filter(): JSX.Element {
 
     if (target.checked) {
       currentStringCount.push(target.id);
-      setcurrentStringCount(currentStringCount);
+      setCurrentStringCount(currentStringCount);
     } else {
       const index = currentStringCount.indexOf(target.id);
       currentStringCount.splice(index, 1);
     }
+
+    setCurrentAndAvailableStringCount(currentStringCount.filter((element) => getAvailableStringCountId(availableStringCount).includes(element)));
   };
 
   const handlePriceMinBlur = () => {
@@ -160,7 +170,6 @@ function Filter(): JSX.Element {
             name="acoustic"
             onInput={(event) => {
               handleTypeInput(event);
-              handleInput();
             }}
           >
           </input>
@@ -174,7 +183,6 @@ function Filter(): JSX.Element {
             name="electric"
             onInput={(event) => {
               handleTypeInput(event);
-              handleInput();
             }}
           >
           </input>
@@ -188,7 +196,6 @@ function Filter(): JSX.Element {
             name="ukulele"
             onInput={(event) => {
               handleTypeInput(event);
-              handleInput();
             }}
           >
           </input>
@@ -205,7 +212,6 @@ function Filter(): JSX.Element {
             name="4-strings"
             onInput={(event) => {
               handleStringCountInput(event);
-              handleInput();
             }}
           >
           </input>
@@ -219,7 +225,6 @@ function Filter(): JSX.Element {
             name="6-strings"
             onInput={(event) => {
               handleStringCountInput(event);
-              handleInput();
             }}
           >
           </input>
@@ -233,7 +238,6 @@ function Filter(): JSX.Element {
             name="7-strings"
             onInput={(event) => {
               handleStringCountInput(event);
-              handleInput();
             }}
           >
           </input>
@@ -247,7 +251,6 @@ function Filter(): JSX.Element {
             name="12-strings"
             onInput={(event) => {
               handleStringCountInput(event);
-              handleInput();
             }}
           >
           </input>
