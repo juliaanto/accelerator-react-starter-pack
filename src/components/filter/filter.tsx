@@ -32,6 +32,7 @@ function Filter(): JSX.Element {
 
   useEffect(() => {
     handleInput();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentAndAvailableStringCount]);
 
   useEffect(() => {
@@ -50,7 +51,7 @@ function Filter(): JSX.Element {
 
     setCurrentAndAvailableStringCount(currentStringCount.filter((element) => getAvailableStringCountId(availableStringCount).includes(element)));
 
-  }, [availableStringCount]);
+  }, [availableStringCount, currentStringCount]);
 
   const priceMinRef = useRef<HTMLInputElement | null>(null);
   const priceMaxRef = useRef<HTMLInputElement | null>(null);
