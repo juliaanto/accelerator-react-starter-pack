@@ -76,3 +76,5 @@ export const stringsCountList = [
     guitarTypes: [String(GuitarType.Acoustic)],
   },
 ];
+
+export const ENTER_KEY = 'Enter';

@@ -1,4 +1,4 @@
-import { APIRoute, FIRST_PAGE, Links, initialStringCountValues } from '../../const';
+import { APIRoute, ENTER_KEY, FIRST_PAGE, Links, initialStringCountValues } from '../../const';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
 import { getAvailableStringCountId, getMaxPrice, getMinPrice, getStringsCountElementIdByValue, getStringsCountValueByElementId, getStringsCountValuesByGuitarTypes } from '../../utils/filter';
@@ -115,11 +115,19 @@ function Filter(): JSX.Element {
     if (priceMinRef.current?.value && Number(priceMinRef.current?.value) < minPrice) {
       (document.querySelector('#priceMin') as HTMLInputElement).value = String(minPrice);
     }
+    handleInput();
   };
 
   const handlePriceMaxBlur = () => {
     if (priceMaxRef.current?.value && Number(priceMaxRef.current?.value) > maxPrice) {
       (document.querySelector('#priceMax') as HTMLInputElement).value = String(maxPrice);
+    }
+    handleInput();
+  };
+
+  const handleKeyPress = (event: { key: string; }) => {
+    if (event.key === ENTER_KEY) {
+      handleInput();
     }
   };
 
@@ -138,7 +146,7 @@ function Filter(): JSX.Element {
               name="от"
               min="0"
               ref={priceMinRef}
-              onInput={handleInput}
+              onKeyPress={handleKeyPress}
               onBlur={handlePriceMinBlur}
               data-testid="priceMin"
             >
@@ -153,7 +161,7 @@ function Filter(): JSX.Element {
               name="до"
               min="0"
               ref={priceMaxRef}
-              onInput={handleInput}
+              onKeyPress={handleKeyPress}
               onBlur={handlePriceMaxBlur}
               data-testid="priceMax"
             >
