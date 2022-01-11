@@ -1,7 +1,7 @@
 import { APIRouteWithVariable, Links } from '../../const';
+import { Guitar, Guitars } from '../../types/guitar';
 import { useRef, useState } from 'react';
 
-import { Guitars } from '../../types/guitar';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
 
@@ -21,8 +21,22 @@ function SearchForm(): JSX.Element {
   const handleInputAndClick = () => {
     document.querySelector('.form-search__select-list')?.classList.remove('hidden');
 
+    const compareFirstSymbol = (firstGuitar: Guitar, secondGuitar: Guitar): number => {
+      const currentValue = searchRef.current?.value.toLowerCase();
+      const firstName = firstGuitar.name.substring(0, 1).toLowerCase();
+      const secondName = secondGuitar.name.substring(0, 1).toLowerCase();
+
+      if (firstName === currentValue && secondName !== currentValue) {
+        return -1;
+      } else if (firstName !== currentValue && secondName === currentValue) {
+        return 1;
+      } else {
+        return 0;
+      }
+    };
+
     if (searchRef.current !== null) {
-      api.get<Guitars>(APIRouteWithVariable.GuitarsBySearchText(searchRef.current.value)).then((response) => setGuitarNames(response.data.map((guitar) => guitar)));
+      api.get<Guitars>(APIRouteWithVariable.GuitarsBySearchText(searchRef.current.value)).then((response) => setGuitarNames((response.data.map((guitar) => guitar)).sort(compareFirstSymbol)));
     }
 
     if (searchRef.current?.value === '') {
