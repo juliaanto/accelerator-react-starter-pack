@@ -1,16 +1,25 @@
+import { getGuitars, getLoadedDataStatus } from '../../store/guitar-data/selectors';
+
 import { AppRoute } from '../../const';
 import Filter from '../filter/filter';
 import Footer from '../footer/footer';
 import Header from '../header/header';
 import { Link } from 'react-router-dom';
+import LoadingScreen from '../loading-screen/loading-screen';
 import Pagination from '../pagination/pagination';
 import ProductCard from '../product-card/product-card';
 import Sort from '../sort/sort';
-import { getGuitars } from '../../store/guitar-data/selectors';
 import { useSelector } from 'react-redux';
 
 function MainScreen(): JSX.Element {
   const guitars = useSelector(getGuitars);
+  const isDataLoaded = useSelector(getLoadedDataStatus);
+
+  if (!isDataLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   return (
     <div className="wrapper">

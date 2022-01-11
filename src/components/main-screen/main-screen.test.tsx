@@ -11,7 +11,7 @@ const history = createMemoryHistory();
 const mockStore = configureMockStore();
 
 const store = mockStore({
-  DATA: { guitars: [], initialGuitars: [] },
+  DATA: { guitars: [], initialGuitars: [], isDataLoaded: true },
   PARAMETERS: { sort: SortBy.Unknown },
 });
 

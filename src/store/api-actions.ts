@@ -1,4 +1,4 @@
-import { APIRoute, APIRouteWithVariable, AppRoute, SERVER_UNAVAILABLE_MESSAGE } from '../const';
+import { APIRoute, APIRouteWithVariable, AppRoute } from '../const';
 import { loadComments, loadGuitars, loadGuitarsCount, loadInitialGuitars, redirectToRoute } from './action';
 
 import { Comments } from '../types/comment';
@@ -6,7 +6,6 @@ import { Guitars } from '../types/guitar';
 import { HttpCode } from '../services/api';
 import { ThunkActionResult } from '../types/action';
 import axios from 'axios';
-import { toast } from 'react-toastify';
 
 export const fetchGuitarsAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -18,11 +17,11 @@ export const fetchGuitarsAction = (): ThunkActionResult =>
         try {
           dispatch(loadComments(response.data));
         } catch (error: unknown) {
-          toast.error(SERVER_UNAVAILABLE_MESSAGE);
+          dispatch(redirectToRoute(AppRoute.ServerUnavailable));
         }
       }));
     } catch (error: unknown) {
-      toast.error(SERVER_UNAVAILABLE_MESSAGE);
+      dispatch(redirectToRoute(AppRoute.ServerUnavailable));
     }
   };
 

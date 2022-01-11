@@ -3,6 +3,7 @@ export enum AppRoute {
   Catalog = '/catalog/page_:pageNumber',
   Product = '/product/:id',
   NotFound = '/notfound',
+  ServerUnavailable = '/serverunavailable',
 }
 
 export const Links = {
