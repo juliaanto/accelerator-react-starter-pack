@@ -31,11 +31,6 @@ function Filter(): JSX.Element {
   const maxPrice = getMaxPrice(initialGuitars);
 
   useEffect(() => {
-    handleInput();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentAndAvailableStringCount]);
-
-  useEffect(() => {
     dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, FIRST_PAGE));
     dispatch(fetchGuitarsCountAction(filterParams));
   }, [dispatch, filterParams, order, sort]);
@@ -95,6 +90,8 @@ function Filter(): JSX.Element {
     } else {
       setAvailableStringCount(getStringsCountValuesByGuitarTypes(currentTypes));
     }
+
+    handleInput();
   };
 
   const handleStringCountInput = (event: SyntheticEvent) => {
@@ -103,12 +100,24 @@ function Filter(): JSX.Element {
     if (target.checked) {
       currentStringCount.push(target.id);
       setCurrentStringCount(currentStringCount);
+
     } else {
       const index = currentStringCount.indexOf(target.id);
       currentStringCount.splice(index, 1);
     }
 
-    setCurrentAndAvailableStringCount(currentStringCount.filter((element) => getAvailableStringCountId(availableStringCount).includes(element)));
+    const currentAndAvailableStringCountValue = currentStringCount.filter((element) => getAvailableStringCountId(availableStringCount).includes(element));
+
+    currentAndAvailableStringCount.splice(0);
+
+    currentAndAvailableStringCountValue.forEach((element) => {
+      currentAndAvailableStringCount.push(element);
+    });
+
+    const currentAndAvailableStringCountUnique = Array.from(new Set(currentAndAvailableStringCount));
+    setCurrentAndAvailableStringCount(currentAndAvailableStringCountUnique);
+
+    handleInput();
   };
 
   const handlePriceMinBlur = () => {
