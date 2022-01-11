@@ -19,7 +19,7 @@ export enum APIRoute {
   FilterStringCount = 'stringCount=',
 }
 
-export const PRODUCTS_PER_PAGE = 6;
+export const PRODUCTS_PER_PAGE = 9;
 
 export const PAGES_STEP = 3;
 
