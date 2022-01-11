@@ -1,7 +1,7 @@
 import { FIRST_PAGE, Links, PAGES_STEP } from '../../const';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
-import { getFirstPageInList, getMaxPage, getRestGuitarsCount } from '../../utils/pagination';
+import { getFirstPageInList, getMaxPage } from '../../utils/pagination';
 import { getOrder, getSort } from '../../store/search-parameters/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -45,9 +45,9 @@ function Pagination(): JSX.Element {
   return (
     <div className="pagination page-content__pagination">
       <ul className="pagination__list">
-        {currentPage > PAGES_STEP ?
+        {currentPage > FIRST_PAGE ?
           <li className="pagination__page pagination__page--prev" id="prev">
-            <Link to={Links.PageByPageNumber((getFirstPageInList(currentPage) - PAGES_STEP), filterParams)} className="link pagination__page-link">Назад</Link>
+            <Link to={Links.PageByPageNumber((currentPage - 1), filterParams)} className="link pagination__page-link">Назад</Link>
           </li>
           : ''}
         {getPages(currentPage).map((page) => (
@@ -55,9 +55,9 @@ function Pagination(): JSX.Element {
             <Link to={Links.PageByPageNumber(page, filterParams)} className="link pagination__page-link">{page}</Link>
           </li>
         ))}
-        {getRestGuitarsCount(guitarsCount, currentPage) > 0 ?
+        {currentPage < getMaxPage(guitarsCount) ?
           <li className="pagination__page pagination__page--next" id="next">
-            <Link to={Links.PageByPageNumber((getFirstPageInList(currentPage) + PAGES_STEP), filterParams)} className="link pagination__page-link">Далее</Link>
+            <Link to={Links.PageByPageNumber((currentPage + 1), filterParams)} className="link pagination__page-link">Далее</Link>
           </li>
           : ''}
       </ul>
