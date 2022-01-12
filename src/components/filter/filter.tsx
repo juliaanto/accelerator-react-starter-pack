@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { APIRoute, ENTER_KEY, FIRST_PAGE, Links, initialStringCountValues } from '../../const';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
 import { getAvailableStringCountId, getMaxPrice, getMinPrice, getStringsCountElementIdByValue, getStringsCountValueByElementId, getStringsCountValuesByGuitarTypes } from '../../utils/filter';
 import { getOrder, getSort } from '../../store/search-parameters/selectors';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 
 import { getInitialGuitars } from '../../store/guitar-data/selectors';
 
@@ -15,6 +16,7 @@ function Filter(): JSX.Element {
   const sort = useSelector(getSort);
   const order = useSelector(getOrder);
 
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
   const [currentTypes, setCurrentTypes] = useState<string[]>([]);
   const [currentStringCount, setCurrentStringCount] = useState<string[]>([]);
   const [currentAndAvailableStringCount, setCurrentAndAvailableStringCount] = useState<string[]>([]);
@@ -27,20 +29,37 @@ function Filter(): JSX.Element {
     filterParams = filterParams.substring(0, filterParams.indexOf('_sort'));
   }
 
+  const {pageNumber} = useParams<{pageNumber: string}>();
+
   const minPrice = getMinPrice(initialGuitars);
   const maxPrice = getMaxPrice(initialGuitars);
 
-  useEffect(() => {
-    handleInput();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentAndAvailableStringCount]);
+
+  let currentPage: number;
+
+  if (isFirstLoad && pageNumber) {
+    currentPage = Number(pageNumber);
+  } else {
+    currentPage = FIRST_PAGE;
+  }
 
   useEffect(() => {
-    dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, FIRST_PAGE));
+    dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, currentPage));
     dispatch(fetchGuitarsCountAction(filterParams));
   }, [dispatch, filterParams, order, sort]);
 
   useEffect(() => {
+    if (isFirstLoad) {
+      return;
+    }
+    handleInput();
+  }, [currentAndAvailableStringCount]);
+
+  useEffect(() => {
+    if (isFirstLoad) {
+      return;
+    }
+
     initialStringCountValues.forEach((value) => {
       document.getElementById(`${getStringsCountElementIdByValue(value)}`)?.setAttribute('disabled', 'true');
     });
@@ -51,7 +70,11 @@ function Filter(): JSX.Element {
 
     setCurrentAndAvailableStringCount(currentStringCount.filter((element) => getAvailableStringCountId(availableStringCount).includes(element)));
 
-  }, [availableStringCount, currentStringCount]);
+  }, [availableStringCount, currentStringCount, currentTypes]);
+
+  useEffect(() => {
+    setIsFirstLoad(false);
+  }, []);
 
   const priceMinRef = useRef<HTMLInputElement | null>(null);
   const priceMaxRef = useRef<HTMLInputElement | null>(null);
