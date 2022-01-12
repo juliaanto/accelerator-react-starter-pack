@@ -1,11 +1,10 @@
 import { FIRST_PAGE, Links, Order, SortBy } from '../../const';
-import { SyntheticEvent, useEffect } from 'react';
 import { getOrder, getSort } from '../../store/search-parameters/selectors';
 import { setOrder, setSort } from '../../store/action';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 
-import { fetchFilteredGuitarsAction } from '../../store/api-actions';
+import { SyntheticEvent } from 'react';
 
 function Sort(): JSX.Element {
 
@@ -19,10 +18,6 @@ function Sort(): JSX.Element {
   if (indexOfSortParams > 0) {
     filterParams = filterParams.substring(0, filterParams.indexOf('_sort'));
   }
-
-  useEffect(() => {
-    dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, FIRST_PAGE));
-  }, [sort, order, filterParams, dispatch]);
 
   const handleTypeChange = (event: SyntheticEvent, currentType: SortBy): void => {
     const target = event.target as HTMLInputElement;

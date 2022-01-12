@@ -40,7 +40,8 @@ function Pagination(): JSX.Element {
   useEffect(() => {
     dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, currentPage));
     dispatch(fetchGuitarsCountAction(filterParams));
-  }, [filterParams, currentPage, sort, order, dispatch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
 
   return (
     <div className="pagination page-content__pagination">

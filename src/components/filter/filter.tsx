@@ -46,7 +46,7 @@ function Filter(): JSX.Element {
   useEffect(() => {
     dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, currentPage));
     dispatch(fetchGuitarsCountAction(filterParams));
-  }, [dispatch, filterParams, order, sort]);
+  }, [dispatch, filterParams, order, sort, currentPage]);
 
   useEffect(() => {
     if (isFirstLoad) {
@@ -96,10 +96,9 @@ function Filter(): JSX.Element {
 
     searchInput += sort + order;
 
-    history.push(String(Links.PageByPageNumber(FIRST_PAGE, searchInput)));
+    currentPage = FIRST_PAGE;
 
-    dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, FIRST_PAGE));
-    dispatch(fetchGuitarsCountAction(filterParams));
+    history.push(String(Links.PageByPageNumber(FIRST_PAGE, searchInput)));
   };
 
   const handleTypeInput = (event: SyntheticEvent) => {
