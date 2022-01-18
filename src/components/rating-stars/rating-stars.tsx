@@ -2,10 +2,12 @@ const MAX_RATING_VALUE = 5;
 
 type RatingStarsProps = {
   rating: number;
+  width: number;
+  height: number;
 }
 
 function RatingStars(props: RatingStarsProps): JSX.Element {
-  const {rating} = props;
+  const {rating, width, height} = props;
 
   const ratingValue = Math.floor(rating);
 
@@ -26,14 +28,14 @@ function RatingStars(props: RatingStarsProps): JSX.Element {
     <>
       {
         ratingFullStars.map((i) => (
-          <svg key={i} width="12" height="11" aria-hidden="true">
+          <svg key={i} width={width} height={height} aria-hidden="true">
             <use xlinkHref="#icon-full-star"></use>
           </svg>
         ))
       }
       {
         ratingEmptyStars.map((i) => (
-          <svg key={i} width="12" height="11" aria-hidden="true">
+          <svg key={i} width={width} height={height} aria-hidden="true">
             <use xlinkHref="#icon-star"></use>
           </svg>
         ))

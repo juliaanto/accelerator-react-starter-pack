@@ -26,7 +26,7 @@ export const PAGES_STEP = 3;
 export const FIRST_PAGE = 1;
 
 export const APIRouteWithVariable = {
-  CommentsByGuitarId: ((guitarId: number): string => `/guitars/${guitarId}/comments`),
+  CommentsByGuitarId: ((guitarId: number): string => `/guitars/${guitarId}/comments?_sort=createAt&_order=desc`),
   GuitarsBySearchText: ((text: string): string => `/guitars?name_like=${text}`),
   GuitarById: ((guitarId: number): string => `/guitars/${guitarId}`),
   GuitarsByParameters: ((filterParams: string, sort: string, order: string, page: number): string => `/guitars${filterParams ? `${filterParams}` : '?'}${sort}${order}_start=${(page - 1) * PRODUCTS_PER_PAGE}&_limit=${PRODUCTS_PER_PAGE}`),
@@ -102,3 +102,7 @@ export enum Tab {
   Characteristics = '#characteristics',
   Description = '#description',
 }
+
+export const REVIEWS_COUNT = 3;
+
+export const REVIEWS_STEP = 3;

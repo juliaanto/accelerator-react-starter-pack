@@ -21,7 +21,7 @@ function ProductCard(props: ProductCardProps): JSX.Element {
       <div className="product-card__info">
         <div className="rate product-card__rate" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
 
-          <RatingStars rating={guitar.rating} />
+          <RatingStars rating={guitar.rating} width={12} height={11} />
 
           <span className="rate__count">{rateCount}</span><span className="rate__message"></span>
         </div>
