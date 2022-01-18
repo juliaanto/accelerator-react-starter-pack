@@ -35,13 +35,13 @@ function ProductScreen(): JSX.Element {
 
       <main className="page-content">
         <div className="container">
-          <h1 className="page-content__title title title--bigger">Товар</h1>
+          <h1 className="page-content__title title title--bigger">{product.name}</h1>
           <ul className="breadcrumbs page-content__breadcrumbs">
             <li className="breadcrumbs__item"><a className="link" href={AppRoute.Main}>Главная</a>
             </li>
             <li className="breadcrumbs__item"><a className="link" href={AppRoute.Main}>Каталог</a>
             </li>
-            <li className="breadcrumbs__item"><Link to="#" className="link">Товар</Link>
+            <li className="breadcrumbs__item"><Link to="#" className="link">{product.name}</Link>
             </li>
           </ul>
           <div className="product-container">
