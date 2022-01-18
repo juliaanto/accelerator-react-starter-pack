@@ -1,4 +1,5 @@
 import { APIRouteWithVariable, AppRoute } from '../../const';
+import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import Footer from '../footer/footer';
@@ -6,11 +7,16 @@ import { Guitar } from '../../types/guitar';
 import Header from '../header/header';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import RatingStars from '../rating-stars/rating-stars';
+import { State } from '../../types/state';
 import api from '../../services/api';
-import { Link, useParams } from 'react-router-dom';
+import { getCommentsCount } from '../../store/guitar-data/selectors';
+import { getGuitarType } from '../../utils/guitarPage';
+import { useSelector } from 'react-redux';
 
 function ProductScreen(): JSX.Element {
   const {id} = useParams<{id: string}>();
+
+  const rateCount = useSelector((state: State) => getCommentsCount(state, Number(id)));
 
   const [product, setProduct] = useState<Guitar>();
 
@@ -46,7 +52,8 @@ function ProductScreen(): JSX.Element {
 
                 <RatingStars rating={product.rating} />
 
-                <span className="rate__count"></span><span className="rate__message"></span>
+                <span className="rate__count">{rateCount}</span>
+                <span className="rate__message"></span>
               </div>
               <div className="tabs"><a className="button button--medium tabs__button" href="#characteristics">Характеристики</a><a className="button button--black-border button--medium tabs__button" href="#description">Описание</a>
                 <div className="tabs__content" id="characteristics">
@@ -58,7 +65,7 @@ function ProductScreen(): JSX.Element {
                       </tr>
                       <tr className="tabs__table-row">
                         <td className="tabs__title">Тип:</td>
-                        <td className="tabs__value">Электрогитара</td>
+                        <td className="tabs__value">{getGuitarType(product.type)}</td>
                       </tr>
                       <tr className="tabs__table-row">
                         <td className="tabs__title">Количество струн:</td>

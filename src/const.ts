@@ -52,6 +52,25 @@ export enum GuitarType {
   Unknown = '',
 }
 
+export const guitarTypes = [
+  {
+    typeKey: GuitarType.Acoustic,
+    typeName: 'Акустическая гитара',
+  },
+  {
+    typeKey: GuitarType.Electric,
+    typeName: 'Электрогитара',
+  },
+  {
+    typeKey: GuitarType.Ukulele,
+    typeName: 'Укулеле',
+  },
+  {
+    typeKey: GuitarType.Unknown,
+    typeName: '',
+  },
+];
+
 export const initialStringCountValues = [4, 6, 7, 12];
 
 export const stringsCountList = [
