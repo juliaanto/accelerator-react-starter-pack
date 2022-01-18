@@ -1,4 +1,4 @@
-import { APIRouteWithVariable, AppRoute, REVIEWS_COUNT, REVIEWS_STEP } from '../../const';
+import { APIRouteWithVariable, AppRoute, Links, REVIEWS_COUNT, REVIEWS_STEP } from '../../const';
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -86,7 +86,7 @@ function ProductScreen(): JSX.Element {
               </button>
               : ''}
 
-            <Link to="#header" className="button button--up button--red-border button--big reviews__up-button">Наверх</Link>
+            <a href={`${Links.ProductById(Number(id))}#header`} className="button button--up button--red-border button--big reviews__up-button">Наверх</a>
 
           </section>
         </div>
