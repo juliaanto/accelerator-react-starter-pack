@@ -97,3 +97,8 @@ export const stringsCountList = [
 ];
 
 export const ENTER_KEY = 'Enter';
+
+export enum Tab {
+  Characteristics = '#characteristics',
+  Description = '#description',
+}
