@@ -1,36 +1,38 @@
 import { APIRouteWithVariable, AppRoute, Links, REVIEWS_COUNT, REVIEWS_STEP } from '../../const';
 import { Link, useParams } from 'react-router-dom';
+import { getCommentsCount, getCurrentGuitar } from '../../store/guitar-data/selectors';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
 import { Comments } from '../../types/comment';
 import Footer from '../footer/footer';
-import { Guitar } from '../../types/guitar';
 import Header from '../header/header';
-import NotFoundScreen from '../not-found-screen/not-found-screen';
+import LoadingScreen from '../loading-screen/loading-screen';
 import RatingStars from '../rating-stars/rating-stars';
 import Review from '../review/review';
 import { State } from '../../types/state';
 import Tabs from '../tabs/tabs';
 import api from '../../services/api';
-import { getCommentsCount } from '../../store/guitar-data/selectors';
-import { useSelector } from 'react-redux';
+import { fetchCurrentGuitarAction } from '../../store/api-actions';
 
 function ProductScreen(): JSX.Element {
   const {id} = useParams<{id: string}>();
 
   const rateCount = useSelector((state: State) => getCommentsCount(state, Number(id)));
+  const product = useSelector((state: State) => getCurrentGuitar(state));
 
-  const [product, setProduct] = useState<Guitar>();
+  const dispatch = useDispatch();
+
   const [reviews, setReviews] = useState<Comments>([]);
   const [reviewsCount, setReviewsCount] = useState<number>(REVIEWS_COUNT);
 
   useEffect(() => {
-    api.get<Guitar>(APIRouteWithVariable.GuitarById(Number(id))).then((response) => setProduct(response.data));
+    dispatch(fetchCurrentGuitarAction(Number(id)));
     api.get<Comments>(APIRouteWithVariable.CommentsByGuitarId(Number(id))).then((response) => setReviews(response.data));
-  }, [id]);
+  }, [dispatch, id]);
 
   if (!product) {
-    return <NotFoundScreen />;
+    return <LoadingScreen />;
   }
 
   return (

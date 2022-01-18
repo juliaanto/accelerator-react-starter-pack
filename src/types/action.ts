@@ -12,6 +12,7 @@ export enum ActionType {
   RedirectToRoute = 'guitars/redirectToRoute',
   SetSort = 'parameters/setSort',
   SetOrder = 'parameters/setOrder',
+  LoadCurrentGuitar = 'data/loadGuitar',
 }
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Action>;

@@ -1,4 +1,4 @@
-import { loadComments, loadGuitars, loadGuitarsCount, loadInitialGuitars } from '../action';
+import { loadComments, loadCurrentGuitar, loadGuitars, loadGuitarsCount, loadInitialGuitars } from '../action';
 
 import { GuitarData } from '../../types/state';
 import { createReducer } from '@reduxjs/toolkit';
@@ -34,6 +34,11 @@ const guitarData = createReducer(initialState, (builder) => {
       const {initialGuitars} = action.payload;
 
       state.initialGuitars = initialGuitars;
+    })
+    .addCase(loadCurrentGuitar, (state, action) => {
+      const {guitar} = action.payload;
+
+      state.currentGuitar = guitar;
     });
 });
 

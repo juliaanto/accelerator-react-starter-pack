@@ -1,8 +1,8 @@
 import { AppRoute, Order, SortBy } from '../const';
+import { Guitar, Guitars } from '../types/guitar';
 
 import { ActionType } from '../types/action';
 import { Comments } from '../types/comment';
-import { Guitars } from '../types/guitar';
 import { createAction } from '@reduxjs/toolkit';
 
 export const loadGuitars = createAction(
@@ -62,6 +62,15 @@ export const setOrder = createAction(
   (order: Order) => ({
     payload: {
       order,
+    },
+  }),
+);
+
+export const loadCurrentGuitar = createAction(
+  ActionType.LoadCurrentGuitar,
+  (guitar: Guitar) => ({
+    payload: {
+      guitar,
     },
   }),
 );

@@ -1,4 +1,5 @@
-import { Guitars } from '../../types/guitar';
+import { Guitar, Guitars } from '../../types/guitar';
+
 import { NameSpace } from '../root-reducer';
 import { State } from '../../types/state';
 import { createSelector } from 'reselect';
@@ -16,3 +17,4 @@ export const getCommentsCount = createSelector(
     const guitarComments = comments.filter((comment) => comment.guitarId === currentGuitarId);
     return guitarComments.length;
   });
+export const getCurrentGuitar = (state: State): Guitar | undefined => state[NameSpace.data].currentGuitar;
