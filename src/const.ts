@@ -99,9 +99,10 @@ export const stringsCountList = [
 
 export const ENTER_KEY = 'Enter';
 
-export enum Tab {
+export enum Hash {
   Characteristics = '#characteristics',
   Description = '#description',
+  Success = '#success',
 }
 
 export const REVIEWS_COUNT = 3;

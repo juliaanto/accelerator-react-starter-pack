@@ -1,5 +1,5 @@
-import { APIRouteWithVariable, AppRoute, Links, REVIEWS_COUNT, REVIEWS_STEP } from '../../const';
-import { Link, useParams } from 'react-router-dom';
+import { APIRouteWithVariable, AppRoute, Hash, Links, REVIEWS_COUNT, REVIEWS_STEP } from '../../const';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { getCommentsCount, getCurrentGuitar } from '../../store/guitar-data/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
@@ -9,12 +9,14 @@ import Footer from '../footer/footer';
 import Header from '../header/header';
 import LoadingScreen from '../loading-screen/loading-screen';
 import ModalReview from '../modal-review/modal-review';
+import ModalSuccessReview from '../modal-success-review/modal-success-review';
 import RatingStars from '../rating-stars/rating-stars';
 import Review from '../review/review';
 import { State } from '../../types/state';
 import Tabs from '../tabs/tabs';
 import api from '../../services/api';
 import { fetchCurrentGuitarAction } from '../../store/api-actions';
+import { redirectToRoute } from '../../store/action';
 
 function ProductScreen(): JSX.Element {
   const {id} = useParams<{id: string}>();
@@ -24,16 +26,29 @@ function ProductScreen(): JSX.Element {
 
   const dispatch = useDispatch();
 
+  const hash = String(useLocation<string>().hash);
+
   const [reviews, setReviews] = useState<Comments>([]);
   const [reviewsCount, setReviewsCount] = useState<number>(REVIEWS_COUNT);
   const [isTopOfPage, setIsTopOfPage] = useState<boolean>(true);
   const [isModalReviewOpen, setIsModalReviewOpen] = useState<boolean>(false);
+  const [isModalSuccessReviewOpen, setIsModalSuccessReviewOpen] = useState<boolean>(false);
 
   useEffect(() => {
     dispatch(fetchCurrentGuitarAction(Number(id)));
     api.get<Comments>(APIRouteWithVariable.CommentsByGuitarId(Number(id))).then((response) => setReviews(response.data));
   }, [dispatch, id]);
 
+  useEffect(() => {
+    if (isModalReviewOpen) {
+      return;
+    }
+
+    if (hash === Hash.Success) {
+      setIsModalSuccessReviewOpen(true);
+      dispatch(redirectToRoute(Links.ProductById(Number(id))));
+    }
+  }, [dispatch, hash, id, isModalReviewOpen]);
 
   document.addEventListener('scroll', () => {
     if (window.scrollY === 0) {
@@ -98,6 +113,10 @@ function ProductScreen(): JSX.Element {
 
             {isModalReviewOpen ?
               <ModalReview handleCloseClick={() => setIsModalReviewOpen(false)} guitarId={Number(id)} guitarName={product.name} />
+              : ''}
+
+            {isModalSuccessReviewOpen ?
+              <ModalSuccessReview handleCloseClick={() => setIsModalSuccessReviewOpen(false)} />
               : ''}
 
             {reviews?.slice(0, reviewsCount).map((review) => (

@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 
 import { Guitar } from '../../types/guitar';
-import { Tab } from '../../const';
+import { Hash } from '../../const';
 import { getGuitarType } from '../../utils/guitarPage';
 
 type TabsProps = {
@@ -15,11 +15,11 @@ function Tabs(props: TabsProps): JSX.Element {
 
   return (
     <div className="tabs">
-      <Link to="#characteristics" className={`button ${currentTab !== Tab.Description ? '' : 'button--black-border'} button--medium tabs__button`}>Характеристики</Link>
-      <Link to="#description" className={`button ${currentTab === Tab.Description ? '' : 'button--black-border'} button--medium tabs__button`}>Описание</Link>
+      <Link to="#characteristics" className={`button ${currentTab !== Hash.Description ? '' : 'button--black-border'} button--medium tabs__button`}>Характеристики</Link>
+      <Link to="#description" className={`button ${currentTab === Hash.Description ? '' : 'button--black-border'} button--medium tabs__button`}>Описание</Link>
 
       <div className="tabs__content" id="characteristics">
-        {currentTab === Tab.Description ?
+        {currentTab === Hash.Description ?
 
           <p className="tabs__product-description">{product.description}</p>
           :
