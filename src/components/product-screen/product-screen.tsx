@@ -25,11 +25,25 @@ function ProductScreen(): JSX.Element {
 
   const [reviews, setReviews] = useState<Comments>([]);
   const [reviewsCount, setReviewsCount] = useState<number>(REVIEWS_COUNT);
+  const [isTopOfPage, setIsTopOfPage] = useState<boolean>(true);
 
   useEffect(() => {
     dispatch(fetchCurrentGuitarAction(Number(id)));
     api.get<Comments>(APIRouteWithVariable.CommentsByGuitarId(Number(id))).then((response) => setReviews(response.data));
   }, [dispatch, id]);
+
+
+  document.addEventListener('scroll', () => {
+    if (window.scrollY === 0) {
+      setIsTopOfPage(true);
+    } else {
+      setIsTopOfPage(false);
+    }
+
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+      setReviewsCount(reviewsCount + REVIEWS_STEP);
+    }
+  });
 
   if (!product) {
     return <LoadingScreen />;
@@ -88,7 +102,8 @@ function ProductScreen(): JSX.Element {
               </button>
               : ''}
 
-            <a href={`${Links.ProductById(Number(id))}#header`} className="button button--up button--red-border button--big reviews__up-button">Наверх</a>
+            {isTopOfPage || reviews.length === 0 ? '' :
+              <a href={`${Links.ProductById(Number(id))}#header`} className="button button--up button--red-border button--big reviews__up-button">Наверх</a>}
 
           </section>
         </div>
