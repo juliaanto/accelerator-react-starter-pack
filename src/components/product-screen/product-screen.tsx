@@ -8,6 +8,7 @@ import { Comments } from '../../types/comment';
 import Footer from '../footer/footer';
 import Header from '../header/header';
 import LoadingScreen from '../loading-screen/loading-screen';
+import ModalReview from '../modal-review/modal-review';
 import RatingStars from '../rating-stars/rating-stars';
 import Review from '../review/review';
 import { State } from '../../types/state';
@@ -26,6 +27,7 @@ function ProductScreen(): JSX.Element {
   const [reviews, setReviews] = useState<Comments>([]);
   const [reviewsCount, setReviewsCount] = useState<number>(REVIEWS_COUNT);
   const [isTopOfPage, setIsTopOfPage] = useState<boolean>(true);
+  const [isModalReviewOpen, setIsModalReviewOpen] = useState<boolean>(false);
 
   useEffect(() => {
     dispatch(fetchCurrentGuitarAction(Number(id)));
@@ -88,7 +90,15 @@ function ProductScreen(): JSX.Element {
           <section className="reviews">
 
             <h3 className="reviews__title title title--bigger">Отзывы</h3>
-            <Link to="#" className="button button--red-border button--big reviews__sumbit-button">Оставить отзыв</Link>
+            <button
+              className="button button--red-border button--big reviews__sumbit-button"
+              onClick={() => setIsModalReviewOpen(true)}
+            >Оставить отзыв
+            </button>
+
+            {isModalReviewOpen ?
+              <ModalReview handleCloseClick={() => setIsModalReviewOpen(false)} guitarId={Number(id)} />
+              : ''}
 
             {reviews?.slice(0, reviewsCount).map((review) => (
               <Review key={review.id} review={review} />

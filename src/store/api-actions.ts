@@ -1,7 +1,8 @@
-import { APIRoute, APIRouteWithVariable, AppRoute } from '../const';
+import { APIRoute, APIRouteWithVariable, AppRoute, Links } from '../const';
 import { Guitar, Guitars } from '../types/guitar';
 import { loadComments, loadCurrentGuitar, loadGuitars, loadGuitarsCount, loadInitialGuitars, redirectToRoute } from './action';
 
+import { CommentPost } from '../types/comment-post';
 import { Comments } from '../types/comment';
 import { HttpCode } from '../services/api';
 import { ThunkActionResult } from '../types/action';
@@ -58,6 +59,21 @@ export const fetchCurrentGuitarAction = (guitarId: number): ThunkActionResult =>
     try {
       const {data} = await api.get<Guitar>(APIRouteWithVariable.GuitarById(guitarId));
       dispatch(loadCurrentGuitar(data));
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === HttpCode.NotFound) {
+          dispatch(redirectToRoute(AppRoute.NotFound));
+        }
+      }
+    }
+  };
+
+export const reviewPostAction = ({guitarId, userName, advantage, disadvantage, comment, rating}: CommentPost): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      await api.post<CommentPost>(APIRoute.Comments, {guitarId, userName, advantage, disadvantage, comment, rating});
+      dispatch(redirectToRoute(Links.ProductById(guitarId)));
+      window.location.reload();
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === HttpCode.NotFound) {

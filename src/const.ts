@@ -17,6 +17,7 @@ export enum APIRoute {
   FilterPriceMax = 'price_lte=',
   FilterType = 'type=',
   FilterStringCount = 'stringCount=',
+  Comments = '/comments',
 }
 
 export const PRODUCTS_PER_PAGE = 9;
