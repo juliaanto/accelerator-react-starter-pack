@@ -2019,6 +2019,8 @@ button,
   color: #585757;
 
   letter-spacing: 0.02em;
+
+  align-self: flex-start;
 }
 
 .form-review__label--required {

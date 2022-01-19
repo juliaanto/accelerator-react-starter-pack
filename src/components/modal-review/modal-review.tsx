@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useState } from 'react';
+import { FormEvent, useReducer, useRef, useState } from 'react';
 
 import { reviewPostAction } from '../../store/api-actions';
 import { useDispatch } from 'react-redux';
@@ -6,10 +6,11 @@ import { useDispatch } from 'react-redux';
 type ModalReviewProps = {
   handleCloseClick: () => void;
   guitarId: number;
+  guitarName: string;
 }
 
 function ModalReview(props: ModalReviewProps): JSX.Element {
-  const {handleCloseClick, guitarId} = props;
+  const {handleCloseClick, guitarId, guitarName} = props;
 
   const dispatch = useDispatch();
 
@@ -19,20 +20,53 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
   const commentRef = useRef<HTMLTextAreaElement | null>(null);
 
   const [rate, setRate] = useState<number>();
+  const [isFormCorrect, setIsFormCorrect] = useState<boolean | null>(true);
+  const [isFirstTry, setIsFirstTry] = useState<boolean | null>(true);
+
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
+
+  const checkForm = () => {
+    if (isFirstTry) {
+      return;
+    }
+
+    if (
+      userNameRef.current !== null &&
+      userNameRef.current?.value.length > 0 &&
+      rate !== null &&
+      rate &&
+      prosRef.current !== null &&
+      prosRef.current?.value.length > 0 &&
+      consRef.current !== null &&
+      consRef.current?.value.length > 0 &&
+      commentRef.current !== null &&
+      commentRef.current?.value.length > 0
+    ) {
+      setIsFormCorrect(true);
+    } else {
+      setIsFormCorrect(false);
+    }
+
+    forceUpdate();
+  };
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    if (userNameRef.current !== null && rate !== null && prosRef.current && consRef.current && commentRef.current && rate) {
+    checkForm();
+
+    if (isFormCorrect && userNameRef.current && prosRef.current && consRef.current && commentRef.current && rate) {
 
       dispatch(reviewPostAction({
         guitarId: guitarId,
-        userName: userNameRef.current?.value,
-        advantage: prosRef.current?.value !== null ? prosRef.current?.value : '',
-        disadvantage: consRef.current?.value !== null ? consRef.current?.value : '',
-        comment: commentRef.current?.value !== null ? commentRef.current?.value : '',
+        userName: userNameRef.current.value,
+        advantage: prosRef.current.value,
+        disadvantage: consRef.current.value,
+        comment: commentRef.current.value,
         rating: rate,
       }));
+    } else {
+      setIsFormCorrect(false);
     }
   };
 
@@ -52,10 +86,13 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
         <div className="modal__overlay" data-close-modal></div>
         <div className="modal__content">
           <h2 className="modal__header modal__header--review title title--medium">Оставить отзыв</h2>
-          <h3 className="modal__product-name title title--medium-20 title--uppercase">СURT Z30 Plus</h3>
+          <h3 className="modal__product-name title title--medium-20 title--uppercase">{guitarName}</h3>
           <form
             className="form-review"
-            onSubmit={handleSubmit}
+            onSubmit={(evt) => {
+              setIsFirstTry(false);
+              handleSubmit(evt);
+            }}
           >
             <div className="form-review__wrapper">
               <div className="form-review__name-wrapper">
@@ -66,7 +103,11 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
                   type="text"
                   autoComplete="off"
                   ref={userNameRef}
-                /><span className="form-review__warning">Заполните поле</span>
+                  onInput={checkForm}
+                />
+                {!isFormCorrect && (!userNameRef.current || userNameRef.current.value.length < 1) ?
+                  <span className="form-review__warning">Заполните поле</span>
+                  : ''}
               </div>
               <div><span className="form-review__label form-review__label--required">Ваша Оценка</span>
                 <div
@@ -82,35 +123,50 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
                   <input className="visually-hidden" type="radio" id="star-2" name="rate" value="2" />
                   <label className="rate__label" htmlFor="star-2" title="Плохо"></label>
                   <input className="visually-hidden" type="radio" id="star-1" name="rate" value="1" />
-                  <label className="rate__label" htmlFor="star-1" title="Ужасно"></label><span className="rate__count"></span><span className="rate__message">Поставьте оценку</span>
+                  <label className="rate__label" htmlFor="star-1" title="Ужасно"></label><span className="rate__count"></span>
+                  {!isFormCorrect && (!rate || rate === null) ?
+                    <span className="rate__message">Поставьте оценку</span>
+                    : ''}
                 </div>
               </div>
             </div>
-            <label className="form-review__label" htmlFor="pros">Достоинства</label>
+            <label className="form-review__label form-review__label--required" htmlFor="pros">Достоинства</label>
             <input
               className="form-review__input"
               id="pros"
               type="text"
               autoComplete="off"
               ref={prosRef}
+              onInput={checkForm}
             />
-            <label className="form-review__label" htmlFor="cons">Недостатки</label>
+            {!isFormCorrect && (!prosRef.current || prosRef.current.value.length < 1) ?
+              <span className="form-review__warning">Заполните поле</span>
+              : ''}
+            <label className="form-review__label form-review__label--required" htmlFor="cons">Недостатки</label>
             <input
               className="form-review__input"
               id="cons"
               type="text"
               autoComplete="off"
               ref={consRef}
+              onInput={checkForm}
             />
-            <label className="form-review__label" htmlFor="user-name">Комментарий</label>
+            {!isFormCorrect && (!consRef.current || consRef.current.value.length < 1) ?
+              <span className="form-review__warning">Заполните поле</span>
+              : ''}
+            <label className="form-review__label form-review__label--required" htmlFor="user-name">Комментарий</label>
             <textarea
               className="form-review__input form-review__input--textarea"
               id="user-name"
               rows={10}
               autoComplete="off"
               ref={commentRef}
+              onInput={checkForm}
             >
             </textarea>
+            {!isFormCorrect && (!commentRef.current || commentRef.current.value.length < 1) ?
+              <span className="form-review__warning">Заполните поле</span>
+              : ''}
             <button className="button button--medium-20 form-review__button" type="submit">Отправить отзыв</button>
           </form>
           <button
