@@ -1,27 +1,33 @@
-import { makeFakeGuitar, makeFakeGuitars } from '../../utils/mocks';
+import { makeFakeGuitar, makeFakeReviews } from '../../utils/mocks';
 import { render, screen } from '@testing-library/react';
 
 import ProductScreen from './product-screen';
+import { Provider } from 'react-redux';
 import React from 'react';
 import { Router } from 'react-router-dom';
+import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createMemoryHistory } from 'history';
 
 const history = createMemoryHistory();
+const mockStore = configureMockStore();
+const fakeReviews = makeFakeReviews();
 const fakeGuitar = makeFakeGuitar();
-const fakeGuitars = makeFakeGuitars();
 
 describe('Component: ProductScreen', () => {
 
   it('should render correctly', () => {
-
-    React.useState = jest.fn()
-      .mockReturnValueOnce([fakeGuitar, {}])
-      .mockReturnValueOnce([fakeGuitars, {}]);
+    const store = mockStore({
+      DATA: { comments: fakeReviews, currentGuitar: fakeGuitar },
+    });
+    store.dispatch = jest.fn();
 
     render(
-      <Router history={history}>
-        <ProductScreen />
-      </Router>);
+      <Provider store={store}>
+        <Router history={history}>
+          <ProductScreen />
+        </Router>
+      </Provider>,
+    );
 
     expect(screen.getByText('Главная')).toBeInTheDocument();
     expect(screen.getByText('Характеристики')).toBeInTheDocument();

@@ -1,9 +1,10 @@
-import { loadGuitars, loadGuitarsCount, loadInitialGuitars } from '../action';
+import { loadCurrentGuitar, loadGuitars, loadGuitarsCount, loadInitialGuitars } from '../action';
+import { makeFakeGuitar, makeFakeGuitars } from '../../utils/mocks';
 
 import { guitarData } from './guitar-data';
-import { makeFakeGuitars } from '../../utils/mocks';
 
 const guitars = makeFakeGuitars();
+const guitar = makeFakeGuitar();
 
 describe('Reducer: guitarData', () => {
   it('without additional parameters should return initial state', () => {
@@ -27,6 +28,12 @@ describe('Reducer: guitarData', () => {
     const state = {guitars: [], guitarsCount: 0, initialGuitars: [], isDataLoaded: false, comments: []};
     expect(guitarData(state, loadInitialGuitars(guitars)))
       .toEqual({guitars: [], guitarsCount: 0, initialGuitars: guitars, isDataLoaded: false, comments: []});
+  });
+
+  it('should update current guitar by load guitar', () => {
+    const state = {guitars: [], guitarsCount: 0, initialGuitars: [], isDataLoaded: false, comments: []};
+    expect(guitarData(state, loadCurrentGuitar(guitar)))
+      .toEqual({guitars: [], guitarsCount: 0, initialGuitars: [], isDataLoaded: false, comments: [], currentGuitar: guitar});
   });
 });
 

@@ -1,7 +1,10 @@
 import { Guitar, Guitars } from '../types/guitar';
 import {datatype, image, lorem, name, vehicle} from 'faker';
 
+import { Comments } from '../types/comment';
+
 const GUITARS_COUNT = 20;
+const REVIEWS_COUNT = 3;
 
 export const makeFakeGuitar = (): Guitar => ({
   id: datatype.number(),
@@ -23,4 +26,25 @@ export const makeFakeGuitars = (): Guitars => {
   }
 
   return guitars;
+};
+
+export const makeFakeReview = () => ({
+  id: String(datatype.number()),
+  userName: name.firstName(),
+  advantage: 'Хорошо. Очень хорошо.',
+  disadvantage: 'Плохо. Очень плохо.',
+  comment: 'Неплохо, но дорого.',
+  rating: Math.floor(Math.random() * 6),
+  createAt: String(datatype.datetime()),
+  guitarId: datatype.number(),
+});
+
+export const makeFakeReviews = (): Comments => {
+  const reviews = [];
+
+  for (let i = 0; i < REVIEWS_COUNT; i++) {
+    reviews.push(makeFakeReview());
+  }
+
+  return reviews;
 };
