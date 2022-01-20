@@ -97,7 +97,10 @@ export const stringsCountList = [
   },
 ];
 
-export const ENTER_KEY = 'Enter';
+export enum Key {
+  Enter = 'Enter',
+  Escape = 'Escape',
+}
 
 export enum Hash {
   Characteristics = '#characteristics',

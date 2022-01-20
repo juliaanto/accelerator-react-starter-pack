@@ -1,3 +1,6 @@
+import { Key } from '../../const';
+import { useEffect } from 'react';
+
 type ModalSuccessReviewProps = {
   handleCloseClick: () => void;
 }
@@ -5,10 +8,28 @@ type ModalSuccessReviewProps = {
 function ModalSuccessReview(props: ModalSuccessReviewProps): JSX.Element {
   const {handleCloseClick} = props;
 
+  const handleEscClick = (event: { key: string; }) => {
+    if (event.key === Key.Escape) {
+      handleCloseClick();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEscClick);
+    return () => {
+      window.removeEventListener('keydown', handleEscClick);
+    };
+  }, []);
+
   return (
     <div className="modal is-active modal--success modal-for-ui-kit">
       <div className="modal__wrapper">
-        <div className="modal__overlay" data-close-modal></div>
+        <div
+          className="modal__overlay"
+          data-close-modal
+          onClick={handleCloseClick}
+        >
+        </div>
         <div className="modal__content">
           <svg className="modal__icon" width="26" height="20" aria-hidden="true">
             <use xlinkHref="#icon-success"></use>

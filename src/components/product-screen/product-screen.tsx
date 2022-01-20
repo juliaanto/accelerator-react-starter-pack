@@ -1,8 +1,8 @@
 import { APIRouteWithVariable, AppRoute, Hash, Links, REVIEWS_COUNT, REVIEWS_STEP } from '../../const';
 import { Link, useLocation, useParams } from 'react-router-dom';
+import { SetStateAction, useEffect, useState } from 'react';
 import { getCommentsCount, getCurrentGuitar } from '../../store/guitar-data/selectors';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
 
 import { Comments } from '../../types/comment';
 import Footer from '../footer/footer';
@@ -33,6 +33,7 @@ function ProductScreen(): JSX.Element {
   const [isTopOfPage, setIsTopOfPage] = useState<boolean>(true);
   const [isModalReviewOpen, setIsModalReviewOpen] = useState<boolean>(false);
   const [isModalSuccessReviewOpen, setIsModalSuccessReviewOpen] = useState<boolean>(false);
+  const [disabledElements, setDisabledElements] = useState<Element[]>();
 
   useEffect(() => {
     dispatch(fetchCurrentGuitarAction(Number(id)));
@@ -49,6 +50,30 @@ function ProductScreen(): JSX.Element {
       dispatch(redirectToRoute(Links.ProductById(Number(id))));
     }
   }, [dispatch, hash, id, isModalReviewOpen]);
+
+  useEffect(() => {
+
+    const modalElement = document.querySelector('.modal__content');
+
+    if (isModalReviewOpen === true || isModalSuccessReviewOpen === true) {
+      document.body.style.overflow = 'hidden';
+      const currentDisabledElements: SetStateAction<Element[] | undefined> = [];
+
+      document.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled]), details:not([disabled]), summary:not(:disabled)').forEach((element) => {
+        if (modalElement !== null && !modalElement.contains(element)) {
+          element.setAttribute('tabIndex', '-1');
+          currentDisabledElements.push(element);
+        }
+      });
+      setDisabledElements(currentDisabledElements);
+    } else {
+      document.body.style.overflow = 'visible';
+      disabledElements?.forEach((element) => {
+        element.removeAttribute('tabIndex');
+      });
+      setDisabledElements([]);
+    }
+  }, [isModalReviewOpen, isModalSuccessReviewOpen]);
 
   document.addEventListener('scroll', () => {
     if (window.scrollY === 0) {

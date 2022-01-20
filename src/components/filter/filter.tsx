@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { APIRoute, ENTER_KEY, FIRST_PAGE, Links, initialStringCountValues } from '../../const';
+import { APIRoute, FIRST_PAGE, Key, Links, initialStringCountValues } from '../../const';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
 import { getAvailableStringCountId, getMaxPrice, getMinPrice, getStringsCountElementIdByValue, getStringsCountValueByElementId, getStringsCountValuesByGuitarTypes } from '../../utils/filter';
@@ -162,7 +162,7 @@ function Filter(): JSX.Element {
   };
 
   const handleKeyPress = (event: { key: string; }) => {
-    if (event.key === ENTER_KEY) {
+    if (event.key === Key.Enter) {
       handleInput();
     }
   };

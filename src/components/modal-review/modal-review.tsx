@@ -1,5 +1,6 @@
-import { FormEvent, useReducer, useRef, useState } from 'react';
+import { FormEvent, useEffect, useReducer, useRef, useState } from 'react';
 
+import { Key } from '../../const';
 import { reviewPostAction } from '../../store/api-actions';
 import { useDispatch } from 'react-redux';
 
@@ -24,6 +25,19 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
   const [isFirstTry, setIsFirstTry] = useState<boolean | null>(true);
 
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
+
+  const handleEscClick = (event: { key: string; }) => {
+    if (event.key === Key.Escape) {
+      handleCloseClick();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEscClick);
+    return () => {
+      window.removeEventListener('keydown', handleEscClick);
+    };
+  }, []);
 
   const checkForm = () => {
     if (isFirstTry) {
@@ -83,7 +97,12 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
   return (
     <div className="modal is-active modal--review modal-for-ui-kit">
       <div className="modal__wrapper">
-        <div className="modal__overlay" data-close-modal></div>
+        <div
+          className="modal__overlay"
+          data-close-modal
+          onClick={handleCloseClick}
+        >
+        </div>
         <div className="modal__content">
           <h2 className="modal__header modal__header--review title title--medium">Оставить отзыв</h2>
           <h3 className="modal__product-name title title--medium-20 title--uppercase">{guitarName}</h3>
@@ -154,10 +173,10 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
             {!isFormCorrect && (!consRef.current || consRef.current.value.length < 1) ?
               <span className="form-review__warning">Заполните поле</span>
               : ''}
-            <label className="form-review__label form-review__label--required" htmlFor="user-name">Комментарий</label>
+            <label className="form-review__label form-review__label--required" htmlFor="comment">Комментарий</label>
             <textarea
               className="form-review__input form-review__input--textarea"
-              id="user-name"
+              id="comment"
               rows={10}
               autoComplete="off"
               ref={commentRef}
