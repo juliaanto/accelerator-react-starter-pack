@@ -39,10 +39,11 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
     };
   }, []);
 
+  useEffect(() => {
+    checkForm();
+  }, [rate]);
+
   const checkForm = () => {
-    if (isFirstTry) {
-      return;
-    }
 
     if (
       userNameRef.current !== null &&
@@ -124,7 +125,7 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
                   ref={userNameRef}
                   onInput={checkForm}
                 />
-                {!isFormCorrect && (!userNameRef.current || userNameRef.current.value.length < 1) ?
+                {!isFormCorrect && !isFirstTry && (!userNameRef.current || userNameRef.current.value.length < 1) ?
                   <span className="form-review__warning">Заполните поле</span>
                   : ''}
               </div>
@@ -143,7 +144,7 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
                   <label className="rate__label" htmlFor="star-2" title="Плохо"></label>
                   <input className="visually-hidden" type="radio" id="star-1" name="rate" value="1" />
                   <label className="rate__label" htmlFor="star-1" title="Ужасно"></label><span className="rate__count"></span>
-                  {!isFormCorrect && (!rate || rate === null) ?
+                  {!isFormCorrect && !isFirstTry && (!rate || rate === null) ?
                     <span className="rate__message">Поставьте оценку</span>
                     : ''}
                 </div>
@@ -158,7 +159,7 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
               ref={prosRef}
               onInput={checkForm}
             />
-            {!isFormCorrect && (!prosRef.current || prosRef.current.value.length < 1) ?
+            {!isFormCorrect && !isFirstTry && (!prosRef.current || prosRef.current.value.length < 1) ?
               <span className="form-review__warning">Заполните поле</span>
               : ''}
             <label className="form-review__label form-review__label--required" htmlFor="cons">Недостатки</label>
@@ -170,7 +171,7 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
               ref={consRef}
               onInput={checkForm}
             />
-            {!isFormCorrect && (!consRef.current || consRef.current.value.length < 1) ?
+            {!isFormCorrect && !isFirstTry && (!consRef.current || consRef.current.value.length < 1) ?
               <span className="form-review__warning">Заполните поле</span>
               : ''}
             <label className="form-review__label form-review__label--required" htmlFor="comment">Комментарий</label>
@@ -183,7 +184,7 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
               onInput={checkForm}
             >
             </textarea>
-            {!isFormCorrect && (!commentRef.current || commentRef.current.value.length < 1) ?
+            {!isFormCorrect && !isFirstTry && (!commentRef.current || commentRef.current.value.length < 1) ?
               <span className="form-review__warning">Заполните поле</span>
               : ''}
             <button className="button button--medium-20 form-review__button" type="submit">Отправить отзыв</button>
