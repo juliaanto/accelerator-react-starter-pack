@@ -37,10 +37,11 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
     return () => {
       window.removeEventListener('keydown', handleEscClick);
     };
-  }, []);
+  });
 
   useEffect(() => {
     checkForm();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rate]);
 
   const checkForm = () => {

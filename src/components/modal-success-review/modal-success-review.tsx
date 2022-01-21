@@ -19,7 +19,7 @@ function ModalSuccessReview(props: ModalSuccessReviewProps): JSX.Element {
     return () => {
       window.removeEventListener('keydown', handleEscClick);
     };
-  }, []);
+  });
 
   return (
     <div className="modal is-active modal--success modal-for-ui-kit">
