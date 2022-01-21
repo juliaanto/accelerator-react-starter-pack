@@ -14,13 +14,16 @@ export const fetchGuitarsAction = (): ThunkActionResult =>
       const {data} = await api.get<Guitars>(APIRoute.Guitars);
       dispatch(loadGuitars(data));
       dispatch(loadInitialGuitars(data));
-      data.map((guitar) => api.get<Comments>(APIRouteWithVariable.CommentsByGuitarId(guitar.id)).then((response) => {
-        try {
-          dispatch(loadComments(response.data));
-        } catch (error: unknown) {
-          dispatch(redirectToRoute(AppRoute.ServerUnavailable));
-        }
-      }));
+    } catch (error: unknown) {
+      dispatch(redirectToRoute(AppRoute.ServerUnavailable));
+    }
+  };
+
+export const fetchCommentsAction = (): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      const {data} = await api.get<Comments>(APIRoute.Comments);
+      dispatch(loadComments(data));
     } catch (error: unknown) {
       dispatch(redirectToRoute(AppRoute.ServerUnavailable));
     }

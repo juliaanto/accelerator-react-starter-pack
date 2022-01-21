@@ -1,7 +1,7 @@
 import {APIRoute, APIRouteWithVariable, FIRST_PAGE, Hash, Links} from '../const';
-import { fetchCurrentGuitarAction, fetchFilteredGuitarsAction, fetchGuitarsCountAction } from './api-actions';
-import { loadCurrentGuitar, loadGuitars, loadGuitarsCount, redirectToRoute } from './action';
-import { makeFakeGuitar, makeFakeGuitars } from '../utils/mocks';
+import { fetchCommentsAction, fetchCurrentGuitarAction, fetchFilteredGuitarsAction, fetchGuitarsAction, fetchGuitarsCountAction } from './api-actions';
+import { loadComments, loadCurrentGuitar, loadGuitars, loadGuitarsCount, loadInitialGuitars, redirectToRoute } from './action';
+import { makeFakeGuitar, makeFakeGuitars, makeFakeReviews } from '../utils/mocks';
 import thunk, {ThunkDispatch} from 'redux-thunk';
 
 import {Action} from 'redux';
@@ -19,6 +19,35 @@ describe('Async actions', () => {
       Action,
       ThunkDispatch<State, typeof api, Action>
     >(middlewares);
+
+  it('should dispatch LoadGuitars and LoadInitialGuitars when GET /guitars', async () => {
+    const mockGuitars = makeFakeGuitars();
+    mockAPI
+      .onGet(APIRoute.Guitars)
+      .reply(200, mockGuitars);
+
+    const store = mockStore();
+    await store.dispatch(fetchGuitarsAction());
+
+    expect(store.getActions()).toEqual([
+      loadGuitars(mockGuitars),
+      loadInitialGuitars(mockGuitars),
+    ]);
+  });
+
+  it('should dispatch LoadComments when GET /comments', async () => {
+    const mockComments = makeFakeReviews();
+    mockAPI
+      .onGet(APIRoute.Comments)
+      .reply(200, mockComments);
+
+    const store = mockStore();
+    await store.dispatch(fetchCommentsAction());
+
+    expect(store.getActions()).toEqual([
+      loadComments(mockComments),
+    ]);
+  });
 
   it('should dispatch LoadGuitars when GET /guitars', async () => {
     const mockGuitars = makeFakeGuitars();
