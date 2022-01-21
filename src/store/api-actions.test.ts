@@ -1,4 +1,4 @@
-import {APIRoute, APIRouteWithVariable, FIRST_PAGE, Hash, Links} from '../const';
+import {APIRoute, APIRouteWithVariable, AppLink, FIRST_PAGE, Hash} from '../const';
 import { fetchCommentsAction, fetchCurrentGuitarAction, fetchFilteredGuitarsAction, fetchGuitarsAction, fetchGuitarsCountAction } from './api-actions';
 import { loadComments, loadCurrentGuitar, loadGuitars, loadGuitarsCount, loadInitialGuitars, redirectToRoute } from './action';
 import { makeFakeGuitar, makeFakeGuitars, makeFakeReviews } from '../utils/mocks';
@@ -98,10 +98,10 @@ describe('Async actions', () => {
       .reply(200);
 
     const store = mockStore();
-    await store.dispatch(redirectToRoute((`${Links.ProductById(mockGuitar.id)}${Hash.Success}`)));
+    await store.dispatch(redirectToRoute((`${AppLink.ProductById(mockGuitar.id)}${Hash.Success}`)));
 
     expect(store.getActions()).toEqual([
-      redirectToRoute(`${Links.ProductById(mockGuitar.id)}${Hash.Success}`),
+      redirectToRoute(`${AppLink.ProductById(mockGuitar.id)}${Hash.Success}`),
     ]);
   });
 });

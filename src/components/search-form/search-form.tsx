@@ -1,4 +1,4 @@
-import { APIRouteWithVariable, Links } from '../../const';
+import { APIRouteWithVariable, AppLink } from '../../const';
 import { Guitar, Guitars } from '../../types/guitar';
 import { useRef, useState } from 'react';
 
@@ -68,7 +68,7 @@ function SearchForm(): JSX.Element {
       </form>
       <ul className="form-search__select-list hidden">
         {guitarNames?.map((guitar) => (
-          <Link to={Links.ProductById(guitar.id)} key={guitar.id} className="form-search__select-item" tabIndex={0}>
+          <Link to={AppLink.ProductById(guitar.id)} key={guitar.id} className="form-search__select-item" tabIndex={0}>
             <li>{guitar.name}</li>
           </Link>
         ))}

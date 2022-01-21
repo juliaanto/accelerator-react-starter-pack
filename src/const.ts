@@ -6,7 +6,7 @@ export enum AppRoute {
   ServerUnavailable = '/serverunavailable',
 }
 
-export const Links = {
+export const AppLink = {
   ProductById: ((id: number): string => `/product/${id}`),
   PageByPageNumber: ((pageNumber: number, filterParams: string): string => `/catalog/page_${pageNumber}${filterParams ? `${filterParams}` : ''}`),
 } as const;

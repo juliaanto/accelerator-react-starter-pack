@@ -1,4 +1,4 @@
-import { APIRouteWithVariable, AppRoute, Hash, Links, REVIEWS_COUNT, REVIEWS_STEP } from '../../const';
+import { APIRouteWithVariable, AppLink, AppRoute, Hash, REVIEWS_COUNT, REVIEWS_STEP } from '../../const';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { SetStateAction, useEffect, useState } from 'react';
 import { getCommentsCount, getCurrentGuitar } from '../../store/guitar-data/selectors';
@@ -47,7 +47,7 @@ function ProductScreen(): JSX.Element {
 
     if (hash === Hash.Success) {
       setIsModalSuccessReviewOpen(true);
-      dispatch(redirectToRoute(Links.ProductById(Number(id))));
+      dispatch(redirectToRoute(AppLink.ProductById(Number(id))));
     }
   }, [dispatch, hash, id, isModalReviewOpen]);
 
@@ -157,7 +157,7 @@ function ProductScreen(): JSX.Element {
               : ''}
 
             {isTopOfPage || reviews.length === 0 ? '' :
-              <a href={`${Links.ProductById(Number(id))}#header`} className="button button--up button--red-border button--big reviews__up-button">Наверх</a>}
+              <a href={`${AppLink.ProductById(Number(id))}#header`} className="button button--up button--red-border button--big reviews__up-button">Наверх</a>}
 
           </section>
         </div>

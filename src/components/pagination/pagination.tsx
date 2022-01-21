@@ -1,4 +1,4 @@
-import { FIRST_PAGE, Links, PAGES_STEP } from '../../const';
+import { AppLink, FIRST_PAGE, PAGES_STEP } from '../../const';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
 import { getFirstPageInList, getMaxPage } from '../../utils/pagination';
@@ -47,17 +47,17 @@ function Pagination(): JSX.Element {
       <ul className="pagination__list">
         {currentPage > FIRST_PAGE ?
           <li className="pagination__page pagination__page--prev" id="prev">
-            <Link to={Links.PageByPageNumber((currentPage - 1), filterParams)} className="link pagination__page-link">Назад</Link>
+            <Link to={AppLink.PageByPageNumber((currentPage - 1), filterParams)} className="link pagination__page-link">Назад</Link>
           </li>
           : ''}
         {getPages(currentPage).map((page) => (
           <li key={`page-${page}`} className={`pagination__page ${page === currentPage ? 'pagination__page--active' : ''}` }>
-            <Link to={Links.PageByPageNumber(page, filterParams)} className="link pagination__page-link">{page}</Link>
+            <Link to={AppLink.PageByPageNumber(page, filterParams)} className="link pagination__page-link">{page}</Link>
           </li>
         ))}
         {currentPage < getMaxPage(guitarsCount) ?
           <li className="pagination__page pagination__page--next" id="next">
-            <Link to={Links.PageByPageNumber((currentPage + 1), filterParams)} className="link pagination__page-link">Далее</Link>
+            <Link to={AppLink.PageByPageNumber((currentPage + 1), filterParams)} className="link pagination__page-link">Далее</Link>
           </li>
           : ''}
       </ul>

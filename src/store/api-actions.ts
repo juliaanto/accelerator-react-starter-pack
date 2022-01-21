@@ -1,4 +1,4 @@
-import { APIRoute, APIRouteWithVariable, AppRoute, Hash, Links } from '../const';
+import { APIRoute, APIRouteWithVariable, AppLink, AppRoute, Hash } from '../const';
 import { Guitar, Guitars } from '../types/guitar';
 import { loadComments, loadCurrentGuitar, loadGuitars, loadGuitarsCount, loadInitialGuitars, redirectToRoute } from './action';
 
@@ -75,7 +75,7 @@ export const reviewPostAction = ({guitarId, userName, advantage, disadvantage, c
   async (dispatch, _getState, api): Promise<void> => {
     try {
       await api.post<CommentPost>(APIRoute.Comments, {guitarId, userName, advantage, disadvantage, comment, rating});
-      dispatch(redirectToRoute(`${Links.ProductById(guitarId)}${Hash.Success}`));
+      dispatch(redirectToRoute(`${AppLink.ProductById(guitarId)}${Hash.Success}`));
       window.location.reload();
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

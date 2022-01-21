@@ -1,6 +1,6 @@
+import { AppLink } from '../../const';
 import { Guitar } from '../../types/guitar';
 import { Link } from 'react-router-dom';
-import { Links } from '../../const';
 import RatingStars from '../rating-stars/rating-stars';
 import { State } from '../../types/state';
 import { getCommentsCount } from '../../store/guitar-data/selectors';
@@ -30,7 +30,7 @@ function ProductCard(props: ProductCardProps): JSX.Element {
         </p>
       </div>
       <div className="product-card__buttons">
-        <Link to={Links.ProductById(guitar.id)} className="button button--mini">
+        <Link to={AppLink.ProductById(guitar.id)} className="button button--mini">
           Подробнее
         </Link>
         <Link to="#" className="button button--red button--mini button--add-to-cart">Купить</Link>

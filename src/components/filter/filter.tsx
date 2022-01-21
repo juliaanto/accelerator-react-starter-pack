@@ -1,4 +1,4 @@
-import { APIRoute, FIRST_PAGE, Key, Links, initialStringCountValues } from '../../const';
+import { APIRoute, AppLink, FIRST_PAGE, Key, initialStringCountValues } from '../../const';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
 import { getAvailableStringCountId, getMaxPrice, getMinPrice, getStringsCountElementIdByValue, getStringsCountValueByElementId, getStringsCountValuesByGuitarTypes } from '../../utils/filter';
@@ -97,7 +97,7 @@ function Filter(): JSX.Element {
 
     currentPage = FIRST_PAGE;
 
-    history.push(String(Links.PageByPageNumber(FIRST_PAGE, searchInput)));
+    history.push(String(AppLink.PageByPageNumber(FIRST_PAGE, searchInput)));
   };
 
   const handleTypeInput = (event: SyntheticEvent) => {

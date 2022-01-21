@@ -1,4 +1,4 @@
-import { FIRST_PAGE, Links, Order, SortBy } from '../../const';
+import { AppLink, FIRST_PAGE, Order, SortBy } from '../../const';
 import { getOrder, getSort } from '../../store/search-parameters/selectors';
 import { setOrder, setSort } from '../../store/action';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,7 +29,7 @@ function Sort(): JSX.Element {
 
     target.classList.toggle('catalog-sort__type-button--active');
 
-    history.push(String(Links.PageByPageNumber(FIRST_PAGE, `${filterParams ? filterParams : '?'}${currentType}${order}`)));
+    history.push(String(AppLink.PageByPageNumber(FIRST_PAGE, `${filterParams ? filterParams : '?'}${currentType}${order}`)));
   };
 
   const handleOrderChange = (event: SyntheticEvent, currentOrder: Order) => {
@@ -46,7 +46,7 @@ function Sort(): JSX.Element {
       dispatch(setSort(SortBy.Price));
     }
 
-    history.push(String(Links.PageByPageNumber(FIRST_PAGE, `${filterParams ? filterParams : '?'}${sort ? sort : SortBy.Price}${currentOrder}`)));
+    history.push(String(AppLink.PageByPageNumber(FIRST_PAGE, `${filterParams ? filterParams : '?'}${sort ? sort : SortBy.Price}${currentOrder}`)));
   };
 
   return (
