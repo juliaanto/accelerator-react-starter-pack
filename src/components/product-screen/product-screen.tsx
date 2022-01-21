@@ -73,7 +73,6 @@ function ProductScreen(): JSX.Element {
       });
       setDisabledElements([]);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalReviewOpen, isModalSuccessReviewOpen]);
 
   document.addEventListener('scroll', () => {

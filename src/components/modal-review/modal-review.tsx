@@ -41,7 +41,6 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
 
   useEffect(() => {
     checkForm();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rate]);
 
   const checkForm = () => {

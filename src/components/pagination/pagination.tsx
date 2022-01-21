@@ -40,7 +40,6 @@ function Pagination(): JSX.Element {
   useEffect(() => {
     dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, currentPage));
     dispatch(fetchGuitarsCountAction(filterParams));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   return (
