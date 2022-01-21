@@ -9,7 +9,7 @@ export enum AppRoute {
 export const Links = {
   ProductById: ((id: number): string => `/product/${id}`),
   PageByPageNumber: ((pageNumber: number, filterParams: string): string => `/catalog/page_${pageNumber}${filterParams ? `${filterParams}` : ''}`),
-};
+} as const;
 
 export enum APIRoute {
   Guitars = '/guitars',
@@ -32,7 +32,7 @@ export const APIRouteWithVariable = {
   GuitarById: ((guitarId: number): string => `/guitars/${guitarId}`),
   GuitarsByParameters: ((filterParams: string, sort: string, order: string, page: number): string => `/guitars${filterParams ? `${filterParams}` : '?'}${sort}${order}_start=${(page - 1) * PRODUCTS_PER_PAGE}&_limit=${PRODUCTS_PER_PAGE}`),
   GuitarsCount:  ((filterParams: string): string => `/guitars${filterParams ? `${filterParams}` : '?'}`),
-};
+} as const;
 
 export enum SortBy {
   Price = '_sort=price&',

@@ -2,15 +2,15 @@ import { Key } from '../../const';
 import { useEffect } from 'react';
 
 type ModalSuccessReviewProps = {
-  handleCloseClick: () => void;
+  onCloseClick: () => void;
 }
 
 function ModalSuccessReview(props: ModalSuccessReviewProps): JSX.Element {
-  const {handleCloseClick} = props;
+  const {onCloseClick} = props;
 
   const handleEscClick = (event: { key: string; }) => {
     if (event.key === Key.Escape) {
-      handleCloseClick();
+      onCloseClick();
     }
   };
 
@@ -27,7 +27,7 @@ function ModalSuccessReview(props: ModalSuccessReviewProps): JSX.Element {
         <div
           className="modal__overlay"
           data-close-modal
-          onClick={handleCloseClick}
+          onClick={onCloseClick}
         >
         </div>
         <div className="modal__content">
@@ -38,7 +38,7 @@ function ModalSuccessReview(props: ModalSuccessReviewProps): JSX.Element {
           <div className="modal__button-container modal__button-container--review">
             <button
               className="button button--small modal__button modal__button--review"
-              onClick={handleCloseClick}
+              onClick={onCloseClick}
             >К покупкам!
             </button>
           </div>
@@ -46,7 +46,7 @@ function ModalSuccessReview(props: ModalSuccessReviewProps): JSX.Element {
             className="modal__close-btn button-cross"
             type="button"
             aria-label="Закрыть"
-            onClick={handleCloseClick}
+            onClick={onCloseClick}
           ><span className="button-cross__icon"></span><span className="modal__close-btn-interactive-area"></span>
           </button>
         </div>

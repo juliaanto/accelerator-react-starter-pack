@@ -5,13 +5,13 @@ import { reviewPostAction } from '../../store/api-actions';
 import { useDispatch } from 'react-redux';
 
 type ModalReviewProps = {
-  handleCloseClick: () => void;
+  onCloseClick: () => void;
   guitarId: number;
   guitarName: string;
 }
 
 function ModalReview(props: ModalReviewProps): JSX.Element {
-  const {handleCloseClick, guitarId, guitarName} = props;
+  const {onCloseClick, guitarId, guitarName} = props;
 
   const dispatch = useDispatch();
 
@@ -28,7 +28,7 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
 
   const handleEscClick = (event: { key: string; }) => {
     if (event.key === Key.Escape) {
-      handleCloseClick();
+      onCloseClick();
     }
   };
 
@@ -101,7 +101,7 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
         <div
           className="modal__overlay"
           data-close-modal
-          onClick={handleCloseClick}
+          onClick={onCloseClick}
         >
         </div>
         <div className="modal__content">
@@ -193,7 +193,7 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
             className="modal__close-btn button-cross"
             type="button"
             aria-label="Закрыть"
-            onClick={handleCloseClick}
+            onClick={onCloseClick}
           ><span className="button-cross__icon"></span><span className="modal__close-btn-interactive-area"></span>
           </button>
         </div>

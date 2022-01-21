@@ -11,7 +11,7 @@ describe('Component: ModalSuccessReview', () => {
 
     render(
       <Router history={history}>
-        <ModalSuccessReview handleCloseClick={jest.fn()} />
+        <ModalSuccessReview onCloseClick={jest.fn()} />
       </Router>);
 
     expect(screen.getByText('Спасибо за ваш отзыв!')).toBeInTheDocument();

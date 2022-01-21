@@ -20,7 +20,7 @@ describe('Component: ModalReview', () => {
     render(
       <Provider store={store}>
         <Router history={history}>
-          <ModalReview handleCloseClick={jest.fn()} guitarId={fakeGuitar.id} guitarName={fakeGuitar.name}/>
+          <ModalReview onCloseClick={jest.fn()} guitarId={fakeGuitar.id} guitarName={fakeGuitar.name}/>
         </Router>
       </Provider>);
 

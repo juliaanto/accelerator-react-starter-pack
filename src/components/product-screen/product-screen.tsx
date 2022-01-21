@@ -137,11 +137,11 @@ function ProductScreen(): JSX.Element {
             </button>
 
             {isModalReviewOpen ?
-              <ModalReview handleCloseClick={() => setIsModalReviewOpen(false)} guitarId={Number(id)} guitarName={product.name} />
+              <ModalReview onCloseClick={() => setIsModalReviewOpen(false)} guitarId={Number(id)} guitarName={product.name} />
               : ''}
 
             {isModalSuccessReviewOpen ?
-              <ModalSuccessReview handleCloseClick={() => setIsModalSuccessReviewOpen(false)} />
+              <ModalSuccessReview onCloseClick={() => setIsModalSuccessReviewOpen(false)} />
               : ''}
 
             {reviews?.slice(0, reviewsCount).map((review) => (
