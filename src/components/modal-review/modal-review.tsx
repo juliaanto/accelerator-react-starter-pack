@@ -1,6 +1,6 @@
+import { FIRST_RATE_VALUE, Key, LAST_RATE_VALUE } from '../../const';
 import { FormEvent, useEffect, useReducer, useRef, useState } from 'react';
 
-import { Key } from '../../const';
 import { reviewPostAction } from '../../store/api-actions';
 import { useDispatch } from 'react-redux';
 
@@ -92,7 +92,39 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
       return;
     }
 
+    checkedRadio.focus();
+
     setRate(Number(checkedRadio.value));
+  };
+
+  const handleRateKeyDown = (evt: any) => {
+
+    document.querySelectorAll('input[name=rate]:checked').forEach((element) => element.removeAttribute('checked'));
+    let currentValue = rate;
+
+    if (!currentValue) {
+      currentValue = LAST_RATE_VALUE;
+    }
+
+    if (evt.key === Key.ArrowLeft || evt.key === Key.ArrowDown) {
+      evt.preventDefault();
+
+      if (currentValue === FIRST_RATE_VALUE) {
+        (document.querySelector(`#star-${LAST_RATE_VALUE}`) as HTMLElement).click();
+      } else {
+        (document.querySelector(`#star-${currentValue - 1}`) as HTMLElement).click();
+      }
+    }
+
+    if (evt.key === Key.ArrowRight || evt.key === Key.ArrowUp) {
+      evt.preventDefault();
+
+      if (currentValue === LAST_RATE_VALUE) {
+        (document.querySelector(`#star-${FIRST_RATE_VALUE}`) as HTMLElement).click();
+      } else {
+        (document.querySelector(`#star-${currentValue + 1}`) as HTMLElement).click();
+      }
+    }
   };
 
   return (
@@ -133,6 +165,7 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
                 <div
                   className="rate rate--reverse"
                   onClick={handleRateClick}
+                  onKeyDown={handleRateKeyDown}
                 >
                   <input className="visually-hidden" type="radio" id="star-5" name="rate" value="5" />
                   <label className="rate__label" htmlFor="star-5" title="Отлично"></label>

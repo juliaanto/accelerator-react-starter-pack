@@ -100,6 +100,10 @@ export const stringsCountList = [
 export enum Key {
   Enter = 'Enter',
   Escape = 'Escape',
+  ArrowLeft = 'ArrowLeft',
+  ArrowRight = 'ArrowRight',
+  ArrowUp = 'ArrowUp',
+  ArrowDown = 'ArrowDown',
 }
 
 export enum Hash {
@@ -111,3 +115,7 @@ export enum Hash {
 export const REVIEWS_COUNT = 3;
 
 export const REVIEWS_STEP = 3;
+
+export const FIRST_RATE_VALUE = 1;
+
+export const LAST_RATE_VALUE = 5;
