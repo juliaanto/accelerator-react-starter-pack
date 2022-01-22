@@ -41,7 +41,6 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
 
   useEffect(() => {
     checkForm();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rate]);
 
   const checkForm = () => {
@@ -98,7 +97,6 @@ function ModalReview(props: ModalReviewProps): JSX.Element {
     setRate(Number(checkedRadio.value));
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleRateKeyDown = (evt: any) => {
 
     document.querySelectorAll('input[name=rate]:checked').forEach((element) => element.removeAttribute('checked'));

@@ -52,7 +52,6 @@ function Filter(): JSX.Element {
       return;
     }
     handleInput();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentAndAvailableStringCount]);
 
   useEffect(() => {
@@ -70,7 +69,6 @@ function Filter(): JSX.Element {
 
     setCurrentAndAvailableStringCount(currentStringCount.filter((element) => getAvailableStringCountId(availableStringCount).includes(element)));
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [availableStringCount, currentStringCount, currentTypes]);
 
   useEffect(() => {
