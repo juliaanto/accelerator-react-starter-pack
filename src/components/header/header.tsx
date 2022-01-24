@@ -1,3 +1,4 @@
+import { AppRoute } from '../../const';
 import { Link } from 'react-router-dom';
 import SearchForm from '../search-form/search-form';
 
@@ -21,7 +22,7 @@ function Header(): JSX.Element {
 
         <SearchForm />
 
-        <Link to="#" className="header__cart-link" aria-label="Корзина">
+        <Link to={AppRoute.Cart} className="header__cart-link" aria-label="Корзина">
           <svg className="header__cart-icon" width="14" height="14" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
           </svg><span className="visually-hidden">Перейти в корзину</span><span className="header__cart-count">2</span>

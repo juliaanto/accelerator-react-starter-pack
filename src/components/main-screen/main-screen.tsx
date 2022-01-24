@@ -1,6 +1,6 @@
+import { AppRoute, Title } from '../../const';
 import { getGuitars, getLoadedDataStatus } from '../../store/guitar-data/selectors';
 
-import { AppRoute } from '../../const';
 import Filter from '../filter/filter';
 import Footer from '../footer/footer';
 import Header from '../header/header';
@@ -14,6 +14,8 @@ import { useSelector } from 'react-redux';
 function MainScreen(): JSX.Element {
   const guitars = useSelector(getGuitars);
   const isDataLoaded = useSelector(getLoadedDataStatus);
+
+  document.title = Title.Main;
 
   if (!isDataLoaded) {
     return (

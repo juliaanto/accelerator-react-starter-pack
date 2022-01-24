@@ -4,6 +4,7 @@ export enum AppRoute {
   Product = '/product/:id',
   NotFound = '/notfound',
   ServerUnavailable = '/serverunavailable',
+  Cart = '/cart',
 }
 
 export const AppLink = {
@@ -119,3 +120,8 @@ export const REVIEWS_STEP = 3;
 export const FIRST_RATE_VALUE = 1;
 
 export const LAST_RATE_VALUE = 5;
+
+export enum Title {
+  Main = 'Guitar-shop',
+  Cart = 'Корзина — Guitar-shop'
+}

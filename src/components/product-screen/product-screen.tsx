@@ -1,4 +1,4 @@
-import { APIRouteWithVariable, AppLink, AppRoute, Hash, REVIEWS_COUNT, REVIEWS_STEP } from '../../const';
+import { APIRouteWithVariable, AppLink, AppRoute, Hash, REVIEWS_COUNT, REVIEWS_STEP, Title } from '../../const';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { SetStateAction, useEffect, useState } from 'react';
 import { getCommentsCount, getCurrentGuitar } from '../../store/guitar-data/selectors';
@@ -27,6 +27,10 @@ function ProductScreen(): JSX.Element {
   const dispatch = useDispatch();
 
   const hash = String(useLocation<string>().hash);
+
+  if (product) {
+    document.title = `${product.name} — ${Title.Main}`;
+  }
 
   const [reviews, setReviews] = useState<Comments>([]);
   const [reviewsCount, setReviewsCount] = useState<number>(REVIEWS_COUNT);
@@ -100,11 +104,14 @@ function ProductScreen(): JSX.Element {
         <div className="container">
           <h1 className="page-content__title title title--bigger">{product.name}</h1>
           <ul className="breadcrumbs page-content__breadcrumbs">
-            <li className="breadcrumbs__item"><a className="link" href={AppRoute.Main}>Главная</a>
+            <li className="breadcrumbs__item">
+              <Link to={AppRoute.Main} className="link">Главная</Link>
             </li>
-            <li className="breadcrumbs__item"><a className="link" href={AppRoute.Main}>Каталог</a>
+            <li className="breadcrumbs__item">
+              <Link to={AppRoute.Main} className="link">Каталог</Link>
             </li>
-            <li className="breadcrumbs__item"><Link to="#" className="link">{product.name}</Link>
+            <li className="breadcrumbs__item">
+              <Link to="#" className="link">{product.name}</Link>
             </li>
           </ul>
           <div className="product-container">
