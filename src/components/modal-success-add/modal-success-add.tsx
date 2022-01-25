@@ -1,6 +1,8 @@
-import { AppRoute, Key } from '../../const';
+import { AppLink, AppRoute, Key } from '../../const';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
-import { Link } from 'react-router-dom';
+import { redirectToRoute } from '../../store/action';
+import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 
 type ModalSuccessAddProps = {
@@ -9,6 +11,13 @@ type ModalSuccessAddProps = {
 
 function ModalSuccessAdd(props: ModalSuccessAddProps): JSX.Element {
   const {onCloseClick} = props;
+
+  const dispatch = useDispatch();
+
+  const path = useLocation<string>().pathname;
+  const {id} = useParams<{id: string}>();
+
+  const isProductScreen = AppLink.ProductById(Number(id)) === path;
 
   useEffect(() => {
     window.addEventListener('keydown', handleEscClick);
@@ -24,7 +33,10 @@ function ModalSuccessAdd(props: ModalSuccessAddProps): JSX.Element {
   };
 
   const handleContinueClick = () => {
-    onCloseClick();
+    isProductScreen ?
+      dispatch(redirectToRoute(AppRoute.Main))
+      :
+      onCloseClick();
   };
 
   return (

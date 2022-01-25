@@ -6,13 +6,13 @@ import Header from '../header/header';
 import { Link } from 'react-router-dom';
 import { State } from '../../types/state';
 import { getGuitarsInCart } from '../../store/guitar-data/selectors';
+import { getUniqueGuitars } from '../../utils/cart';
 import { useSelector } from 'react-redux';
 
 function CartScreen(): JSX.Element {
   document.title = Title.Cart;
 
   const guitarsInCart = useSelector((state: State) => getGuitarsInCart(state));
-  const uniqueGuitarsInCart = Array.from(new Set(guitarsInCart));
 
   return (
 
@@ -36,7 +36,7 @@ function CartScreen(): JSX.Element {
           </ul>
           <div className="cart">
 
-            {uniqueGuitarsInCart.map((cartItem) => (
+            {getUniqueGuitars(guitarsInCart).map((cartItem) => (
               <CartItem key={cartItem.id} guitar={cartItem}/>
             ))}
 

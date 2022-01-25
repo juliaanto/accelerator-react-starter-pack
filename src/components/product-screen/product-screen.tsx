@@ -8,7 +8,9 @@ import { Comments } from '../../types/comment';
 import Footer from '../footer/footer';
 import Header from '../header/header';
 import LoadingScreen from '../loading-screen/loading-screen';
+import ModalCartAdd from '../modal-cart-add/modal-cart-add';
 import ModalReview from '../modal-review/modal-review';
+import ModalSuccessAdd from '../modal-success-add/modal-success-add';
 import ModalSuccessReview from '../modal-success-review/modal-success-review';
 import RatingStars from '../rating-stars/rating-stars';
 import Review from '../review/review';
@@ -37,6 +39,8 @@ function ProductScreen(): JSX.Element {
   const [isTopOfPage, setIsTopOfPage] = useState<boolean>(true);
   const [isModalReviewOpen, setIsModalReviewOpen] = useState<boolean>(false);
   const [isModalSuccessReviewOpen, setIsModalSuccessReviewOpen] = useState<boolean>(false);
+  const [isModalAddToCartOpen, setIsModalAddToCartOpen] = useState<boolean>(false);
+  const [isModalSuccessAddToCartOpen, setIsModalSuccessAddToCartOpen] = useState<boolean>(false);
   const [disabledElements, setDisabledElements] = useState<Element[]>();
 
   useEffect(() => {
@@ -53,13 +57,18 @@ function ProductScreen(): JSX.Element {
       setIsModalSuccessReviewOpen(true);
       dispatch(redirectToRoute(AppLink.ProductById(Number(id))));
     }
+
+    return () => {
+      setIsModalSuccessReviewOpen(false);
+    };
+
   }, [dispatch, hash, id, isModalReviewOpen]);
 
   useEffect(() => {
 
     const modalElement = document.querySelector('.modal__content');
 
-    if (isModalReviewOpen === true || isModalSuccessReviewOpen === true) {
+    if (isModalReviewOpen === true || isModalSuccessReviewOpen === true || isModalAddToCartOpen === true || isModalSuccessAddToCartOpen === true) {
       document.body.style.overflow = 'hidden';
       const currentDisabledElements: SetStateAction<Element[] | undefined> = [];
 
@@ -77,7 +86,7 @@ function ProductScreen(): JSX.Element {
       });
       setDisabledElements([]);
     }
-  }, [isModalReviewOpen, isModalSuccessReviewOpen]);
+  }, [isModalReviewOpen, isModalSuccessReviewOpen, isModalAddToCartOpen, isModalSuccessAddToCartOpen]);
 
   document.addEventListener('scroll', () => {
     if (window.scrollY === 0) {
@@ -131,7 +140,12 @@ function ProductScreen(): JSX.Element {
             </div>
             <div className="product-container__price-wrapper">
               <p className="product-container__price-info product-container__price-info--title">Цена:</p>
-              <p className="product-container__price-info product-container__price-info--value">{String(product.price).replace(/(\d)(?=(\d{3})+$)/g, '$1 ')} ₽</p><Link to="#" className="button button--red button--big product-container__button">Добавить в корзину</Link>
+              <p className="product-container__price-info product-container__price-info--value">{String(product.price).replace(/(\d)(?=(\d{3})+$)/g, '$1 ')} ₽</p>
+              <button
+                className="button button--red button--big product-container__button"
+                onClick={() => setIsModalAddToCartOpen(true)}
+              >Добавить в корзину
+              </button>
             </div>
           </div>
           <section className="reviews">
@@ -149,6 +163,14 @@ function ProductScreen(): JSX.Element {
 
             {isModalSuccessReviewOpen ?
               <ModalSuccessReview onCloseClick={() => setIsModalSuccessReviewOpen(false)} />
+              : ''}
+
+            {isModalAddToCartOpen ?
+              <ModalCartAdd onCloseClick={() => setIsModalAddToCartOpen(false)} guitar={product} onSuccessAdd={() => setIsModalSuccessAddToCartOpen(true)}/>
+              : ''}
+
+            {isModalSuccessAddToCartOpen ?
+              <ModalSuccessAdd onCloseClick={() => setIsModalSuccessAddToCartOpen(false)} />
               : ''}
 
             {reviews?.slice(0, reviewsCount).map((review) => (
