@@ -65,7 +65,6 @@ function ProductScreen(): JSX.Element {
   }, [dispatch, hash, id, isModalReviewOpen]);
 
   useEffect(() => {
-
     const modalElement = document.querySelector('.modal__content');
 
     if (isModalReviewOpen === true || isModalSuccessReviewOpen === true || isModalAddToCartOpen === true || isModalSuccessAddToCartOpen === true) {
@@ -86,6 +85,11 @@ function ProductScreen(): JSX.Element {
       });
       setDisabledElements([]);
     }
+
+    return () => {
+      document.body.style.overflow = 'visible';
+    };
+
   }, [isModalReviewOpen, isModalSuccessReviewOpen, isModalAddToCartOpen, isModalSuccessAddToCartOpen]);
 
   document.addEventListener('scroll', () => {

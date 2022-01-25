@@ -47,6 +47,11 @@ function ProductCard(props: ProductCardProps): JSX.Element {
       });
       setDisabledElements([]);
     }
+
+    return () => {
+      document.body.style.overflow = 'visible';
+    };
+
   }, [isModalAddToCartOpen, isModalSuccessAddToCartOpen]);
 
   return (
