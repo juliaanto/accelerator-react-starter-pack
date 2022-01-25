@@ -1,3 +1,4 @@
+import { Key, MAX_GUITARS_QUANTITY } from '../../const';
 import { addGuitarToCart, removeGuitarFromCart } from '../../store/action';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
@@ -5,6 +6,7 @@ import { useEffect, useRef } from 'react';
 import { Guitar } from '../../types/guitar';
 import { State } from '../../types/state';
 import { getGuitarType } from '../../utils/guitarPage';
+import { getGuitarsById } from '../../utils/cart';
 import { getGuitarsInCart } from '../../store/user-actions/selectors';
 
 type CartItemProps = {
@@ -26,6 +28,25 @@ function CartItem(props: CartItemProps): JSX.Element {
     const cartItemElement = document.querySelector(`[id='${guitar.id}']`);
     (cartItemElement?.querySelector('.quantity__input') as HTMLInputElement).value = String(guitarsCount);
   });
+
+  const updateGuitarsQuantity = () => {
+    if (Number(quantityRef.current?.value) > MAX_GUITARS_QUANTITY) {
+      const quantityInputElement = document.querySelector('.quantity__input') as HTMLObjectElement;
+      quantityInputElement.reportValidity();
+    } else {
+      const currentGuitars = getGuitarsById(guitarsInCart, guitar.id);
+      currentGuitars.forEach((currentGuitar: Guitar) => dispatch(removeGuitarFromCart(currentGuitar)));
+      for (let i = 0; i < Number(quantityRef.current?.value); i++) {
+        dispatch(addGuitarToCart(guitar));
+      }
+    }
+  };
+
+  const handleQuantityInputKeyDown = (event: { key: string; }) => {
+    if (event.key === Key.Enter) {
+      updateGuitarsQuantity();
+    }
+  };
 
   return (
     <div className="cart-item" id={`${guitar.id}`}>
@@ -58,6 +79,8 @@ function CartItem(props: CartItemProps): JSX.Element {
           name="4-count"
           max="99"
           ref={quantityRef}
+          onKeyDown={handleQuantityInputKeyDown}
+          onBlur={updateGuitarsQuantity}
         />
         <button
           className="quantity__button"

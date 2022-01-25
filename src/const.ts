@@ -125,3 +125,5 @@ export enum Title {
   Main = 'Guitar-shop',
   Cart = 'Корзина — Guitar-shop'
 }
+
+export const MAX_GUITARS_QUANTITY = 99;
