@@ -1,7 +1,7 @@
+import { Guitar, Guitars } from './guitar';
 import { Order, SortBy } from '../const';
 
 import { Comments } from './comment';
-import { Guitar, Guitars } from './guitar';
 import { RootState } from '../store/root-reducer';
 
 export type GuitarData = {
@@ -10,6 +10,7 @@ export type GuitarData = {
   isDataLoaded: boolean,
   initialGuitars: Guitars,
   comments: Comments,
+  guitarsInCart: Guitars,
   currentGuitar?: Guitar,
 }
 

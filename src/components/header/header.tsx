@@ -1,8 +1,13 @@
 import { AppRoute } from '../../const';
 import { Link } from 'react-router-dom';
 import SearchForm from '../search-form/search-form';
+import { State } from '../../types/state';
+import { getGuitarsInCart } from '../../store/guitar-data/selectors';
+import { useSelector } from 'react-redux';
 
 function Header(): JSX.Element {
+  const guitarsInCart = useSelector((state: State) => getGuitarsInCart(state));
+
   return (
     <header className="header" id="header">
       <div className="container header__wrapper">
@@ -25,7 +30,7 @@ function Header(): JSX.Element {
         <Link to={AppRoute.Cart} className="header__cart-link" aria-label="Корзина">
           <svg className="header__cart-icon" width="14" height="14" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
-          </svg><span className="visually-hidden">Перейти в корзину</span><span className="header__cart-count">2</span>
+          </svg><span className="visually-hidden">Перейти в корзину</span><span className="header__cart-count">{guitarsInCart.length}</span>
         </Link>
       </div>
     </header>

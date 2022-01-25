@@ -74,3 +74,12 @@ export const loadCurrentGuitar = createAction(
     },
   }),
 );
+
+export const addGuitarToCart = createAction(
+  ActionType.AddGuitarToCart,
+  (guitar: Guitar) => ({
+    payload: {
+      guitar,
+    },
+  }),
+);

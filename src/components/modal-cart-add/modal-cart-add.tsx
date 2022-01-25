@@ -1,6 +1,8 @@
 import { Guitar } from '../../types/guitar';
 import { Key } from '../../const';
+import { addGuitarToCart } from '../../store/action';
 import { getGuitarType } from '../../utils/guitarPage';
+import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 
 type ModalCartAddProps = {
@@ -11,11 +13,7 @@ type ModalCartAddProps = {
 function ModalCartAdd(props: ModalCartAddProps): JSX.Element {
   const {guitar, onCloseClick} = props;
 
-  const handleEscClick = (event: { key: string; }) => {
-    if (event.key === Key.Escape) {
-      onCloseClick();
-    }
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
     window.addEventListener('keydown', handleEscClick);
@@ -23,6 +21,17 @@ function ModalCartAdd(props: ModalCartAddProps): JSX.Element {
       window.removeEventListener('keydown', handleEscClick);
     };
   });
+
+  const handleEscClick = (event: { key: string; }) => {
+    if (event.key === Key.Escape) {
+      onCloseClick();
+    }
+  };
+
+  const handleAddToCartClick = () => {
+    dispatch(addGuitarToCart(guitar));
+    onCloseClick();
+  };
 
   return (
     <div className="modal is-active modal-cart-add">
@@ -40,7 +49,11 @@ function ModalCartAdd(props: ModalCartAddProps): JSX.Element {
             </div>
           </div>
           <div className="modal__button-container">
-            <button className="button button--red button--big modal__button modal__button--add">Добавить в корзину</button>
+            <button
+              className="button button--red button--big modal__button modal__button--add"
+              onClick={handleAddToCartClick}
+            >Добавить в корзину
+            </button>
           </div>
           <button
             className="modal__close-btn button-cross"
