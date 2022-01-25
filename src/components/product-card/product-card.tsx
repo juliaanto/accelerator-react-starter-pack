@@ -1,12 +1,14 @@
-import { AppLink } from '../../const';
+import { AppLink, AppRoute } from '../../const';
+import { SetStateAction, useEffect, useState } from 'react';
+import { getCommentsCount, getGuitarsInCart } from '../../store/guitar-data/selectors';
+
 import { Guitar } from '../../types/guitar';
 import { Link } from 'react-router-dom';
 import ModalCartAdd from '../modal-cart-add/modal-cart-add';
+import ModalSuccessAdd from '../modal-success-add/modal-success-add';
 import RatingStars from '../rating-stars/rating-stars';
 import { State } from '../../types/state';
-import { getCommentsCount } from '../../store/guitar-data/selectors';
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
 
 type ProductCardProps = {
   guitar: Guitar;
@@ -16,8 +18,36 @@ function ProductCard(props: ProductCardProps): JSX.Element {
   const {guitar} = props;
 
   const rateCount = useSelector((state: State) => getCommentsCount(state, guitar.id));
+  const guitarsInCart = useSelector((state: State) => getGuitarsInCart(state));
 
-  const [isModalCartAddOpen, setIsModalCartAddOpen] = useState<boolean>(false);
+  const [isModalAddToCartOpen, setIsModalAddToCartOpen] = useState<boolean>(false);
+  const [isModalSuccessAddToCartOpen, setIsModalSuccessAddToCartOpen] = useState<boolean>(false);
+  const [disabledElements, setDisabledElements] = useState<Element[]>();
+
+  const isGuitarInCart = () => (guitarsInCart.filter((guitarInCart) => guitarInCart.id === guitar.id)).length > 0;
+
+  useEffect(() => {
+    const modalElement = document.querySelector('.modal__content');
+
+    if (isModalAddToCartOpen === true || isModalSuccessAddToCartOpen === true) {
+      document.body.style.overflow = 'hidden';
+      const currentDisabledElements: SetStateAction<Element[] | undefined> = [];
+
+      document.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled]), details:not([disabled]), summary:not(:disabled)').forEach((element) => {
+        if (modalElement !== null && !modalElement.contains(element)) {
+          element.setAttribute('tabIndex', '-1');
+          currentDisabledElements.push(element);
+        }
+      });
+      setDisabledElements(currentDisabledElements);
+    } else {
+      document.body.style.overflow = 'visible';
+      disabledElements?.forEach((element) => {
+        element.removeAttribute('tabIndex');
+      });
+      setDisabledElements([]);
+    }
+  }, [isModalAddToCartOpen, isModalSuccessAddToCartOpen]);
 
   return (
     <div className="product-card">
@@ -37,16 +67,29 @@ function ProductCard(props: ProductCardProps): JSX.Element {
         <Link to={AppLink.ProductById(guitar.id)} className="button button--mini">
           Подробнее
         </Link>
-        <Link
-          to="#"
-          className="button button--red button--mini button--add-to-cart"
-          onClick={() => setIsModalCartAddOpen(true)}
-        >Купить
-        </Link>
+
+        {isGuitarInCart() ?
+          <Link
+            to={AppRoute.Cart}
+            className="button button--red-border button--mini button--in-cart"
+          >В Корзине
+          </Link>
+          :
+          <Link
+            to="#"
+            className="button button--red button--mini button--add-to-cart"
+            onClick={() => setIsModalAddToCartOpen(true)}
+          >Купить
+          </Link>}
+
       </div>
 
-      {isModalCartAddOpen ?
-        <ModalCartAdd guitar={guitar} onCloseClick={() => setIsModalCartAddOpen(false)}/>
+      {isModalAddToCartOpen ?
+        <ModalCartAdd guitar={guitar} onCloseClick={() => setIsModalAddToCartOpen(false)}  onSuccessAdd={() => setIsModalSuccessAddToCartOpen(true)}/>
+        : ''}
+
+      {isModalSuccessAddToCartOpen ?
+        <ModalSuccessAdd onCloseClick={() => setIsModalSuccessAddToCartOpen(false)}/>
         : ''}
     </div>
   );

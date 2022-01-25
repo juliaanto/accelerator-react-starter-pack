@@ -8,10 +8,11 @@ import { useEffect } from 'react';
 type ModalCartAddProps = {
   guitar: Guitar;
   onCloseClick: () => void;
+  onSuccessAdd: () => void;
 }
 
 function ModalCartAdd(props: ModalCartAddProps): JSX.Element {
-  const {guitar, onCloseClick} = props;
+  const {guitar, onCloseClick, onSuccessAdd} = props;
 
   const dispatch = useDispatch();
 
@@ -31,12 +32,18 @@ function ModalCartAdd(props: ModalCartAddProps): JSX.Element {
   const handleAddToCartClick = () => {
     dispatch(addGuitarToCart(guitar));
     onCloseClick();
+    onSuccessAdd();
   };
 
   return (
     <div className="modal is-active modal-cart-add">
       <div className="modal__wrapper">
-        <div className="modal__overlay" data-close-modal></div>
+        <div
+          className="modal__overlay"
+          data-close-modal
+          onClick={onCloseClick}
+        >
+        </div>
         <div className="modal__content">
           <h2 className="modal__header title title--medium">Добавить товар в корзину</h2>
           <div className="modal__info">
