@@ -1,6 +1,5 @@
 import { AppLink, AppRoute } from '../../const';
 import { SetStateAction, useEffect, useState } from 'react';
-import { getCommentsCount, getGuitarsInCart } from '../../store/guitar-data/selectors';
 
 import { Guitar } from '../../types/guitar';
 import { Link } from 'react-router-dom';
@@ -8,6 +7,8 @@ import ModalCartAdd from '../modal-cart-add/modal-cart-add';
 import ModalSuccessAdd from '../modal-success-add/modal-success-add';
 import RatingStars from '../rating-stars/rating-stars';
 import { State } from '../../types/state';
+import { getCommentsCount } from '../../store/guitar-data/selectors';
+import { getGuitarsInCart } from '../../store/user-actions/selectors';
 import { useSelector } from 'react-redux';
 
 type ProductCardProps = {

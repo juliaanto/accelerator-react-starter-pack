@@ -18,4 +18,3 @@ export const getCommentsCount = createSelector(
     return guitarComments.length;
   });
 export const getCurrentGuitar = (state: State): Guitar | undefined => state[NameSpace.data].currentGuitar;
-export const getGuitarsInCart = (state: State): Guitars => state[NameSpace.data].guitarsInCart;

@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import { addGuitarToCart, removeGuitarFromCart } from '../../store/action';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
 
 import { Guitar } from '../../types/guitar';
 import { State } from '../../types/state';
 import { getGuitarType } from '../../utils/guitarPage';
-import { getGuitarsInCart } from '../../store/guitar-data/selectors';
-import { useSelector } from 'react-redux';
+import { getGuitarsInCart } from '../../store/user-actions/selectors';
 
 type CartItemProps = {
   guitar: Guitar;
@@ -13,6 +13,8 @@ type CartItemProps = {
 
 function CartItem(props: CartItemProps): JSX.Element {
   const {guitar} = props;
+
+  const dispatch = useDispatch();
 
   const guitarsInCart = useSelector((state: State) => getGuitarsInCart(state));
 
@@ -39,7 +41,11 @@ function CartItem(props: CartItemProps): JSX.Element {
       </div>
       <div className="cart-item__price">{String(guitar.price).replace(/(\d)(?=(\d{3})+$)/g, '$1 ')} ₽</div>
       <div className="quantity cart-item__quantity">
-        <button className="quantity__button" aria-label="Уменьшить количество">
+        <button
+          className="quantity__button"
+          aria-label="Уменьшить количество"
+          onClick={() => dispatch(removeGuitarFromCart(guitar))}
+        >
           <svg width="8" height="8" aria-hidden="true">
             <use xlinkHref="#icon-minus"></use>
           </svg>
@@ -53,7 +59,11 @@ function CartItem(props: CartItemProps): JSX.Element {
           max="99"
           ref={quantityRef}
         />
-        <button className="quantity__button" aria-label="Увеличить количество">
+        <button
+          className="quantity__button"
+          aria-label="Увеличить количество"
+          onClick={() => dispatch(addGuitarToCart(guitar))}
+        >
           <svg width="8" height="8" aria-hidden="true">
             <use xlinkHref="#icon-plus"></use>
           </svg>

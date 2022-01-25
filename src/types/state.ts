@@ -10,13 +10,16 @@ export type GuitarData = {
   isDataLoaded: boolean,
   initialGuitars: Guitars,
   comments: Comments,
-  guitarsInCart: Guitars,
   currentGuitar?: Guitar,
 }
 
 export type SearchParameters = {
   sort: SortBy,
   order: Order,
+}
+
+export type UserActions = {
+  guitarsInCart: Guitars,
 }
 
 export type State = RootState;

@@ -83,3 +83,12 @@ export const addGuitarToCart = createAction(
     },
   }),
 );
+
+export const removeGuitarFromCart = createAction(
+  ActionType.RemoveGuitarFromCart,
+  (guitar: Guitar) => ({
+    payload: {
+      guitar,
+    },
+  }),
+);

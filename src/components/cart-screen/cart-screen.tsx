@@ -5,7 +5,7 @@ import Footer from '../footer/footer';
 import Header from '../header/header';
 import { Link } from 'react-router-dom';
 import { State } from '../../types/state';
-import { getGuitarsInCart } from '../../store/guitar-data/selectors';
+import { getGuitarsInCart } from '../../store/user-actions/selectors';
 import { getUniqueGuitars } from '../../utils/cart';
 import { useSelector } from 'react-redux';
 

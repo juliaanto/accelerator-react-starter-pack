@@ -2,7 +2,7 @@ import { AppRoute } from '../../const';
 import { Link } from 'react-router-dom';
 import SearchForm from '../search-form/search-form';
 import { State } from '../../types/state';
-import { getGuitarsInCart } from '../../store/guitar-data/selectors';
+import { getGuitarsInCart } from '../../store/user-actions/selectors';
 import { useSelector } from 'react-redux';
 
 function Header(): JSX.Element {
