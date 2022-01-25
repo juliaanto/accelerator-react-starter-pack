@@ -1,12 +1,28 @@
 import { Guitar } from '../../types/guitar';
+import { Key } from '../../const';
 import { getGuitarType } from '../../utils/guitarPage';
+import { useEffect } from 'react';
 
 type ModalCartAddProps = {
   guitar: Guitar;
+  onCloseClick: () => void;
 }
 
 function ModalCartAdd(props: ModalCartAddProps): JSX.Element {
-  const {guitar} = props;
+  const {guitar, onCloseClick} = props;
+
+  const handleEscClick = (event: { key: string; }) => {
+    if (event.key === Key.Escape) {
+      onCloseClick();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleEscClick);
+    return () => {
+      window.removeEventListener('keydown', handleEscClick);
+    };
+  });
 
   return (
     <div className="modal is-active modal-cart-add">
@@ -26,7 +42,13 @@ function ModalCartAdd(props: ModalCartAddProps): JSX.Element {
           <div className="modal__button-container">
             <button className="button button--red button--big modal__button modal__button--add">Добавить в корзину</button>
           </div>
-          <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть"><span className="button-cross__icon"></span><span className="modal__close-btn-interactive-area"></span>
+          <button
+            className="modal__close-btn button-cross"
+            type="button"
+            aria-label="Закрыть"
+            onClick={onCloseClick}
+          ><span className="button-cross__icon"></span>
+            <span className="modal__close-btn-interactive-area"></span>
           </button>
         </div>
       </div>

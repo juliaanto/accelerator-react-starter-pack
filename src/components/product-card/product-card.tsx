@@ -46,7 +46,7 @@ function ProductCard(props: ProductCardProps): JSX.Element {
       </div>
 
       {isModalCartAddOpen ?
-        <ModalCartAdd guitar={guitar}/>
+        <ModalCartAdd guitar={guitar} onCloseClick={() => setIsModalCartAddOpen(false)}/>
         : ''}
     </div>
   );
