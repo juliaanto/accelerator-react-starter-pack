@@ -5,6 +5,7 @@ import { createReducer } from '@reduxjs/toolkit';
 
 const initialState: UserActions = {
   guitarsInCart: [],
+  coupon: 0,
 };
 
 const userActions = createReducer(initialState, (builder) => {

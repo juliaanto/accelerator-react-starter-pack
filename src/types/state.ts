@@ -20,7 +20,7 @@ export type SearchParameters = {
 
 export type UserActions = {
   guitarsInCart: Guitars,
-  coupon?: number,
+  coupon: number,
 }
 
 export type State = RootState;

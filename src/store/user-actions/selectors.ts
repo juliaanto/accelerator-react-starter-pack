@@ -3,3 +3,4 @@ import { NameSpace } from '../root-reducer';
 import { State } from '../../types/state';
 
 export const getGuitarsInCart = (state: State): Guitars => state[NameSpace.user].guitarsInCart;
+export const getCoupon = (state: State): number => state[NameSpace.user].coupon;

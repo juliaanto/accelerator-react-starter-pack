@@ -13,3 +13,13 @@ export const getUniqueGuitars = (guitars: Guitars) => {
 
   return uniqueGuitars;
 };
+
+export const getTotalValue = (guitars: Guitars) => {
+  let totalValue = 0;
+
+  guitars.forEach((guitar) => {
+    totalValue += guitar.price;
+  });
+
+  return totalValue;
+};
