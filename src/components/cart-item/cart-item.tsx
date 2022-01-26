@@ -1,7 +1,7 @@
 import { Key, LAST_GUITAR_QUANTITY, MAX_GUITARS_QUANTITY } from '../../const';
+import { SetStateAction, useEffect, useRef, useState } from 'react';
 import { addGuitarToCart, updateGuitarsInCart } from '../../store/action';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useRef, useState } from 'react';
 
 import { Guitar } from '../../types/guitar';
 import ModalCartDelete from '../modal-cart-delete/modal-cart-delete';
@@ -19,6 +19,7 @@ function CartItem(props: CartItemProps): JSX.Element {
   const dispatch = useDispatch();
 
   const [isModalDeleteFromCartOpen, setIsModalDeleteFromCartOpen] = useState<boolean>(false);
+  const [disabledElements, setDisabledElements] = useState<Element[]>();
 
   const guitarsInCart = useSelector((state: State) => getGuitarsInCart(state));
 
@@ -30,6 +31,34 @@ function CartItem(props: CartItemProps): JSX.Element {
     const cartItemElement = document.querySelector(`[id='${guitar.id}']`);
     (cartItemElement?.querySelector('.quantity__input') as HTMLInputElement).value = String(guitarsCount);
   });
+
+  useEffect(() => {
+    const modalElement = document.querySelector('.modal__content');
+
+    if (isModalDeleteFromCartOpen === true) {
+      document.body.style.overflow = 'hidden';
+      const currentDisabledElements: SetStateAction<Element[] | undefined> = [];
+
+      document.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled]), details:not([disabled]), summary:not(:disabled)').forEach((element) => {
+        if (modalElement !== null && !modalElement.contains(element)) {
+          element.setAttribute('tabIndex', '-1');
+          currentDisabledElements.push(element);
+        }
+      });
+      setDisabledElements(currentDisabledElements);
+    } else {
+      document.body.style.overflow = 'visible';
+      disabledElements?.forEach((element) => {
+        element.removeAttribute('tabIndex');
+      });
+      setDisabledElements([]);
+    }
+
+    return () => {
+      document.body.style.overflow = 'visible';
+    };
+
+  }, [isModalDeleteFromCartOpen]);
 
   const updateGuitarsQuantity = () => {
     if (Number(quantityRef.current?.value) > MAX_GUITARS_QUANTITY) {

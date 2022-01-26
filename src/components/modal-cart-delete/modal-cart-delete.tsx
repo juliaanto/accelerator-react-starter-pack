@@ -1,10 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Guitar } from '../../types/guitar';
+import { Key } from '../../const';
 import { State } from '../../types/state';
 import { getGuitarType } from '../../utils/guitarPage';
 import { getGuitarsInCart } from '../../store/user-actions/selectors';
 import { updateGuitarsInCart } from '../../store/action';
+import { useEffect } from 'react';
 
 type ModalCartAddProps = {
   guitar: Guitar;
@@ -18,6 +20,19 @@ function ModalCartDelete(props: ModalCartAddProps): JSX.Element {
 
   const guitarsInCart = useSelector((state: State) => getGuitarsInCart(state));
 
+  useEffect(() => {
+    window.addEventListener('keydown', handleEscClick);
+    return () => {
+      window.removeEventListener('keydown', handleEscClick);
+    };
+  });
+
+  const handleEscClick = (event: { key: string; }) => {
+    if (event.key === Key.Escape) {
+      onCloseClick();
+    }
+  };
+
   const handleDeleteClick = () => {
     const updatedGuitars = guitarsInCart.filter((item) => item.id !== guitar.id);
     dispatch(updateGuitarsInCart(updatedGuitars));
@@ -27,7 +42,11 @@ function ModalCartDelete(props: ModalCartAddProps): JSX.Element {
   return (
     <div className="modal is-active modal-for-ui-kit">
       <div className="modal__wrapper">
-        <div className="modal__overlay" data-close-modal></div>
+        <div
+          className="modal__overlay" data-close-modal
+          onClick={onCloseClick}
+        >
+        </div>
         <div className="modal__content">
           <h2 className="modal__header title title--medium title--red">Удалить этот товар?</h2>
           <div className="modal__info">
@@ -45,7 +64,11 @@ function ModalCartDelete(props: ModalCartAddProps): JSX.Element {
               onClick={handleDeleteClick}
             >Удалить товар
             </button>
-            <button className="button button--black-border button--small modal__button modal__button--right">Продолжить покупки</button>
+            <button
+              className="button button--black-border button--small modal__button modal__button--right"
+              onClick={onCloseClick}
+            >Продолжить покупки
+            </button>
           </div>
           <button
             className="modal__close-btn button-cross"
