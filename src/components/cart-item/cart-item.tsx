@@ -35,17 +35,16 @@ function CartItem(props: CartItemProps): JSX.Element {
     if (Number(quantityRef.current?.value) > MAX_GUITARS_QUANTITY) {
       const quantityInputElement = document.querySelector('.quantity__input') as HTMLObjectElement;
       quantityInputElement.reportValidity();
-      return;
+
+    } else {
+      const guitarIndex = guitarsInCart.indexOf(guitar);
+      const updatedGuitars = guitarsInCart.filter((item) => item.id !== guitar.id);
+
+      for (let i = 0; i < Number(quantityRef.current?.value); i++) {
+        updatedGuitars.splice(guitarIndex, 0, guitar);
+      }
+      dispatch(updateGuitarsInCart(updatedGuitars));
     }
-
-    const updatedGuitars = guitarsInCart.filter((item) => item.id !== guitar.id);
-
-    for (let i = 0; i < Number(quantityRef.current?.value); i++) {
-      updatedGuitars.push(guitar);
-    }
-
-    dispatch(updateGuitarsInCart(updatedGuitars));
-
   };
 
   const handleQuantityInputKeyDown = (event: { key: string; }) => {
