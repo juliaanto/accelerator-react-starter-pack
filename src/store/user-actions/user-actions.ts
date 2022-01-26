@@ -1,4 +1,4 @@
-import { addGuitarToCart, updateGuitarsInCart } from '../action';
+import { addGuitarToCart, applyCoupon, updateGuitarsInCart } from '../action';
 
 import { UserActions } from '../../types/state';
 import { createReducer } from '@reduxjs/toolkit';
@@ -18,6 +18,11 @@ const userActions = createReducer(initialState, (builder) => {
       const {guitars} = action.payload;
 
       state.guitarsInCart = guitars;
+    })
+    .addCase(applyCoupon, (state, action) => {
+      const {coupon} = action.payload;
+
+      state.coupon = coupon;
     });
 });
 

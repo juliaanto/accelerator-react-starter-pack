@@ -1,9 +1,10 @@
 import { APIRoute, APIRouteWithVariable, AppLink, AppRoute, Hash } from '../const';
 import { Guitar, Guitars } from '../types/guitar';
-import { loadComments, loadCurrentGuitar, loadGuitars, loadGuitarsCount, loadInitialGuitars, redirectToRoute } from './action';
+import { applyCoupon, loadComments, loadCurrentGuitar, loadGuitars, loadGuitarsCount, loadInitialGuitars, redirectToRoute } from './action';
 
 import { CommentPost } from '../types/comment-post';
 import { Comments } from '../types/comment';
+import { CouponPost } from '../types/coupon-post';
 import { HttpCode } from '../services/api';
 import { ThunkActionResult } from '../types/action';
 import axios from 'axios';
@@ -77,6 +78,20 @@ export const reviewPostAction = ({guitarId, userName, advantage, disadvantage, c
       await api.post<CommentPost>(APIRoute.Comments, {guitarId, userName, advantage, disadvantage, comment, rating});
       dispatch(redirectToRoute(`${AppLink.ProductById(guitarId)}${Hash.Success}`));
       window.location.reload();
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === HttpCode.NotFound) {
+          dispatch(redirectToRoute(AppRoute.NotFound));
+        }
+      }
+    }
+  };
+
+export const couponPostAction = ({coupon}: CouponPost): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    try {
+      const {data} = await api.post<number>(APIRoute.Coupons, {coupon});
+      dispatch(applyCoupon(data));
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === HttpCode.NotFound) {

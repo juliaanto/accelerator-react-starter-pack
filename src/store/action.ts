@@ -93,3 +93,11 @@ export const updateGuitarsInCart = createAction(
   }),
 );
 
+export const applyCoupon = createAction(
+  ActionType.ApplyCoupon,
+  (coupon: number) => ({
+    payload: {
+      coupon,
+    },
+  }),
+);

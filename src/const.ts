@@ -19,6 +19,7 @@ export enum APIRoute {
   FilterType = 'type=',
   FilterStringCount = 'stringCount=',
   Comments = '/comments',
+  Coupons = '/coupons',
 }
 
 export const PRODUCTS_PER_PAGE = 9;
