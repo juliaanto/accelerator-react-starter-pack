@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { Guitar } from '../../types/guitar';
 import { Hash } from '../../const';
-import { getGuitarType } from '../../utils/guitarPage';
+import { getGuitarType } from '../../utils/guitar';
 
 type TabsProps = {
   product: Guitar;

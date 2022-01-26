@@ -1,12 +1,12 @@
 import { Key, LAST_GUITAR_QUANTITY, MAX_GUITARS_QUANTITY } from '../../const';
 import { SetStateAction, useEffect, useRef, useState } from 'react';
 import { addGuitarToCart, updateGuitarsInCart } from '../../store/action';
+import { getGuitarType, getPriceFormatted } from '../../utils/guitar';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Guitar } from '../../types/guitar';
 import ModalCartDelete from '../modal-cart-delete/modal-cart-delete';
 import { State } from '../../types/state';
-import { getGuitarType } from '../../utils/guitarPage';
 import { getGuitarsInCart } from '../../store/user-actions/selectors';
 
 type CartItemProps = {
@@ -127,7 +127,7 @@ function CartItem(props: CartItemProps): JSX.Element {
         <p className="product-info__info">Артикул: {guitar.vendorCode}</p>
         <p className="product-info__info">{getGuitarType(guitar.type)}, {guitar.stringCount} струнная</p>
       </div>
-      <div className="cart-item__price">{String(guitar.price).replace(/(\d)(?=(\d{3})+$)/g, '$1 ')} ₽</div>
+      <div className="cart-item__price">{getPriceFormatted(guitar.price)}</div>
       <div className="quantity cart-item__quantity">
         <button
           className="quantity__button"
@@ -159,7 +159,7 @@ function CartItem(props: CartItemProps): JSX.Element {
           </svg>
         </button>
       </div>
-      <div className="cart-item__price-total">{String(guitar.price * guitarsCount).replace(/(\d)(?=(\d{3})+$)/g, '$1 ')} ₽</div>
+      <div className="cart-item__price-total">{getPriceFormatted(guitar.price * guitarsCount)}</div>
 
       {isModalDeleteFromCartOpen ?
         <ModalCartDelete guitar={guitar} onCloseClick={() => setIsModalDeleteFromCartOpen(false)}/>

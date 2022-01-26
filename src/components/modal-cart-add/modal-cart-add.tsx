@@ -1,7 +1,8 @@
+import { getGuitarType, getPriceFormatted } from '../../utils/guitar';
+
 import { Guitar } from '../../types/guitar';
 import { Key } from '../../const';
 import { addGuitarToCart } from '../../store/action';
-import { getGuitarType } from '../../utils/guitarPage';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 
@@ -52,7 +53,7 @@ function ModalCartAdd(props: ModalCartAddProps): JSX.Element {
               <h3 className="modal__product-name title title--little title--uppercase">Гитара {guitar.name}</h3>
               <p className="modal__product-params modal__product-params--margin-11">Артикул: {guitar.vendorCode}</p>
               <p className="modal__product-params">{getGuitarType(guitar.type)}, {guitar.stringCount} струнная</p>
-              <p className="modal__price-wrapper"><span className="modal__price">Цена:</span><span className="modal__price">{String(guitar.price).replace(/(\d)(?=(\d{3})+$)/g, '$1 ')} ₽</span></p>
+              <p className="modal__price-wrapper"><span className="modal__price">Цена:</span><span className="modal__price">{getPriceFormatted(guitar.price)}</span></p>
             </div>
           </div>
           <div className="modal__button-container">

@@ -18,6 +18,7 @@ import { State } from '../../types/state';
 import Tabs from '../tabs/tabs';
 import api from '../../services/api';
 import { fetchCurrentGuitarAction } from '../../store/api-actions';
+import { getPriceFormatted } from '../../utils/guitar';
 import { redirectToRoute } from '../../store/action';
 
 function ProductScreen(): JSX.Element {
@@ -144,7 +145,7 @@ function ProductScreen(): JSX.Element {
             </div>
             <div className="product-container__price-wrapper">
               <p className="product-container__price-info product-container__price-info--title">Цена:</p>
-              <p className="product-container__price-info product-container__price-info--value">{String(product.price).replace(/(\d)(?=(\d{3})+$)/g, '$1 ')} ₽</p>
+              <p className="product-container__price-info product-container__price-info--value">{getPriceFormatted(product.price)}</p>
               <button
                 className="button button--red button--big product-container__button"
                 onClick={() => setIsModalAddToCartOpen(true)}

@@ -1,6 +1,6 @@
 import { Comment } from '../../types/comment';
 import RatingStars from '../rating-stars/rating-stars';
-import { getDateFormatted } from '../../utils/guitarPage';
+import { getDateFormatted } from '../../utils/guitar';
 
 type ReviewProps = {
   review: Comment;

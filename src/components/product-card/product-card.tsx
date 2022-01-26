@@ -9,6 +9,7 @@ import RatingStars from '../rating-stars/rating-stars';
 import { State } from '../../types/state';
 import { getCommentsCount } from '../../store/guitar-data/selectors';
 import { getGuitarsInCart } from '../../store/user-actions/selectors';
+import { getPriceFormatted } from '../../utils/guitar';
 import { useSelector } from 'react-redux';
 
 type ProductCardProps = {
@@ -66,8 +67,7 @@ function ProductCard(props: ProductCardProps): JSX.Element {
           <span className="rate__count">{rateCount}</span><span className="rate__message"></span>
         </div>
         <p className="product-card__title">{guitar.name}</p>
-        <p className="product-card__price"><span className="visually-hidden">Цена:</span>{String(guitar.price).replace(/(\d)(?=(\d{3})+$)/g, '$1 ')} ₽
-        </p>
+        <p className="product-card__price"><span className="visually-hidden">Цена:</span>{getPriceFormatted(guitar.price)}</p>
       </div>
       <div className="product-card__buttons">
         <Link to={AppLink.ProductById(guitar.id)} className="button button--mini">
