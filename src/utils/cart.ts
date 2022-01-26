@@ -13,5 +13,3 @@ export const getUniqueGuitars = (guitars: Guitars) => {
 
   return uniqueGuitars;
 };
-
-export const getGuitarsById = (guitars: Guitars, id: number) => guitars.filter((guitar) => guitar.id === id);

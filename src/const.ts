@@ -127,3 +127,5 @@ export enum Title {
 }
 
 export const MAX_GUITARS_QUANTITY = 99;
+
+export const LAST_GUITAR_QUANTITY = 1;

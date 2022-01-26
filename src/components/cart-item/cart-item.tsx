@@ -1,12 +1,12 @@
-import { Key, MAX_GUITARS_QUANTITY } from '../../const';
-import { addGuitarToCart, removeGuitarFromCart } from '../../store/action';
+import { Key, LAST_GUITAR_QUANTITY, MAX_GUITARS_QUANTITY } from '../../const';
+import { addGuitarToCart, updateGuitarsInCart } from '../../store/action';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Guitar } from '../../types/guitar';
+import ModalCartDelete from '../modal-cart-delete/modal-cart-delete';
 import { State } from '../../types/state';
 import { getGuitarType } from '../../utils/guitarPage';
-import { getGuitarsById } from '../../utils/cart';
 import { getGuitarsInCart } from '../../store/user-actions/selectors';
 
 type CartItemProps = {
@@ -17,6 +17,8 @@ function CartItem(props: CartItemProps): JSX.Element {
   const {guitar} = props;
 
   const dispatch = useDispatch();
+
+  const [isModalDeleteFromCartOpen, setIsModalDeleteFromCartOpen] = useState<boolean>(false);
 
   const guitarsInCart = useSelector((state: State) => getGuitarsInCart(state));
 
@@ -33,24 +35,61 @@ function CartItem(props: CartItemProps): JSX.Element {
     if (Number(quantityRef.current?.value) > MAX_GUITARS_QUANTITY) {
       const quantityInputElement = document.querySelector('.quantity__input') as HTMLObjectElement;
       quantityInputElement.reportValidity();
-    } else {
-      const currentGuitars = getGuitarsById(guitarsInCart, guitar.id);
-      currentGuitars.forEach((currentGuitar: Guitar) => dispatch(removeGuitarFromCart(currentGuitar)));
-      for (let i = 0; i < Number(quantityRef.current?.value); i++) {
-        dispatch(addGuitarToCart(guitar));
-      }
+      return;
     }
+
+    const updatedGuitars = guitarsInCart.filter((item) => item.id !== guitar.id);
+
+    for (let i = 0; i < Number(quantityRef.current?.value); i++) {
+      updatedGuitars.push(guitar);
+    }
+
+    dispatch(updateGuitarsInCart(updatedGuitars));
+
   };
 
   const handleQuantityInputKeyDown = (event: { key: string; }) => {
-    if (event.key === Key.Enter) {
+    if (event.key !== Key.Enter) {
+      return;
+    }
+
+    if (Number(quantityRef.current?.value) === 0) {
+      setIsModalDeleteFromCartOpen(true);
+    } else {
       updateGuitarsQuantity();
+    }
+
+  };
+
+  const handleBlurGuitarsQuantity = () => {
+    if (Number(quantityRef.current?.value) === 0) {
+      setIsModalDeleteFromCartOpen(true);
+    } else {
+      updateGuitarsQuantity();
+    }
+  };
+
+  const handleRemoveGuitarClick = () => {
+    if (guitarsCount === LAST_GUITAR_QUANTITY) {
+      setIsModalDeleteFromCartOpen(true);
+    } else {
+      const deletedGuitarIndex = guitarsInCart.lastIndexOf(guitar);
+      const updatedGuitars = guitarsInCart.slice();
+      updatedGuitars.splice(deletedGuitarIndex, 1);
+      dispatch(updateGuitarsInCart(updatedGuitars));
     }
   };
 
   return (
     <div className="cart-item" id={`${guitar.id}`}>
-      <button className="cart-item__close-button button-cross" type="button" aria-label="Удалить"><span className="button-cross__icon"></span><span className="cart-item__close-button-interactive-area"></span>
+      <button
+        className="cart-item__close-button button-cross"
+        type="button"
+        aria-label="Удалить"
+        onClick={() => setIsModalDeleteFromCartOpen(true)}
+      >
+        <span className="button-cross__icon"></span>
+        <span className="cart-item__close-button-interactive-area"></span>
       </button>
       <div className="cart-item__image">
         <img src={guitar.previewImg} width="55" height="130" alt={guitar.name} />
@@ -65,7 +104,7 @@ function CartItem(props: CartItemProps): JSX.Element {
         <button
           className="quantity__button"
           aria-label="Уменьшить количество"
-          onClick={() => dispatch(removeGuitarFromCart(guitar))}
+          onClick={handleRemoveGuitarClick}
         >
           <svg width="8" height="8" aria-hidden="true">
             <use xlinkHref="#icon-minus"></use>
@@ -80,7 +119,7 @@ function CartItem(props: CartItemProps): JSX.Element {
           max="99"
           ref={quantityRef}
           onKeyDown={handleQuantityInputKeyDown}
-          onBlur={updateGuitarsQuantity}
+          onBlur={handleBlurGuitarsQuantity}
         />
         <button
           className="quantity__button"
@@ -93,7 +132,13 @@ function CartItem(props: CartItemProps): JSX.Element {
         </button>
       </div>
       <div className="cart-item__price-total">{String(guitar.price * guitarsCount).replace(/(\d)(?=(\d{3})+$)/g, '$1 ')} ₽</div>
+
+      {isModalDeleteFromCartOpen ?
+        <ModalCartDelete guitar={guitar} onCloseClick={() => setIsModalDeleteFromCartOpen(false)}/>
+        : ''}
+
     </div>
+
   );
 }
 

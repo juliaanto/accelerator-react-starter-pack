@@ -1,4 +1,4 @@
-import { addGuitarToCart, removeGuitarFromCart } from '../action';
+import { addGuitarToCart, updateGuitarsInCart } from '../action';
 
 import { UserActions } from '../../types/state';
 import { createReducer } from '@reduxjs/toolkit';
@@ -14,11 +14,10 @@ const userActions = createReducer(initialState, (builder) => {
 
       state.guitarsInCart.push(guitar);
     })
-    .addCase(removeGuitarFromCart, (state, action) => {
-      const {guitar} = action.payload;
+    .addCase(updateGuitarsInCart, (state, action) => {
+      const {guitars} = action.payload;
 
-      const deletedGuitarIndex = state.guitarsInCart.indexOf(guitar);
-      state.guitarsInCart.splice(deletedGuitarIndex, 1);
+      state.guitarsInCart = guitars;
     });
 });
 

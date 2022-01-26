@@ -14,7 +14,7 @@ export enum ActionType {
   SetOrder = 'parameters/setOrder',
   LoadCurrentGuitar = 'data/loadGuitar',
   AddGuitarToCart = 'user/addGuitarToCart',
-  RemoveGuitarFromCart = 'user/removeGuitarFromCart'
+  UpdateGuitarsInCart = 'user/updateGuitarsInCart',
 }
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Action>;
