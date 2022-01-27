@@ -127,9 +127,10 @@ export enum Title {
   Cart = 'Корзина — Guitar-shop'
 }
 
-export const MAX_GUITARS_QUANTITY = 99;
-
-export const LAST_GUITAR_QUANTITY = 1;
+export enum GuitarQuantity {
+  Min = 1,
+  Max = 99,
+}
 
 export enum Coupon {
   Light = 'light-333',

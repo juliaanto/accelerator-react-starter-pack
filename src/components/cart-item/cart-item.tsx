@@ -1,4 +1,4 @@
-import { Key, LAST_GUITAR_QUANTITY, MAX_GUITARS_QUANTITY } from '../../const';
+import { GuitarQuantity, Key } from '../../const';
 import { SetStateAction, useEffect, useRef, useState } from 'react';
 import { addGuitarToCart, updateGuitarsInCart } from '../../store/action';
 import { getGuitarType, getPriceFormatted } from '../../utils/guitar';
@@ -61,11 +61,7 @@ function CartItem(props: CartItemProps): JSX.Element {
   }, [isModalDeleteFromCartOpen]);
 
   const updateGuitarsQuantity = () => {
-    if (Number(quantityRef.current?.value) > MAX_GUITARS_QUANTITY) {
-      const quantityInputElement = document.querySelector('.quantity__input') as HTMLObjectElement;
-      quantityInputElement.reportValidity();
-
-    } else {
+    if (Number(quantityRef.current?.value) > GuitarQuantity.Min && Number(quantityRef.current?.value) < GuitarQuantity.Max) {
       const guitarIndex = guitarsInCart.indexOf(guitar);
       const updatedGuitars = guitarsInCart.filter((item) => item.id !== guitar.id);
 
@@ -73,6 +69,9 @@ function CartItem(props: CartItemProps): JSX.Element {
         updatedGuitars.splice(guitarIndex, 0, guitar);
       }
       dispatch(updateGuitarsInCart(updatedGuitars));
+    } else {
+      const quantityInputElement = document.querySelector('.quantity__input') as HTMLObjectElement;
+      quantityInputElement.reportValidity();
     }
   };
 
@@ -81,16 +80,15 @@ function CartItem(props: CartItemProps): JSX.Element {
       return;
     }
 
-    if (Number(quantityRef.current?.value) === 0) {
+    if (Number(quantityRef.current?.value) < GuitarQuantity.Min) {
       setIsModalDeleteFromCartOpen(true);
     } else {
       updateGuitarsQuantity();
     }
-
   };
 
   const handleBlurGuitarsQuantity = () => {
-    if (Number(quantityRef.current?.value) === 0) {
+    if (Number(quantityRef.current?.value) < GuitarQuantity.Min) {
       setIsModalDeleteFromCartOpen(true);
     } else {
       updateGuitarsQuantity();
@@ -98,13 +96,19 @@ function CartItem(props: CartItemProps): JSX.Element {
   };
 
   const handleRemoveGuitarClick = () => {
-    if (guitarsCount === LAST_GUITAR_QUANTITY) {
+    if (guitarsCount === GuitarQuantity.Min) {
       setIsModalDeleteFromCartOpen(true);
     } else {
       const deletedGuitarIndex = guitarsInCart.lastIndexOf(guitar);
       const updatedGuitars = guitarsInCart.slice();
       updatedGuitars.splice(deletedGuitarIndex, 1);
       dispatch(updateGuitarsInCart(updatedGuitars));
+    }
+  };
+
+  const handleAddGuitarClick = () => {
+    if (Number(quantityRef.current?.value) < GuitarQuantity.Max) {
+      dispatch(addGuitarToCart(guitar));
     }
   };
 
@@ -144,7 +148,8 @@ function CartItem(props: CartItemProps): JSX.Element {
           placeholder="1"
           id="4-count"
           name="4-count"
-          max="99"
+          min={GuitarQuantity.Min}
+          max={GuitarQuantity.Max}
           ref={quantityRef}
           onKeyDown={handleQuantityInputKeyDown}
           onBlur={handleBlurGuitarsQuantity}
@@ -152,7 +157,7 @@ function CartItem(props: CartItemProps): JSX.Element {
         <button
           className="quantity__button"
           aria-label="Увеличить количество"
-          onClick={() => dispatch(addGuitarToCart(guitar))}
+          onClick={handleAddGuitarClick}
         >
           <svg width="8" height="8" aria-hidden="true">
             <use xlinkHref="#icon-plus"></use>
