@@ -87,12 +87,19 @@ export const reviewPostAction = ({guitarId, userName, advantage, disadvantage, c
     }
   };
 
-export const couponPostAction = ({coupon}: CouponPost): ThunkActionResult =>
+export const couponPostAction = ({coupon}: CouponPost, setIsCouponCorrect: () => void, setIsCouponIncorrect: () => void): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     try {
       const {data} = await api.post<number>(APIRoute.Coupons, {coupon});
       dispatch(applyCoupon(data));
+      setIsCouponCorrect();
     } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === HttpCode.BadRequest) {
+          setIsCouponIncorrect();
+          dispatch(applyCoupon(0));
+        }
+      }
       if (axios.isAxiosError(error)) {
         if (error.response?.status === HttpCode.NotFound) {
           dispatch(redirectToRoute(AppRoute.NotFound));

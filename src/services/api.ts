@@ -4,6 +4,7 @@ const BACKEND_URL = 'https://accelerator-guitar-shop-api-v1.glitch.me/';
 const REQUEST_TIMEOUT = 5000;
 
 export enum HttpCode {
+  BadRequest = 400,
   NotFound = 404,
 }
 

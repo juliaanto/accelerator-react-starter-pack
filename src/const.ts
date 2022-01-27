@@ -130,3 +130,9 @@ export enum Title {
 export const MAX_GUITARS_QUANTITY = 99;
 
 export const LAST_GUITAR_QUANTITY = 1;
+
+export enum Coupon {
+  Light = 'light-333',
+  Medium = 'medium-444',
+  Height = 'height-555',
+}

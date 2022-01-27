@@ -58,7 +58,7 @@ function CartScreen(): JSX.Element {
                 </p>
                 <p className="cart__total-item">
                   <span className="cart__total-value-name">Скидка:</span>
-                  <span className="cart__total-value cart__total-value--bonus">- {getPriceFormatted(discountValue)}</span>
+                  <span className={`cart__total-value ${coupon !== 0 ? 'cart__total-value--bonus' : ''}`}>{coupon !== 0 ? '- ' : ''}{getPriceFormatted(discountValue)}</span>
                 </p>
                 <p className="cart__total-item">
                   <span className="cart__total-value-name">К оплате:</span>
