@@ -13,6 +13,7 @@ const mockStore = configureMockStore();
 const store = mockStore({
   DATA: {  guitars: makeFakeGuitars(), guitarsCount: 0, initialGuitars: [], isDataLoaded: true, comments: []},
   PARAMETERS: {  sort: SortBy.Unknown, order: Order.Unknown},
+  USER: {guitarsInCart: []},
 });
 
 store.dispatch = jest.fn();

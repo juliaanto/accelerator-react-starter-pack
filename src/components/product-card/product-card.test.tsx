@@ -15,6 +15,7 @@ describe('Component: ProductCard', () => {
   it('should render correctly', () => {
     const store = mockStore({
       DATA: { comments: [] },
+      USER: {guitarsInCart: []},
     });
 
     render(
@@ -37,6 +38,7 @@ describe('Component: ProductCard', () => {
 
     const store = mockStore({
       DATA: { comments: [] },
+      USER: {guitarsInCart: []},
     });
     render(
       <Provider store={store}>

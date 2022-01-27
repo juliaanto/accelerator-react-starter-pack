@@ -13,6 +13,7 @@ const mockStore = configureMockStore();
 const store = mockStore({
   DATA: { guitars: [], initialGuitars: [], isDataLoaded: true },
   PARAMETERS: { sort: SortBy.Unknown },
+  USER: {guitarsInCart: []},
 });
 
 store.dispatch = jest.fn();

@@ -1,17 +1,26 @@
 import { render, screen } from '@testing-library/react';
 
 import Header from './header';
+import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
+import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createMemoryHistory } from 'history';
 
 const history = createMemoryHistory();
+const mockStore = configureMockStore();
 
 describe('Component: Header', () => {
   it('should render correctly', () => {
+    const store = mockStore({
+      USER: {guitarsInCart: []},
+    });
+
     render(
-      <Router history={history}>
-        <Header />
-      </Router>);
+      <Provider store={store}>
+        <Router history={history}>
+          <Header />
+        </Router>
+      </Provider>);
 
     expect(screen.getByAltText(/Логотип/i)).toBeInTheDocument();
     expect(screen.getByText(/Каталог/i)).toBeInTheDocument();
