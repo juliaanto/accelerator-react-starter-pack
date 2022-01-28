@@ -4,15 +4,15 @@ import { searchParameters } from './search-parameters/search-parameters';
 import { userActions } from './user-actions/user-actions';
 
 export enum NameSpace {
-  data = 'DATA',
-  paramaters = 'PARAMETERS',
-  user = 'USER',
+  Data = 'DATA',
+  Parameters = 'PARAMETERS',
+  User = 'USER',
 }
 
 export const rootReducer = combineReducers({
-  [NameSpace.data]: guitarData,
-  [NameSpace.paramaters]: searchParameters,
-  [NameSpace.user]: userActions,
+  [NameSpace.Data]: guitarData,
+  [NameSpace.Parameters]: searchParameters,
+  [NameSpace.User]: userActions,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
