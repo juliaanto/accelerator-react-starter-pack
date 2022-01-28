@@ -1,6 +1,6 @@
 import {APIRoute, APIRouteWithVariable, AppLink, FIRST_PAGE, Hash} from '../const';
-import { fetchCommentsAction, fetchCurrentGuitarAction, fetchFilteredGuitarsAction, fetchGuitarsAction, fetchGuitarsCountAction } from './api-actions';
-import { loadComments, loadCurrentGuitar, loadGuitars, loadGuitarsCount, loadInitialGuitars, redirectToRoute } from './action';
+import { applyCoupon, loadComments, loadCurrentGuitar, loadGuitars, loadGuitarsCount, loadInitialGuitars, redirectToRoute } from './action';
+import { couponPostAction, fetchCommentsAction, fetchCurrentGuitarAction, fetchFilteredGuitarsAction, fetchGuitarsAction, fetchGuitarsCountAction } from './api-actions';
 import { makeFakeGuitar, makeFakeGuitars, makeFakeReviews } from '../utils/mocks';
 import thunk, {ThunkDispatch} from 'redux-thunk';
 
@@ -102,6 +102,21 @@ describe('Async actions', () => {
 
     expect(store.getActions()).toEqual([
       redirectToRoute(`${AppLink.ProductById(mockGuitar.id)}${Hash.Success}`),
+    ]);
+  });
+
+  it('should dispatch applyCoupon when POST /coupons', async () => {
+    const fakeCoupon = 25;
+
+    mockAPI
+      .onPost(APIRoute.Coupons)
+      .reply(200, fakeCoupon);
+
+    const store = mockStore();
+    await store.dispatch(couponPostAction({coupon: ''}, jest.fn(), jest.fn()));
+
+    expect(store.getActions()).toEqual([
+      applyCoupon(fakeCoupon),
     ]);
   });
 });

@@ -44,6 +44,17 @@ describe('Application Routing', () => {
     expect(screen.getByText(/Главная/i)).toBeInTheDocument();
   });
 
+  it('should render "CartScreen" when user navigate to "/cart"', () => {
+    history.push(AppRoute.Cart);
+    render(fakeApp);
+
+    expect(screen.getByText('Главная')).toBeInTheDocument();
+    expect(screen.getByText('Всего:')).toBeInTheDocument();
+    expect(screen.getByText('Скидка:')).toBeInTheDocument();
+    expect(screen.getByText('К оплате:')).toBeInTheDocument();
+    expect(screen.getByText('Оформить заказ')).toBeInTheDocument();
+  });
+
   it('should render "NotFoundScreen" when user navigate to non-existent route', () => {
     history.push('/non-existent-route');
     render(fakeApp);
