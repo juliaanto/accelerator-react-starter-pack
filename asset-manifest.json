@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/guitar-shop/static/css/main.03d2d048.css",
-    "main.js": "/guitar-shop/static/js/main.d47d0f11.js",
+    "main.js": "/guitar-shop/static/js/main.4c4c8abe.js",
     "index.html": "/guitar-shop/index.html",
     "main.03d2d048.css.map": "/guitar-shop/static/css/main.03d2d048.css.map",
-    "main.d47d0f11.js.map": "/guitar-shop/static/js/main.d47d0f11.js.map"
+    "main.4c4c8abe.js.map": "/guitar-shop/static/js/main.4c4c8abe.js.map"
   },
   "entrypoints": [
     "static/css/main.03d2d048.css",
-    "static/js/main.d47d0f11.js"
+    "static/js/main.4c4c8abe.js"
   ]
 }
