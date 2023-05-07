@@ -1,4 +1,4 @@
-import { Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 import { AppRoute } from '../../const';
 import CartScreen from '../cart-screen/cart-screen';
@@ -8,9 +8,8 @@ import ProductScreen from '../product-screen/product-screen';
 import ServerUnavailable from '../server-unavailable/server-unavailable';
 
 function App(): JSX.Element {
-
   return (
-    <Switch>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Route exact path={AppRoute.Main}>
         <MainScreen />
       </Route>
@@ -29,7 +28,7 @@ function App(): JSX.Element {
       <Route>
         <NotFoundScreen />
       </Route>
-    </Switch>
+    </BrowserRouter>
   );
 }
 

@@ -1,5 +1,6 @@
 {
   "private": true,
+  "homepage": "https://juliaanto.github.io/guitar-shop",
   "dependencies": {
     "@reduxjs/toolkit": "1.5.0",
     "axios": "0.21.1",
@@ -30,6 +31,7 @@
     "axios-mock-adapter": "1.19.0",
     "eslint-config-htmlacademy": "4.1.0",
     "faker": "5.5.3",
+    "gh-pages": "^5.0.0",
     "redux-devtools-extension": "2.13",
     "typescript": "4.5.4"
   },
@@ -38,7 +40,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test --passWithNoTests",
     "eject": "react-scripts eject",
-    "eslint": "eslint --ext .tsx --ext .ts src/"
+    "eslint": "eslint --ext .tsx --ext .ts src/",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

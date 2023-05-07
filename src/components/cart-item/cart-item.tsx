@@ -124,7 +124,7 @@ function CartItem(props: CartItemProps): JSX.Element {
         <span className="cart-item__close-button-interactive-area"></span>
       </button>
       <div className="cart-item__image">
-        <img src={guitar.previewImg} width="55" height="130" alt={guitar.name} />
+        <img src={`${process.env.PUBLIC_URL}/${guitar.previewImg}`} width="55" height="130" alt={guitar.name} />
       </div>
       <div className="product-info cart-item__info">
         <p className="product-info__title">{guitar.name}</p>

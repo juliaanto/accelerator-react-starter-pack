@@ -129,7 +129,7 @@ function ProductScreen(): JSX.Element {
             </li>
           </ul>
           <div className="product-container">
-            <img className="product-container__img" src={product?.previewImg} width="90" height="235" alt="" />
+            <img className="product-container__img" src={`${process.env.PUBLIC_URL}/${product?.previewImg}`} width="90" height="235" alt="" />
             <div className="product-container__info-wrapper">
               <h2 className="product-container__title title title--big title--uppercase">{product?.name}</h2>
               <div className="rate product-container__rating" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
