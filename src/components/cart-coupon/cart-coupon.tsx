@@ -17,9 +17,9 @@ function CartCoupon(): JSX.Element {
 
     setIsCouponCorrect(undefined);
 
-    if (couponRef.current?.value === Coupon.Light || couponRef.current?.value === Coupon.Medium || couponRef.current?.value === Coupon.Height) {
+    if (couponRef.current?.value.toLowerCase() === Coupon.Light || couponRef.current?.value.toLowerCase() === Coupon.Medium || couponRef.current?.value.toLowerCase() === Coupon.Height) {
       dispatch(couponPostAction({
-        coupon: couponRef.current.value,
+        coupon: couponRef.current.value.toLowerCase(),
       },
       () => setIsCouponCorrect(true),
       () => setIsCouponCorrect(false),
