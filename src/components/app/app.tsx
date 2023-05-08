@@ -16,6 +16,9 @@ function App(): JSX.Element {
       <Route path={AppRoute.Catalog}>
         <MainScreen />
       </Route>
+      <Route exact path={AppRoute.NotFound}>
+        <NotFoundScreen />
+      </Route>
       <Route exact path={AppRoute.Product}>
         <ProductScreen />
       </Route>
@@ -24,9 +27,6 @@ function App(): JSX.Element {
       </Route>
       <Route exact path={AppRoute.ServerUnavailable}>
         <ServerUnavailable />
-      </Route>
-      <Route>
-        <NotFoundScreen />
       </Route>
     </BrowserRouter>
   );
